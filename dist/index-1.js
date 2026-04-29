@@ -29,3 +29,6 @@ npm i -g typescript
 let age = 27;
 let text = `I am ${age} years old`;
 console.log(text);
+let phone = undefined;
+phone = 25;
+console.log(phone);

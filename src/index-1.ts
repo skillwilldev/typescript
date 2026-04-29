@@ -39,3 +39,6 @@ let age: number = 27
 let text: string = `I am ${age} years old`;
 console.log(text);
 
+let phone: undefined | number = undefined;
+phone = 25;
+console.log(phone);
