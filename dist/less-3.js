@@ -1,5 +1,5 @@
+"use strict";
 // // number
-export {};
 // let age: number = 27; // int - მთელი რიცხვი
 // let price: number = 99.99; // float - ათწილადი,
 // let bigNumber: bigint = 213421342313412342134234n; // bigint
