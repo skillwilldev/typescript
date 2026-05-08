@@ -1,0 +1,108 @@
+body {
+    font-family: "Montserrat", sans-serif;
+    font-size: 18px;
+}
+
+.clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+
+    .clock__inner {
+        width: 350px;
+        height: 350px;
+        border: 8px solid #222222;
+        outline: 10px solid #343434;
+        outline-offset: -1px;
+        border-radius: 50%;
+        position: relative;
+
+        >span {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            width: 14px;
+            height: 14px;
+            background-color: #222222;
+            z-index: 4;
+
+            &::after {
+                content: '';
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                width: 5px;
+                height: 5px;
+                border-radius: 50%;
+                background-color: #fff;
+                z-index: 5;
+            }
+        }
+
+
+        .arrow {
+            position: absolute;
+            left: 50%;
+            bottom: 50%;
+            transform-origin: bottom center;
+            border-top-left-radius: 2px;
+            border-top-right-radius: 2px;
+            background-color: #222222;
+        }
+
+        .hours {
+            width: 6px;
+            height: 24%;
+            transform: translateX(-50%) rotate(0deg);
+        }
+
+        .minute {
+            width: 4px;
+            height: 33%;
+            transform: translateX(-50%) rotate(0deg);
+        }
+
+        .seconds {
+            width: 2px;
+            height: 36%;
+            transform: translateX(-50%) rotate(0deg);
+        }
+
+        .clock__numbers {
+            div {
+                position: absolute;
+                text-align: center;
+                width: 100%;
+                height: 100%;
+
+                span {
+                    display: inline-block;
+                    text-align: center;
+                    transform: translateY(-20px);
+                }
+            }
+        }
+
+        .clock__lines {
+            div {
+                position: absolute;
+                width: 100%;
+                height: 100%;
+                text-align: center;
+
+                span {
+                    display: inline-block;
+                    text-align: center;
+                    position: absolute;
+                    width: 2px;
+                    height: 8px;
+                    background-color: #222222;
+                }
+            }
+        }
+    }
+}
