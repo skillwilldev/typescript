@@ -18,7 +18,7 @@ body {
         border-radius: 50%;
         position: relative;
 
-        >span {
+        .center {
             position: absolute;
             top: 50%;
             left: 50%;
@@ -83,6 +83,8 @@ body {
                     display: inline-block;
                     text-align: center;
                     transform: translateY(-20px);
+                    font-size: 24px;
+                    font-weight: 700;
                 }
             }
         }
@@ -103,6 +105,19 @@ body {
                     background-color: #222222;
                 }
             }
+        }
+
+        .clock__decore {
+            font-family: "Dancing Script", cursive;
+            position: absolute;
+            top: 69%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 40px;
+            font-weight: 800;
+            color: #22222226;
+            text-transform: capitalize;
+
         }
     }
 }
