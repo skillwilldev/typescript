@@ -36,12 +36,31 @@ const clockLines = document.createElement('div') as HTMLDivElement;
 clockLines.classList.add('clock__lines');
 clockInner.appendChild(clockLines);
 
+const romanNumerals: Record<number, string> = {
+    1: 'I',
+    2: 'II',
+    3: 'III',
+    4: 'IV',
+    5: 'V',
+    6: 'VI',
+    7: 'VII',
+    8: 'VIII',
+    9: 'IX',
+    10: 'X',
+    11: 'XI',
+    12: 'XII'
+}
+
+function getRoman(num: number): string {
+    return romanNumerals[num] ?? '';
+}
+
 
 function nums(text: number, space: string, rotate: number): void {
     const numItemCover = document.createElement('div') as HTMLDivElement;
     numItemCover.style = `transform: rotate(${rotate}deg);`;
     const numItemSpan = document.createElement('span') as HTMLSpanElement;
-    numItemSpan.textContent = text.toString();
+    numItemSpan.textContent = text.toString(); //getRoman(text);
     numItemSpan.style = `transform: translateY(${space}px) rotate(-${rotate}deg)`;
     numItemCover.appendChild(numItemSpan);
     clockNumbers.appendChild(numItemCover);
@@ -53,8 +72,8 @@ function line(rotate: number, h: boolean): void {
     const lineSpan = document.createElement('span') as HTMLSpanElement;
     if (h) {
         lineSpan.style = `
-             width: 1.2%;
-             height: 3.6%;
+             width: 4px;
+             height: 12px;
         `;
     }
     lineCover.appendChild(lineSpan);
