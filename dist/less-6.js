@@ -1,4 +1,3 @@
-"use strict";
 // objects
 let myuser = [
     { name: "johny", age: 22 },
@@ -13,4 +12,5 @@ let myuser = [
 ];
 let finduser = myuser.find((x) => x.name === "john");
 console.log(finduser);
+export {};
 // for()  - filter ---- find -- map

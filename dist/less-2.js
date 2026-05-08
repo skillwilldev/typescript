@@ -1,5 +1,5 @@
-"use strict";
 // // npm i -g typescript ან (Mac) sudo npm i -g typescript
+export {};
 // // შევქმნათ tsconfig.json ფაილი ჩვენს სამუშაო Folder-ში
 // // {
 // //     "compilerOptions": {

@@ -1,7 +1,7 @@
-"use strict";
 // function hello(): void{ 
 //     console.error("You Have an Error");
 // }
+export {};
 // hello();
 // let mya = Number(prompt("შემოიტანეთ a"))
 // let myb = Number(prompt("შემოიტანეთ b"))

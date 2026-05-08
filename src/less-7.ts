@@ -90,13 +90,13 @@
 
 // user.name = ""
 
-interface Add{
+interface Add {
     (a: number, b: number): number;
 }
 
-const sum: Add = (a,b) => a + b;
+const sum: Add = (a, b) => a + b;
 
-const minus: Add = (a, b) => a-b;
+const minus: Add = (a, b) => a - b;
 
 // inheritance - extends
 
@@ -105,7 +105,7 @@ interface Animal {
     legs: number
 }
 
-interface Dog extends Animal{
+interface Dog extends Animal {
     name: string,
     breed: string
 }
@@ -116,9 +116,9 @@ const dog: Dog = {
     legs: 4
 }
 
-console.log( minus(5,6) )
+console.log(minus(5, 6))
 
-type A ={
+type A = {
     name: string
 }
 
@@ -144,3 +144,74 @@ enum TrafficLight {
 const traffic: TrafficLight = TrafficLight.Red;
 console.log(traffic);
 
+// generic
+
+// type IUser =  {
+//     id: number;
+//     // [key: string]: string | number;
+// } & Record<string, string>
+
+
+// interface IUser {
+//     id: number;
+// }
+
+// interface Cast extends IUser {
+//     [key: string]: string | number
+// }
+
+///////////////////
+
+// interface IUser {
+//     id: number;
+//     name: string;
+// }
+
+// interface Cast extends IUser {
+//     [key: string]: any;
+// }
+
+/////////////
+// interface IUser {
+//     id: number;
+//     name: string;
+// }
+
+// // type Cast = IUser & Record<string, any>
+// type Cast = IUser & {
+//     [key: string]: any;
+// }
+
+
+
+
+// async function getData<T>(url: string): Promise<T> {
+//     const response = await fetch(url);
+//     return response.json();
+// }
+
+// const user = getData<Cast>('/api/user/1');
+///////////////////
+
+interface Cast {
+    id: number;
+    name: string;
+    [key: string]: any;
+}
+
+type Asm = {
+    id: number;
+    name: string;
+}
+
+
+
+
+async function getData<T extends Asm>(url: string): Promise<T> {
+    const response = await fetch(url);
+    return response.json();
+}
+
+const user = await getData<Cast>('/api/user/1');
+
+console.log(user.name);
