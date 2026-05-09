@@ -63,7 +63,7 @@ body {
 
         .minute {
             width: 4px;
-            height: 33%;
+            height: 30%;
             transform: translateX(-50%) rotate(0deg);
         }
 
@@ -71,6 +71,7 @@ body {
             width: 2px;
             height: 36%;
             transform: translateX(-50%) rotate(0deg);
+            background-color: tomato;
         }
 
         .clock__numbers {
@@ -104,6 +105,8 @@ body {
                     width: 2px;
                     height: 8px;
                     background-color: #222222;
+                    /* border-bottom-left-radius: 2px;
+                    border-bottom-right-radius: 2px; */
                 }
             }
         }
