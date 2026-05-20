@@ -54,7 +54,7 @@ function findUserById(id: number): User | undefined {
 }
 
 function printUsers(): void {
-    console.log("👤 REGISTERED USERS:");
+    console.log("REGISTERED USERS:");
     console.log(users);
 }
 
