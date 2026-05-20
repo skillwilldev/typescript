@@ -106,7 +106,8 @@ function removeFromCart(userId: number, productId: number): void {
     product.stock += item!.quantity;
 
     // Remove from cart
-    user.cart.splice(index, 1);
+    //user.cart.splice(index, 1);
+    user.cart = user.cart.filter((item) => item.product.id !== productId);
 }
 
 // ==========================================
