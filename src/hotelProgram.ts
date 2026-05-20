@@ -1,5 +1,5 @@
 // ==========================================
-// 1️. TYPES & INTERFACES
+// 1. TYPES & INTERFACES
 // ==========================================
 type Product = {
     id: number;
@@ -21,13 +21,13 @@ type User = {
 };
 
 // ==========================================
-// 2️. DATABASE (STATE)
+// 2. DATABASE (STATE)
 // ==========================================
 let products: Product[] = [];
 let users: User[] = [];
 
 // ==========================================
-// 3️. PRODUCT FUNCTIONS
+// 3. PRODUCT FUNCTIONS
 // ==========================================
 function addProduct(product: Product): void {
     products.push(product);
@@ -38,12 +38,12 @@ function findProductById(id: number): Product | undefined {
 }
 
 function printProducts(): void {
-    console.log("📦 CURRENT PRODUCTS IN STORE:");
+    console.log(" CURRENT PRODUCTS IN STORE:");
     console.log(products);
 }
 
 // ==========================================
-// 4️. USER FUNCTIONS
+// 4. USER FUNCTIONS
 // ==========================================
 function addUser(user: User): void {
     users.push(user);
@@ -59,7 +59,7 @@ function printUsers(): void {
 }
 
 // ==========================================
-// 5️. CART FUNCTIONS
+// 5. CART FUNCTIONS
 // ==========================================
 function addToCart(userId: number, productId: number, quantity: number): void {
     const user = findUserById(userId);
@@ -75,10 +75,10 @@ function addToCart(userId: number, productId: number, quantity: number): void {
         return;
     }
 
-    // Уменьшаем количество товара на складе
+    // Reduce the product stock in the warehouse
     product.stock -= quantity;
 
-    // Ищем, есть ли уже такой товар в корзине
+    // Check if this product is already in the cart
     const existingItem = user.cart.find(item => item.product.id === productId);
 
     if (existingItem) {
@@ -102,18 +102,18 @@ function removeFromCart(userId: number, productId: number): void {
 
     const item = user.cart[index];
 
-    // Возвращаем товар на склад
+    // Return the product back to the stock/warehouse
     product.stock += item!.quantity;
 
-    // Удаляем из корзины
+    // Remove from cart
     user.cart.splice(index, 1);
 }
 
 // ==========================================
-// 6️. ANALYTICS FUNCTIONS (USING reduce)
+// 6. ANALYTICS FUNCTIONS (USING reduce)
 // ==========================================
 
-// Считает общую стоимость корзины конкретного пользователя
+// Calculates the total price of a specific user's cart
 function calculateCartTotal(userId: number): number {
     const user = findUserById(userId);
     if (!user) return 0;
@@ -123,7 +123,7 @@ function calculateCartTotal(userId: number): number {
     }, 0);
 }
 
-// Считает общее количество единиц товара в корзине пользователя
+// Calculates the total number of items in a user's cart
 function calculateTotalItems(userId: number): number {
     const user = findUserById(userId);
     if (!user) return 0;
@@ -133,7 +133,7 @@ function calculateTotalItems(userId: number): number {
     }, 0);
 }
 
-// Находит самый дорогой продукт в магазине
+// Finds the most expensive product in the store
 function getMostExpensiveProduct(): Product | undefined {
     if (products.length === 0) return undefined;
 
@@ -142,12 +142,12 @@ function getMostExpensiveProduct(): Product | undefined {
     });
 }
 
-// Считает суммарную стоимость всех товаров на складе (цена * остаток)
+// Calculates the total value of all products in stock (price * stock)
 function totalStoreValue(): number {
     return products.reduce((total, p) => total + (p.price * p.stock), 0);
 }
 
-// Вычисляет среднюю цену товара в магазине
+// Calculates the average product price in the store
 function averageProductPrice(): number {
     if (products.length === 0) return 0;
 
@@ -155,7 +155,7 @@ function averageProductPrice(): number {
     return totalSum / products.length;
 }
 
-// Аgroupирует продукты по категориям (возвращает объект вида { "Tech": [...], "Toys": [...] })
+// Groups products by category (returns an object like { "Tech": [...], "Toys": [...] })
 function groupProductsByCategory(): Record<string, Product[]> {
     return products.reduce((grouped, product) => {
         const cat = product.category;
@@ -168,7 +168,7 @@ function groupProductsByCategory(): Record<string, Product[]> {
 }
 
 // ==========================================
-// 7️. CHECKOUT SYSTEM
+// 7. CHECKOUT SYSTEM
 // ==========================================
 function checkout(userId: number): void {
     const user = findUserById(userId);
@@ -182,54 +182,54 @@ function checkout(userId: number): void {
         return;
     }
 
-    // Рассчитываем итоговую сумму с помощью нашей функции на reduce
+    // Calculate the total price using our reduce-based function
     const total = calculateCartTotal(userId);
 
     console.log(`\n🧾 CHECKOUT FOR USER: ${user.name.toUpperCase()}`);
     console.log("Items purchased:", user.cart);
-    console.log(`💰 TOTAL PAID: $${total}`);
+    console.log(`TOTAL PAID: $${total}`);
     console.log("------------------------------------------");
 
-    // Очищаем корзину после успешной оплаты
+    // Clear the cart after a successful payment
     user.cart = [];
 }
 
 // ==========================================
-// 8️. APP START (TESTING DATA)
+// 8. APP START (TESTING DATA)
 // ==========================================
 
-// 1. Добавляем товары в магазин
+// 1. Add products to the store
 addProduct({ id: 1, name: "Laptop", price: 1000, stock: 5, category: "Tech" });
 addProduct({ id: 2, name: "Phone", price: 700, stock: 10, category: "Tech" });
 addProduct({ id: 3, name: "Keyboard", price: 150, stock: 15, category: "Tech" });
 addProduct({ id: 4, name: "Whale plush toy", price: 30, stock: 50, category: "Toys" });
 
-// 2. Регистрируем пользователя
+// 2. Register a user
 addUser({ id: 1, name: "Melik", cart: [] });
 
-// 3. Операции с корзиной (Cart operations)
-addToCart(1, 1, 1);  // Мелик берет 1 лаптоп (остаток на складе: 4)
-addToCart(1, 2, 2);  // Мелик берет 2 телефона (остаток на складе: 8)
-addToCart(1, 4, 5);  // Мелик берет 5 игрушек  (остаток на складе: 45)
+// 3. Cart operations
+addToCart(1, 1, 1);  // Melik takes 1 laptop (remaining stock: 4)
+addToCart(1, 2, 2);  // Melik takes 2 phones (remaining stock: 8)
+addToCart(1, 4, 5);  // Melik takes 5 toys (remaining stock: 45)
 
-// 4. Вывод аналитики (Analytics)
-console.log("--- 📊 STORE ANALYTICS ---");
-console.log("Most expensive product:", getMostExpensiveProduct()?.name); // Ожидается: Laptop
-console.log("Average product price:", `$${averageProductPrice().toFixed(2)}`); // Ожидается: $470.00
+// 4. Analytics output
+console.log("--- STORE ANALYTICS ---");
+console.log("Most expensive product:", getMostExpensiveProduct()?.name); // Expected: Laptop
+console.log("Average product price:", `$${averageProductPrice().toFixed(2)}`); // Expected: $470.00
 console.log("Total store inventory value:", `$${totalStoreValue()}`);
 console.log("Products by category:", groupProductsByCategory());
 
-console.log("\n--- 🛒 USER CART ANALYTICS ---");
-console.log("Total items in Melik's cart:", calculateTotalItems(1)); // Ожидается: 8 (1 + 2 + 5)
-console.log("Current cart total cost:", `$${calculateCartTotal(1)}`); // Ожидается: 1000 + 1400 + 150 = 2550
+console.log("\n--- USER CART ANALYTICS ---");
+console.log("Total items in Melik's cart:", calculateTotalItems(1)); // Expected: 8 (1 + 2 + 5)
+console.log("Current cart total cost:", `$${calculateCartTotal(1)}`); // Expected: 1000 + 1400 + 150 = 2550
 
-// 5. Оформление заказа (Checkout)
+// 5. Checkout
 checkout(1);
 
-// Проверяем, что корзина пуста, а склад обновился
-console.log("\n--- 🔍 POST-CHECKOUT CHECK ---");
-printProducts(); // Показывает уменьшенный stock
-printUsers();    // Показывает пустую корзину Мелика
+// Verify that the cart is empty and the stock has updated
+console.log("\n--- POST-CHECKOUT CHECK ---");
+printProducts(); // Shows reduced stock values
+printUsers();    // Shows Melik's empty cart
 
 console.log('------------------');
 console.log(users);
