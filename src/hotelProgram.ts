@@ -66,21 +66,25 @@ function addToCart(userId: number, productId: number, quantity: number): void {
     const product = findProductById(productId);
 
     if (!user || !product) {
-        console.log(`⚠ Error: User ${userId} or Product ${productId} not found.`);
+        console.log(`Error: User ${userId} or Product ${productId} not found.`);
         return;
     }
 
-    if (product.stock < quantity) {
-        console.log(`⚠ Error: Not enough stock for ${product.name}. Available: ${product.stock}`);
-        return;
-    }
-
-    // Reduce the product stock in the warehouse
-    product.stock -= quantity;
-
-    // Check if this product is already in the cart
+    // 1. Check if this product is already in the user's cart
     const existingItem = user.cart.find(item => item.product.id === productId);
 
+    // 2. Calculate the total quantity requested after this addition
+    const currentInCart = existingItem ? existingItem.quantity : 0;
+    const futureTotalRequested = currentInCart + quantity;
+
+    // 3. Compare the total requested quantity with the actual store stock
+    if (product.stock < futureTotalRequested) {
+        console.log(`Error: Cannot add ${quantity} more ${product.name}(s). ` +
+            `You already have ${currentInCart} in cart. Total available in store: ${product.stock}`);
+        return;
+    }
+
+    // 4. If everything is fine - update the quantity or push a new item to the cart
     if (existingItem) {
         existingItem.quantity += quantity;
     } else {
@@ -93,17 +97,18 @@ function addToCart(userId: number, productId: number, quantity: number): void {
 
 function removeFromCart(userId: number, productId: number): void {
     const user = findUserById(userId);
-    const product = findProductById(productId);
+    //const product = findProductById(productId);
 
-    if (!user || !product) return;
+    // if (!user || !product) return;
+    if (!user) return;
 
-    const index = user.cart.findIndex(item => item.product.id === productId);
-    if (index === -1) return;
+    // const index = user.cart.findIndex(item => item.product.id === productId);
+    // if (index === -1) return;
 
-    const item = user.cart[index];
+    // const item = user.cart[index];
 
-    // Return the product back to the stock/warehouse
-    product.stock += item!.quantity;
+    // // Return the product back to the stock/warehouse
+    // product.stock += item!.quantity;
 
     // Remove from cart
     //user.cart.splice(index, 1);
@@ -174,15 +179,43 @@ function groupProductsByCategory(): Record<string, Product[]> {
 function checkout(userId: number): void {
     const user = findUserById(userId);
     if (!user) {
-        console.log("⚠ Checkout failed: User not found.");
+        console.log("Checkout failed: User not found.");
         return;
     }
 
     if (user.cart.length === 0) {
-        console.log(`⚠ Checkout failed: ${user.name}'s cart is empty.`);
+        console.log(`Checkout failed: ${user.name}'s cart is empty.`);
         return;
     }
 
+    for (const item of user.cart) {
+        if (item.product.stock < item.quantity) {
+            console.log(`\n CHECKOUT FAILED for ${user.name.toUpperCase()}:`);
+            console.log(`  Not enough stock for "${item.product.name}".`);
+            console.log(`  In store: ${item.product.stock} pcs | In your cart: ${item.quantity} pcs.`);
+            console.log("  Please update your cart or wait for restocking.");
+            return; // Stop checkout completely, do not charge money, do not clear cart
+        }
+    }
+
+    console.log(`\n🧾 CHECKOUT FOR USER: ${user.name.toUpperCase()}`);
+    console.log("Items purchased:");
+
+    for (const item of user.cart) {
+        // Reduce the physical warehouse stock right now during the purchase
+        item.product.stock -= item.quantity;
+        console.log(`  - ${item.product.name} x${item.quantity} ($${item.product.price * item.quantity})`);
+    }
+
+    // Calculate the total price using our reduce-based function
+    const total = calculateCartTotal(userId);
+    console.log(`TOTAL PAID: $${total}`);
+    console.log("------------------------------------------");
+
+    // Clear the cart after a successful payment
+    user.cart = [];
+
+    /* 
     // Calculate the total price using our reduce-based function
     const total = calculateCartTotal(userId);
 
@@ -193,6 +226,7 @@ function checkout(userId: number): void {
 
     // Clear the cart after a successful payment
     user.cart = [];
+    */
 }
 
 // ==========================================
@@ -209,9 +243,9 @@ addProduct({ id: 4, name: "Whale plush toy", price: 30, stock: 50, category: "To
 addUser({ id: 1, name: "Melik", cart: [] });
 
 // 3. Cart operations
-addToCart(1, 1, 1);  // Melik takes 1 laptop (remaining stock: 4)
-addToCart(1, 2, 2);  // Melik takes 2 phones (remaining stock: 8)
-addToCart(1, 4, 5);  // Melik takes 5 toys (remaining stock: 45)
+addToCart(1, 1, 1);  // Melik puts 1 laptop in cart (store stock is still 5)
+addToCart(1, 2, 2);  // Melik puts 2 phones in cart (store stock is still 10)
+addToCart(1, 4, 5);  // Melik puts 5 toys in cart (store stock is still 50)
 
 // 4. Analytics output
 console.log("--- STORE ANALYTICS ---");
