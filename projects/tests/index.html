@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="ka">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="./style.css">
+  <title>გაფართოებული მასივები და ფორმები - ქვიზი</title>
+</head>
+
+<body>
+  <div class="quiz-container">
+    <h1>გაფართოებული მასივები და ფორმები<br />ქვიზი</h1>
+    <p class="subtitle">Advanced Arrays & Forms Quiz</p>
+
+    <div class="progress-bar-track">
+      <div class="progress-bar-fill" id="progressBar" style="width: 10%"></div>
+    </div>
+
+    <div id="questionArea">
+      <p class="question-counter" id="questionCounter">კითხვა 1 / 20</p>
+
+      <div class="advanced-banner hidden" id="advancedBanner">
+        <div class="banner-title">&#9888;&#65039; ყურადღება!</div>
+        <div>ქვემოთ მოცემული კითხვები მოიცავს რთულ კომბინაციებს და მეთოდების ჩეინინგს. ისინი მოითხოვს მასალის ღრმა გაგებას.</div>
+      </div>
+
+      <div class="question-card" id="questionCard">
+        <span class="section-label main" id="sectionLabel">ძირითადი - while Loop</span>
+        <div class="question-text" id="questionText">რა განსხვავებაა <code>while</code> და <code>do-while</code> ციკლებს შორის?</div>
+        
+        <pre class="code-block hidden" id="codeBlock"></pre>
+        
+        <div class="options" id="optionsContainer">
+          <button class="option-btn">არანაირი განსხვავება, ორივე ერთნაირად მუშაობს</button>
+          <button class="option-btn">do-while ყოველთვის სრულდება მინიმუმ ერთხელ, while კი შეიძლება არასოდეს შესრულდეს</button>
+          <button class="option-btn">while უფრო სწრაფია ვიდრე do-while</button>
+          <button class="option-btn">do-while მხოლოდ რიცხვებთან მუშაობს</button>
+        </div>
+        
+        <div class="feedback" id="feedback"></div>
+        
+        <div class="explanation-box" id="explanationBox">
+          <div class="explanation-title">ახსნა</div>
+          <div id="explanationText">while ციკლი პირობას ამოწმებს ყოველი იტერაციის წინ — თუ პირობა თავიდანვე false-ია, ციკლის სხეული არასოდეს შესრულდება. do-while კი ჯერ ასრულებს კოდს, შემდეგ ამოწმებს პირობას, ამიტომ ყოველთვის სრულდება მინიმუმ ერთხელ.</div>
+        </div>
+      </div>
+
+      <div class="nav-buttons">
+        <button class="nav-btn prev" id="prevBtn" disabled>&#8592; წინა</button>
+        <button class="nav-btn next" id="nextBtn">შემდეგი &#8594;</button>
+      </div>
+    </div>
+
+    <div class="results-screen hidden" id="resultsScreen">
+      <h2>ქვიზი დასრულებულია!</h2>
+      <div class="score-circle excellent" id="scoreCircle">
+        <span id="scorePercent">100%</span>
+        <span class="score-label" id="scoreLabel">შესანიშნავი!</span>
+      </div>
+      <div class="score-breakdown" id="scoreBreakdown">
+        <strong>სულ:</strong> 20 / 20 სწორი პასუხი<br/>
+        <strong>ძირითადი ნაწილი:</strong> 15 / 15<br/>
+        <strong>დამატებითი:</strong> 5 / 5
+      </div>
+      <button class="restart-btn">&#x1F504; თავიდან დაწყება</button>
+    </div>
+  </div>
+</body>
+
+</html>
