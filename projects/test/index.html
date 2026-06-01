@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./style.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Geist:wght@300;400;500;600;700&display=swap"
+        rel="stylesheet">
+    <title>TypeScript Quiz</title>
+
+
+</head>
+
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <div class="header-brand">
+                <span class="ts-badge">TS</span>
+                <span class="lang-key" data-ru="Квиз" data-en="Quiz" data-ka="ქვიზი">Квиз</span>
+            </div>
+            <div class="lang-toggle">
+                <div class="lang-toggle">
+                    <button class="lang-btn" id="btn-en" data-lang="en">EN</button>
+                    <button class="lang-btn active" id="btn-ru" data-lang="ru">RU</button>
+                    <button class="lang-btn" id="btn-ka" data-lang="ka">KA</button>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="hero">
+            <span class="hero-icon">🟦</span>
+            <h1 class="lang-key" data-ru="TypeScript — Полный Квиз" data-en="TypeScript — Full Quiz"
+                data-ka="TypeScript — სრული ქვიზი">TypeScript — Полный Квиз</h1>
+            <p class="lang-key"
+                data-ru="Типы, интерфейсы, дженерики, утилиты, декораторы, продвинутые фичи и конфигурация. Проверь, насколько глубоко ты знаешь TypeScript."
+                data-en="Types, interfaces, generics, utility types, decorators, advanced features, and configuration. Test how deep your TypeScript knowledge goes."
+                data-ka="ტიპები, ინტერფეისები, ჯენერიკები, უტილიტები, დეკორატორები, დამატებითი ფუნქციები და კონფიგურაცია. შეამოწმე შენი TypeScript-ის ცოდნა.">
+                Типы, интерфейсы, дженерики, утилиты, декораторы, продвинутые фичи и конфигурация. Проверь, насколько
+                глубоко ты знаешь TypeScript.
+            </p>
+            <div class="stats-row">
+                <div class="stat">
+                    <span class="stat-num" id="total-count">0</span>
+                    <span class="stat-label lang-key" data-ru="вопросов" data-en="questions"
+                        data-ka="კითხვა">вопросов</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num" id="cat-count">0</span>
+                    <span class="stat-label lang-key" data-ru="тем" data-en="topics" data-ka="თემა">тем</span>
+                </div>
+                <div class="stat">
+                    <span class="stat-num">∞</span>
+                    <span class="stat-label lang-key" data-ru="полезных ссылок" data-en="doc links"
+                        data-ka="ლინკები">полезных ссылок</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="progress-section">
+            <div class="progress-meta">
+                <span class="progress-text" id="progress-text">0 / 0</span>
+                <div class="progress-score">
+                    <span class="score-pill correct" id="score-correct">✓ 0</span>
+                    <span class="score-pill wrong" id="score-wrong">✗ 0</span>
+                </div>
+            </div>
+            <div class="progress-bar-track">
+                <div class="progress-bar-fill" id="progress-bar" style="width:0%"></div>
+            </div>
+        </div>
+
+        <div class="category-tabs" id="cat-tabs"></div>
+
+        <div id="quiz-area"></div>
+
+        <div class="results-screen" id="results-screen">
+            <div class="results-trophy" id="results-trophy">🏆</div>
+            <h2 class="results-title" id="results-title"></h2>
+            <p class="results-subtitle" id="results-subtitle"></p>
+            <div class="results-rank" id="results-rank"></div>
+            <div class="results-grid">
+                <div class="result-card">
+                    <span class="result-card-num blue" id="res-total">0</span>
+                    <span class="result-card-label lang-key" data-ru="Всего вопросов" data-en="Total questions"
+                        data-ka="სულ კითხვები">Всего вопросов</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-card-num green" id="res-correct">0</span>
+                    <span class="result-card-label lang-key" data-ru="Правильных" data-en="Correct"
+                        data-ka="სწორი">Правильных</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-card-num red" id="res-wrong">0</span>
+                    <span class="result-card-label lang-key" data-ru="Неправильных" data-en="Wrong"
+                        data-ka="არასწორი">Неправильных</span>
+                </div>
+                <div class="result-card">
+                    <span class="result-card-num blue" id="res-pct">0%</span>
+                    <span class="result-card-label lang-key" data-ru="Результат" data-en="Score"
+                        data-ka="შედეგი">Результат</span>
+                </div>
+            </div>
+            <button class="btn-restart" id="btn-restart">
+                <span class="lang-key" data-ru="↺ Пройти снова" data-en="↺ Try again" data-ka="↺ თავიდან დაწყება">↺
+                    Пройти снова</span>
+            </button>
+        </div>
+
+    </main>
+
+    <footer class="footer">
+        <span class="lang-key" data-ru="Данные о TypeScript:" data-en="TypeScript data:"
+            data-ka="TypeScript დოკუმენტაცია:">Данные о TypeScript:</span>
+        <a href="https://www.typescriptlang.org/docs/" target="_blank">typescriptlang.org/docs</a>
+    </footer>
+
+    <script type="module" src="./script.js"></script>
+</body>
+
+</html>
