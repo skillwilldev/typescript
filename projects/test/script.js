@@ -1,11 +1,12 @@
 import { QUESTIONS } from './data.js';
 
 document.addEventListener('DOMContentLoaded', () => {
-    let lang = 'ru';
-    let currentCategory = 'all';
+    let lang = localStorage.getItem('app_lang') || 'ru';
+    let currentCategory = 'basic-types';
     let answered = {};
     let correctCount = 0;
     let wrongCount = 0;
+    setLang(lang);
 
     // --- НАВЕШИВАНИЕ СОБЫТИЙ (КЛИКОВ) ИЗ JS ---
 
@@ -45,6 +46,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function setLang(l) {
         lang = l;
+        localStorage.setItem('app_lang', l);
         document.getElementById('btn-en').classList.toggle('active', l === 'en');
         document.getElementById('btn-ru').classList.toggle('active', l === 'ru');
         document.getElementById('btn-ka').classList.toggle('active', l === 'ka');
@@ -69,14 +71,14 @@ document.addEventListener('DOMContentLoaded', () => {
         const total = QUESTIONS.length;
         const container = document.getElementById('cat-tabs');
 
-        let allLabel = 'Все';
-        if (lang === 'en') allLabel = 'All';
-        if (lang === 'ka') allLabel = 'ყველა';
-
+        // let allLabel = 'Все';
+        // if (lang === 'en') allLabel = 'All';
+        // if (lang === 'ka') allLabel = 'ყველა';
+        let html = '';
         // ИЗМЕНЕНО: вместо onclick используем data-category
-        let html = `<button class="cat-tab ${currentCategory === 'all' ? 'active' : ''}" data-category="all">
-    ${allLabel} <span class="cat-count">${total}</span>
-  </button>`;
+        //         let html = `<button class="cat-tab ${currentCategory === 'all' ? 'active' : ''}" data-category="all">
+        //     ${allLabel} <span class="cat-count">${total}</span>
+        //   </button>`;
 
         cats.forEach(c => {
             let label = c.ru;
@@ -97,7 +99,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function getFilteredQuestions() {
-        if (currentCategory === 'all') return QUESTIONS;
+        // if (currentCategory === 'all') return QUESTIONS;
         return QUESTIONS.filter(q => q.tag === currentCategory);
     }
 
@@ -202,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     else if (i === q.correct) btnClass = 'show-correct';
                 }
                 const optText = opt[lang] || opt.ru;
-                
+
                 // ИЗМЕНЕНО: вместо onclick добавили data-qid и data-idx
                 html += `<button class="option-btn ${btnClass}" ${disabled} data-qid="${q.id}" data-idx="${i}">
         <span class="opt-letter">${letters[i]}</span>
@@ -261,7 +263,7 @@ document.addEventListener('DOMContentLoaded', () => {
         answered = {};
         correctCount = 0;
         wrongCount = 0;
-        currentCategory = 'all';
+        // currentCategory = 'all';
         renderAll();
         window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -269,12 +271,12 @@ document.addEventListener('DOMContentLoaded', () => {
     function renderAll() {
         renderCategoryTabs();
         renderQuestions();
-        updateProgress();
+        // updateProgress();
 
         const cats = getCategories();
         document.getElementById('total-count').textContent = QUESTIONS.length;
         document.getElementById('cat-count').textContent = cats.length;
     }
 
-    setLang('ru');
+
 });
