@@ -3139,7 +3139,6 @@ obj.list.<span class="fn">push</span>(<span class="num">3</span>);`,
         docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#control-flow-analysis",
         docLabel: "Control Flow Inside Closures — Handbook"
     },
-
     {
         id: 115,
         category: { ru: "Type Narrowing", en: "Type Narrowing", ka: "ტიპის შევიწროება" },
@@ -9616,8 +9615,8 @@ obj.items.push(<span class="num">3</span>);`,
     // 19. CUSTOM TYPE GUARDS (IS / ASSERTS)
     {
         id: 361,
-        category: { ru: "Type Narrowing", en: "Type Narrowing", ka: "ტიპის შევიწროება" },
-        tag: "narrowing",
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
         question: {
             ru: "Для чего применяется ключевое слово asserts в сигнатуре функций?",
             en: "What is the specific utility of the asserts keyword in function signatures?",
@@ -9636,92 +9635,2092 @@ obj.items.push(<span class="num">3</span>);`,
         explanation: {
             ru: "Функции утверждения (Assertion Functions) с ключевым словом `asserts val is string` не возвращают значение, а генерируют исключение, если условие не выполнено. Преимущество для TypeScript: если функция была вызвана и выполнение кода пошло дальше (не упало в ошибку), то компилятор автоматически считает, что на всех последующих строках переменная val имеет тип `string`. Это избавляет от необходимости заворачивать код в блоки `if (isString(val)) {}`.",
             en: "Assertion Functions using `asserts val is string` return no data but throw runtime execution errors if conditions fail. The benefit to TS is linear flow management: if this function runs and code flow continues successfully, the engine assumes all downstream code lines can interact with 'val' as a confirmed `string` type.",
-            ka: "Assertion ფუნქციები `asserts val is string` ქივორდით არ აბრუნებენ მნიშვნელობას, არამედ აგდებენ შეცდომას, თუ პირობა არ შესრულდა. TS-ისთვის ეს ნიშნავს: თუ ფუნქცია გამოიძახა და კოდი არ გაჩერდა შეცდომაზე, მაშინ ყველა მომდევნо ხაზზე val ცვლადი ითვლება `string` ტიპად. ეს გვაცილებს კოდის `if` ბლოკებში ჩასმის საჭიროებას."
+            ka: "Assertion ფუნქციები `asserts val is string` ქივორდით არ აბრუნებენ მნიშვნელობას, არამედ აგდებენ შეცდომას, თუ პირობა არ შესრულდა. TS-ისთვის ეს ნიშნავს: თუ ფუნქცია გამოიძახა და კოდი არ გაჩერდა შეცდომაზე, მაშინ ყველა მომდევნო ხაზზე val ცვლადი ითვლება `string` ტიპად. ეს გვაცილებს კოდის `if` ბლოკებში ჩასმის საჭიროებას."
         },
         docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#assertion-functions",
         docLabel: "Assertion Functions — Handbook"
     },
+    {
+        id: 362,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Что означает конструкция 'x is Fish' в качестве возвращаемого типа функции?",
+            en: "What does the 'x is Fish' construct mean as the return type of a function?",
+            ka: "რას ნიშნავს კონსტრუქცია 'x is Fish' ფუნქციის დასაბრუნებელი ტიპის სახით?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">isFish</span>(x: <span class="type">any</span>): x <span class="kw">is</span> <span class="type">Fish</span> {
+  <span class="kw">return</span> (x <span class="kw">as</span> <span class="type">Fish</span>).swim !== <span class="kw">undefined</span>;
+}`,
+        options: [
+            { ru: "Это предикат типа, сообщающий TS, что если функция вернет true, то переменная x имеет тип Fish", en: "It is a type predicate telling TS that if the function returns true, the variable x is of type Fish", ka: "ეს არის ტიპის პრედიკატი, რომელიც ეუბნება TS-ს, რომ თუ ფუნქცია აბრუნებს true-ს, მაშინ x ცვლადი არის Fish ტიპის" },
+            { ru: "Это синтаксис, который принудительно приводит x к типу Fish в рантайме", en: "It is a syntax that forces x to be cast to the Fish type at runtime", ka: "ეს არის სინტაქსი, რომელიც იძულებით ახდენს x-ის კასტინგს Fish ტიპზე runtime-ში" },
+            { ru: "Это означает, что функция возвращает строковое значение 'Fish'", en: "It means the function returns a literal string value 'Fish'", ka: "ეს ნიშნავს, რომ ფუნქცია აბრუნებს სტრიქონულ მნიშვნელობას 'Fish'" },
+            { ru: "Этот код проверяет, является ли x экземпляром класса Fish через instanceof", en: "This code checks if x is an instance of the Fish class via instanceof", ka: "ეს კოდი ამოწმებს, არის თუ არა x Fish კლასის ეგზემპლარი instanceof-ის საშუალებით" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Конструкция `x is Type` называется предикатом типа (Type Predicate). Она превращает функцию в пользовательский защитник типа (User-Defined Type Guard). Если функция возвращает `true`, TypeScript сужает тип аргумента до указанного.",
+            en: "The `x is Type` construct is called a type predicate. It turns a function into a User-Defined Type Guard. If the function returns `true`, TypeScript narrows the argument's type to the specified one.",
+            ka: "კონსტრუქცია `x is Type` იწოდება ტიპის პრედიკატად (Type Predicate). ის ფუნქციას აქცევს მომხმარებლის მიერ განსაზღვრულ type guard-ად. თუ ფუნქცია აბრუნებს `true`-ს, TS ავიწროებს არგუმენტის ტიპს მითითებულამდე."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
+        docLabel: "Using type predicates — Handbook"
+    },
+    {
+        id: 363,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Как работает сокращенная форма 'asserts condition' без указания конкретного типа через 'is'?",
+            en: "How does the short-form 'asserts condition' work without specifying a concrete type via 'is'?",
+            ka: "როგორ მუშაობს შემოკლებული ფორმა 'asserts condition' კონკრეტული ტიპის 'is'-ით მითითების გარეშე?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">assert</span>(condition: <span class="type">any</span>, msg?: <span class="type">string</span>): <span class="kw">asserts</span> condition {
+  <span class="kw">if</span> (!condition) <span class="kw">throw new</span> <span class="fn">Error</span>(msg);
+}`,
+        options: [
+            { ru: "Она гарантирует, что переданное выражение истинно (truthy) для компилятора на последующих строках", en: "It guarantees that the passed expression is evaluated as truthy by the compiler for subsequent lines", ka: "ის იძლევა გარანტიას, რომ გადაცემული გამოსახულება არის ჭეშმარიტი (truthy) კომპილატორისთვის მომდევნო ხაზებზე" },
+            { ru: "Она автоматически преобразует переменную condition в булевый тип", en: "It automatically converts the condition variable into a boolean type", ka: "ის ავტომატურად გარდაქმნის condition ცვლადს ბულევან ტიპად" },
+            { ru: "Она проверяет, что переменная не равна undefined или null", en: "It checks that the variable is strictly not equal to undefined or null", ka: "ის ამოწმებს, რომ ცვლადი არ არის undefined-ის ან null-ის ტოლი" },
+            { ru: "Эта форма не влияет на вывод типов и служит только для документации", en: "This form does not affect type inference and serves only for documentation documentation", ka: "ეს ფორმა გავლენას არ ახდენს ტიპების გამოყვანაზე და გამოიყენება მხოლოდ დოკუმენტაციისთვის" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Сигнатура `asserts condition` говорит TypeScript, что если функция успешно завершилась, то всё, что было передано в параметр `condition`, является истинным (`truthy`). Это позволяет сужать типы, например, отсекая `null` при проверке `assert(x !== null)`.",
+            en: "The `asserts condition` signature tells TypeScript that if the function returns successfully, whatever was passed to the `condition` parameter is `truthy`. This allows narrowing, for example, filtering out `null` when checking `assert(x !== null)`.",
+            ka: "სიგნატურა `asserts condition` ეუბნება TS-ს, რომ თუ ფუნქცია წარმატებით დასრულდა, ყველაფერი, რაც გადაეცა `condition` პარამეტრში, არის ჭეშმარიტი (`truthy`). ეს საშუალებას იძლევა შევიწროვდეს ტიპები, მაგალითად `null`-ს მოცილება `assert(x !== null)` შემოწმებისას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#assertion-functions",
+        docLabel: "Assertion Functions — Handbook"
+    },
+    {
+        id: 364,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "В чем главное архитектурное различие в использовании функции с 'is' и функции с 'asserts'?",
+            en: "What is the main architectural difference between using a function with 'is' and a function with 'asserts'?",
+            ka: "რა არის მთავარი არქიტექტურული განსხვავება 'is'-ის მქონე ფუნქციასა და 'asserts'-ის მქონე ფუნქციას შორის?"
+        },
+        code: `<span class="cmt">// Вариант А:</span> <span class="kw">function</span> <span class="fn">checkA</span>(v: <span class="type">any</span>): v <span class="kw">is</span> <span class="type">string</span>;
+<span class="cmt">// Вариант Б:</span> <span class="kw">function</span> <span class="fn">checkB</span>(v: <span class="type">any</span>): <span class="kw">asserts</span> v <span class="kw">is</span> <span class="type">string</span>;`,
+        options: [
+            { ru: "Функция с 'is' требует ветвления (if/else), а 'asserts' сужает тип для текущего линейного потока выполнения", en: "A function with 'is' requires branching (if/else), while 'asserts' narrows the type for the current linear execution flow", ka: "ფუნქცია 'is'-ით მოითხოვს განშტოებას (if/else), ხოლო 'asserts' ავიწროებს ტიპს მიმდინარე ხაზოვანი შესრულების ნაკადისთვის" },
+            { ru: "Функция с 'asserts' может использоваться асинхронно, а 'is' — только синхронно", en: "A function with 'asserts' can be used asynchronously, whereas 'is' can only be synchronous", ka: "ფუნქცია 'asserts'-ით შეიძლება გამოყენებულ იქნას ასინქრონულად, ხოლო 'is' — მხოლოდ სინქრონულად" },
+            { ru: "Функция с 'is' работает быстрее, так как не компилируется в JavaScript", en: "A function with 'is' runs faster because it does not compile into JavaScript code", ka: "ფუნქცია 'is'-ით უფრო სწრაფად მუშაობს, რადგან არ კომპილირდება JavaScript-ში" },
+            { ru: "Разницы нет, это синонимы, добавленные для совместимости", en: "There is no difference; they are synonyms added for backward compatibility", ka: "განსხვავება არ არის, ესენი სინონიმებია, რომლებიც დაემატა თავსებადობისთვის" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Функции с `is` возвращают `boolean` и используются внутри условий `if`. Функции с `asserts` возвращают `void`, генерируют ошибку внутри при неудаче и сужают тип «начиная со следующей строки» без условных операторов.",
+            en: "Functions with `is` return a `boolean` and are used inside `if` statements. Functions with `asserts` return `void`, throw an error on failure, and narrow the type 'from the next line onwards' without conditional blocks.",
+            ka: "ფუნქციები `is`-ით აბრუნებენ `boolean`-ს და გამოიყენება `if` პირობების შიგნით. ფუნქციები `asserts`-ით აბრუნებენ `void`-ს, აგდებენ შეცდომას წარუმატებლობისას და ავიწროებენ ტიპს მომდევნო ხაზიდანვე, პირობითი ბლოკების გარეშე."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+        docLabel: "Narrowing — Handbook"
+    },
+    {
+        id: 365,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Что произойдет, если в функции с предикатом типа (is) забыть вернуть логическое значение?",
+            en: "What happens if you forget to return a boolean value in a function with a type predicate (is)?",
+            ka: "რა მოხდება, თუ ტიპის პრედიკატის (is) მქონე ფუნქციაში დაგვავიწყდება ბულევანის დაბრუნება?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">isNumber</span>(val: <span class="type">any</span>): val <span class="kw">is</span> <span class="type">number</span> {
+  <span class="kw">typeof</span> val === <span class="str">'number'</span>; <span class="cmt">// Забыли return!</span>
+}`,
+        options: [
+            { ru: "TypeScript выдаст ошибку компиляции, так как сигнатура требует возврата boolean", en: "TypeScript will throw a compilation error because the signature requires a boolean return", ka: "TypeScript გამოაგდებს კომპილაციის შეცდომას, რადგან სიგნატურა მოითხოვს boolean-ის დაბრუნებას" },
+            { ru: "Функция автоматически вернет true, если условие верно", en: "The function will automatically return true if the statement evaluates to true", ka: "ფუნქცია ავტომატურად დააბრუნებს true-ს, თუ პირობა სწორია" },
+            { ru: "Тип val автоматически сузится до any", en: "The type of val will be automatically narrowed to any", ka: "val-ის ტიპი ავტომატურად შეივიწროვდება any-მდე" },
+            { ru: "Код успешно скомпилируется, но вернет undefined в рантайме без ошибок TS", en: "The code will compile successfully but return undefined at runtime without TS errors", ka: "კოდი წარმატებით დაკომპილირდება, მაგრამ runtime-ში დააბრუნებს undefined-ს TS შეცდომების გარეშე" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Функция, возвращающая предикат типа `val is T`, под капотом обязана возвращать `boolean`. Если опустить ключевое слово `return`, компилятор укажет на ошибку: тип `void` нельзя присвоить типу `boolean`.",
+            en: "A function returning a type predicate `val is T` is implicitly required to return a `boolean`. If you omit the `return` keyword, the compiler will raise an error stating that type `void` is not assignable to type `boolean`.",
+            ka: "ფუნქცია, რომელიც აბრუნებს ტიპის პრედიკატს `val is T`, ვალდებულია დააბრუნოს `boolean`. თუ გამოვტოვებთ `return` ქივორდს, კომპილატორი მიუთითებს შეცდომაზე: `void` ტიპის მინიჭება `boolean` ტიპზე შეუძლებელია."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
+        docLabel: "Type Predicates — Handbook"
+    },
+    {
+        id: 366,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Проверяет ли TypeScript реальное тело функции на соответствие предикату 'is'?",
+            en: "Does TypeScript check the actual function body to ensure it matches the 'is' predicate?",
+            ka: "ამოწმებს თუ არა TypeScript ფუნქციის რეალურ ტანს 'is' პრედიკატთან შესაბამისობაზე?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">isString</span>(val: <span class="type">any</span>): val <span class="kw">is</span> <span class="type">string</span> {
+  <span class="kw">return typeof</span> val === <span class="str">'number'</span>; <span class="cmt">// Намеренная ошибка в теле</span>
+}`,
+        options: [
+            { ru: "Нет, TS верит сигнатуре; ответственность за корректность рантайм-проверки лежит на разработчике", en: "No, TS trusts the signature; the developer is fully responsible for the correctness of the runtime check", ka: "არა, TS ენდობა სიგნატურას; runtime შემოწმ성의 სისწორეზე პასუხისმგებლობა დეველოპერს ეკისრება" },
+            { ru: "Да, компилятор выдаст ошибку, так как typeof вернул 'number', а не 'string'", en: "Yes, the compiler will throw an error because typeof returned 'number' instead of 'string'", ka: "დიახ, კომპილატორი გამოაგდებს შეცდომას, რადგან typeof-მა დააბრუნა 'number' და არა 'string'" },
+            { ru: "Да, но только если включена опция --strictFunctionTypes", en: "Yes, but only if the --strictFunctionTypes option is enabled", ka: "დიახ, მაგრამ მხოლოდ იმ შემთხვევაში, თუ ჩართულია --strictFunctionTypes ოფცია" },
+            { ru: "Тело функции будет автоматически переписано компилятором под нужный тип", en: "The function body will be automatically rewritten by the compiler to match the required type", ka: "ფუნქციის ტანი ავტომატურად გადაიწერება კომპილატორის მიერ საჭირო ტიპზე" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Пользовательские Type Guards — это способ «приказать» компилятору верить функции. TypeScript не валидирует логику внутри тела функции на соответствие предикату, поэтому логические ошибки там могут привести к нарушению типизации в рантайме.",
+            en: "User-Defined Type Guards are a way to 'order' the compiler to trust the function. TypeScript does not validate the internal logic of the function body against the predicate, so logical errors there can lead to type unsafety at runtime.",
+            ka: "მომხმარებლის მიერ განსაზღვრული Type Guard-ები არის გზა, რათა კომპილატორს „ვუბრძანოთ“ ენდოს ფუნქციას. TS არ ამოწმებს შიდა ლოგიკას პრედიკატთან შესაბამისობაზე, ამიტომ იქ დაშვებულმა შეცდომებმა შეიძლება გამოიწვიოს ტიპიზაციის დარღვევა runtime-ში."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
+        docLabel: "Type Predicates — Handbook"
+    },
+    {
+        id: 367,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Как работает предикат 'this is Type' в сигнатуре методов классов или интерфейсов?",
+            en: "How does the 'this is Type' predicate work in class or interface method signatures?",
+            ka: "როგორ მუშაობს პრედიკატი 'this is Type' კლასების ან ინტერფეისების მეთოდების სიგნატურაში?"
+        },
+        code: `<span class="kw">class</span> <span class="type">FileSystemObject</span> {
+  <span class="fn">isFile</span>(): <span class="kw">this is</span> <span class="type">File</span> { <span class="kw">return this instanceof</span> <span class="type">File</span>; }
+}`,
+        options: [
+            { ru: "Позволяет сузить тип самого экземпляра класса при вызове метода в блоке if", en: "Allows narrowing the type of the class instance itself when calling the method inside an if block", ka: "საშუალებას იძლევა შევიწროვდეს თავად კლასის ეგზემპლარის ტიპი if ბლოკში მეთოდის გამოძახებისას" },
+            { ru: "Делает метод доступным только внутри самого класса (аналог private)", en: "Makes the method accessible only within the class itself (similar to private)", ka: "მეთოდს ხელმისაწვდომს ხდის მხოლოდ თავად კლასის შიგნით (private-ის ანალოგი)" },
+            { ru: "Принудительно превращает текущий контекст в глобальный объект window", en: "Forces the current context to be cast to the global window object", ka: "მიმდინარე კონტექსტს იძულებით აქცევს გლობალურ window ობიექტად" },
+            { ru: "Этот синтаксис недопустим и вызовет ошибку парсинга", en: "This syntax is invalid and will cause a parsing error", ka: "ეს სინტაქსი დაუშვებელია და გამოიწვევს პარსინგის შეცდომას" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "TypeScript поддерживает использование `this is Type` для методов. Это позволяет сужать тип объекта, на котором вызывается метод, что очень удобно в объектно-ориентированных иерархиях.",
+            en: "TypeScript supports using `this is Type` for methods. This allows narrowing the type of the target object instance upon which the method is called, which is highly useful in OOP hierarchies.",
+            ka: "TS მხარს უჭერს `this is Type`-ს გამოყენებას მეთოდებისთვის. ეს საშუალებას იძლევა შევიწროვდეს იმ ობიექტის ტიპი, რომელზეც გამოიძახება მეთოდი, რაც ძალიან მოსახერხებელია OOP იერარქიებში."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/classes.html#this-based-type-guards",
+        docLabel: "This-based type guards — Handbook"
+    },
+    {
+        id: 368,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Какое ограничение накладывается на стрелочные функции при использовании ключевого слова 'asserts' без явного указания типа возвращаемого значения?",
+            en: "What restriction is placed on arrow functions when using the 'asserts' keyword without explicitly typing the function?",
+            ka: "რა შეზღუდვა ეკისრება ისრიან (arrow) ფუნქციებს 'asserts' ქივორდის გამოყენებისას ფუნქციის ტიპის აშკარა მითითების გარეშე?"
+        },
+        code: `<span class="kw">const</span> <span class="fn">assertIsNumber</span> = (val: <span class="type">any</span>): <span class="kw">asserts</span> val <span class="kw">is</span> <span class="type">number</span> =&gt; {
+  <span class="kw">if</span> (<span class="kw">typeof</span> val !== <span class="str">'number'</span>) <span class="kw">throw new</span> <span class="fn">Error</span>();
+}; <span class="cmt">// Требуется ли здесь явная аннотация типа самой переменной-функции?</span>`,
+        options: [
+            { ru: "Для функций-выражений (включая стрелочные) с asserts необходима явная аннотация типа или использование function declaration, иначе TS может выдать ошибку контекста", en: "Function expressions (including arrow functions) with asserts need explicit type annotations or function declarations, otherwise TS may hit contextual errors", ka: "ფუნქცია-გამოსახულებებისთვის (ისრიანების ჩათვლით) asserts-ით საჭიროა ტიპის აშკარა ანოტაცია ან function declaration-ის გამოყენება, წინააღმდეგ შემთხვევაში TS-მა შეიძლება გამოაგდოს კონტექსტის შეცდომა" },
+            { ru: "Стрелочные функции вообще не могут использовать слово asserts", en: "Arrow functions cannot use the asserts keyword under any circumstances", ka: "ისრიან ფუნქციებს საერთოდ არ შეუძლიათ asserts ქივორდის გამოყენება" },
+            { ru: "Стрелочные функции обязаны возвращать null при использовании asserts", en: "Arrow functions must explicitly return null when utilizing asserts", ka: "ისრიანი ფუნქციები ვალდებულნი არიან დააბრუნონ null, როდესაც გამოიყენება asserts" },
+            { ru: "Ограничений нет, поведение полностью идентично обычным функциям", en: "There are no restrictions; the behavior is completely identical to regular function declarations", ka: "შეზღუდვები არ არის, ქცევა აბსოლუტურად იდენტურია ჩვეულებრივი ფუნქციების" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "В TypeScript функции утверждения имеют ограничение: при использовании функциональных выражений (arrow functions) компилятор требует, чтобы они имели явный тип, либо были объявлены через ключевое слово `function`, иначе сужение типа в линейном потоке может работать некорректно из-за порядка обхода AST.",
+            en: "In TypeScript, assertion functions have a restriction: when using function expressions (like arrow functions), the compiler often requires an explicit type definition or a standard `function` declaration to properly infer the control flow narrowing.",
+            ka: "TS-ში assertion ფუნქციებს აქვთ შეზღუდვა: ფუნქცია-გამოსახულებების გამოყენებისას (როგორიცაა ისრიანი ფუნქციები), კომპილატორი ხშირად მოითხოვს ტიპის აშკარა განსაზღვრას ან სტანდაртულ `function` დეკლარაციას კონტროლის ნაკადის სწორი შევიწროებისთვის."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#assertion-functions",
+        docLabel: "Assertion Functions — Handbook"
+    },
+    {
+        id: 369,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Можно ли использовать обобщенные типы (Generics) в предикатах пользовательских защитников типов?",
+            en: "Can generic types be used within the predicates of custom type guards?",
+            ka: "შესაძლებელია თუ არა ჯენერიკ ტიპების (Generics) გამოყენება მომხმარებლის type guard-ების პრედიკატებში?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">is some</span>&lt;<span class="type">T</span>&gt;(val: <span class="type">any</span>, check: (<span class="type">x: any</span>) =&gt; <span class="kw">val is</span> <span class="type">T</span>): val <span class="kw">is</span> <span class="type">T</span> {
+  <span class="kw">return</span> check(val);
+}`,
+        options: [
+            { ru: "Да, дженерики полностью поддерживаются в предикатах типов", en: "Yes, generics are fully supported within type predicates", ka: "დიახ, ჯენერიკები სრულად არის მხარდაჭერილი ტიპის პრედიკატებში" },
+            { ru: "Нет, в предикате можно указывать только примитивы (string, number и т.д.)", en: "No, only primitive types (string, number, etc.) can be declared in predicates", ka: "არა, პრედიკატში შეიძლება მიეთითოს მხოლოდ პრიმიტივები (string, number და ა.შ.)" },
+            { ru: "Можно, но только если дженерик наследует класс через extends", en: "Yes, but only if the generic type extends a class structure", ka: "შესაძლებელია, მაგრამ მხოლოდ იმ შემთხვევაში, თუ ჯენერიკი აფართოებს კლასს extends-ის საშუალებით" },
+            { ru: "Нет, компилятор выдаст ошибку о невозможности динамического вывода", en: "No, the compiler will fail stating dynamic inference is impossible", ka: "არა, კომპილატორი გამოაგდებს შეცდომას დინამიური გამოყვანის შეუძლებლობის შესახებ" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "TypeScript позволяет использовать параметры типов (дженерики) в кастомных тайп-гардах. Это делает защитники типов гибкими и переиспользуемыми для любых структур данных.",
+            en: "TypeScript allows utilizing type parameters (generics) inside custom type guards. This makes type guards highly flexible and reusable across different data structures.",
+            ka: "TypeScript საშუალებას იძლევа გამოვიყენოთ ჯენერიკ პარამეტრები კასტომურ type guard-ებში. ეს ხდის მათ მოქნილს და მრავალჯერადად გამოყენებადს სხვადასხვა მონაცემთა სტრუქტურებისთვის."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/generics.html",
+        docLabel: "Generics — Handbook"
+    },
+    {
+        id: 370,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Как кастомный Type Guard помогает при фильтрации массива для очистки от null/undefined элементов?",
+            en: "How does a custom Type Guard help when filtering an array to clear out null/undefined elements?",
+            ka: "როგორ გვეხმარება კასტომური Type Guard მასივის გაფილტვრისას null/undefined ელემენტებისგან გასასუფთავებლად?"
+        },
+        code: `<span class="kw">const</span> arr: (<span class="type">string</span> | <span class="kw">null</span>)[] = [<span class="str">"a"</span>, <span class="kw">null</span>, <span class="str">"b"</span>];
+<span class="kw">const</span> <span class="fn">isNotNull</span> = (val: <span class="type">string</span> | <span class="kw">null</span>): val <span class="kw">is</span> <span class="type">string</span> =&gt; val !== <span class="kw">null</span>;
+<span class="kw">const</span> filtered = arr.<span class="fn">filter</span>(isNotNull);`,
+        options: [
+            { ru: "Тип переменной filtered превращается в string[], убирая null из типа массива", en: "The type of the filtered variable becomes string[], removing null from the array type", ka: "filtered ცვლადის ტიპი ხდება string[], რითაც null შორდება მასივის ტიპს" },
+            { ru: "Никак не влияет, тип остается (string | null)[] без явного as string[]", en: "It has no effect; the type remains (string | null)[] unless explicitly cast as string[]", ka: "არანაირი გავლენა არ აქვს, ტიპი რჩება (string | null)[] ასპექტირებული as string[]-ის გარეშე" },
+            { ru: "Вызывает ошибку компиляции, метод filter не принимает предикаты", en: "Triggers a compilation error because the filter method does not accept predicates", ka: "იწვევს კომპილაციის შეცდომას, რადგან filter მეთოდი არ იღებს პრედიკატებს" },
+            { ru: "Превращает массив в кортеж фиксированной длины", en: "Transforms the array into a fixed-length tuple automatically", ka: "ავტომატურად აქცევს მასივს ფიქსირებული სიგრძის კორტეჟად" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Встроенные типы TypeScript для `Array.prototype.filter` имеют перегрузку, принимающую предикат типа. Благодаря этому `arr.filter(isNotNull)` автоматически возвращает массив суженного типа `string[]` вместо `(string | null)[]`.",
+            en: "TypeScript's built-in typings for `Array.prototype.filter` include an overload that accepts a type predicate. Because of this, `arr.filter(isNotNull)` automatically narrows the output array type to `string[]` instead of `(string | null)[]`.",
+            ka: "TypeScript-ის ჩაშენებულ ტიპიზაციას `Array.prototype.filter`-ისთვის აქვს გადატვირთვა (overload), რომელიც იღებს ტიპის პრედიკატს. ამის წყალობით, `arr.filter(isNotNull)` ავტომატურად აბრუნებს შევიწროებული ტიპის მასივს `string[]` ნაცვლად `(string | null)[]`-ისა."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
+        docLabel: "Type Predicates in Filters — Handbook"
+    },
+    {
+        id: 371,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "К какому типу приведет переменную TypeScript на последующих строках, если вызов двух функций 'asserts' создаст логическое противоречие?",
+            en: "What type will TypeScript infer for a variable downstream if two conflicting 'asserts' functions create a logical contradiction?",
+            ka: "რა ტიპზე დაიყვანს TS ცვლადს მომდევნო ხაზებზე, თუ ორი 'asserts' ფუნქციის გამოძახება შექმნის ლოგიკურ წინააღმდეგობას?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">assertString</span>(v: <span class="type">any</span>): <span class="kw">asserts</span> v <span class="kw">is</span> <span class="type">string</span> { <span class="cmt">/*...*/</span> }
+<span class="kw">function</span> <span class="fn">assertNumber</span>(v: <span class="type">any</span>): <span class="kw">asserts</span> v <span class="kw">is</span> <span class="type">number</span> { <span class="cmt">/*...*/</span> }
 
-//     // 20. DECLARE GLOBAL / MODULES (.D.TS)
-//     {
-//         id: 26,
-//         category: { ru: "Окружение и Модули", en: "Environment & Modules", ka: "გარემო და მოდულები" },
-//         tag: "environment",
-//         question: {
-//             ru: "Зачем нужны файлы с расширением .d.ts в экосистеме TypeScript?",
-//             en: "What is the core purpose of .d.ts declaration files in TypeScript?",
-//             ka: "რისთვის არის საჭირო .d.ts გაფართოების ფაილები TypeScript ეკოსისტემაში?"
-//         },
-//         code: `<span class="cm">// index.d.ts</span>
-// <span class="kw">declare module</span> <span class="str">"legacy-lib"</span> { <span class="kw">export function</span> <span class="fn">oldFunc</span>(): <span class="type">void</span>; }`,
-//         options: [
-//             { ru: "Для описания типов и интерфейсов существующего JavaScript-кода без генерации итогового JS", en: "To hold purely architectural types for existing JavaScript code without emitting runtime JS", ka: "არსებული JavaScript კოდის ტიპებისა და ინტერფეისების აღსაწერად, საბოლოო JS ფაილის გენერაციის გარეშე" },
-//             { ru: "Это файлы для автоматического документирования разметки HTML5", en: "They function as build targets documentation formatting global HTML5 canvas layers", ka: "ეს არის ფაილები HTML5 მარკაპის ავტომატური დოკუმენტირებისთვის" },
-//             { ru: "В них пишется логика работы баз данных проекта", en: "They hold dynamic logic connecting active database queries", ka: "მათში იწერება პროექტის მონაცემთა ბაზების მუშაობის ლოგიკა" },
-//             { ru: "Они автоматически переводят код на другие языки программирования", en: "They translate standard variables into target low-level bytecode scripts", ka: "ისინი ავტომატურად თარგმნიან კოდს პროგრამირების სხვა ენებზე" }
-//         ],
-//         correct: 0,
-//         explanation: {
-//             ru: "Файлы с расширением `.d.ts` называются Declaration Files (файлы деклараций). Они содержат исключительно описание типов, интерфейсов и сигнатур модулей, но не содержат никакой исполняемой логики. Сборщик полностью игнорирует их при создании продакшн-кода. Они нужны, чтобы подружить TypeScript со старыми JavaScript-библиотеками или объявить глобальные переменные (например, расширить объект `window` через `declare global`).",
-//             en: "Files ending in `.d.ts` are Declaration Files. They store exclusively type signatures, blueprints, and interface abstractions. They contain zero operational runtime code, meaning compilers filter them out from production builds. They serve as bridging maps enabling TS projects to interact with raw, un-typed standard JS dependencies safely.",
-//             ka: "`.d.ts` გაფართოების ფაილებს დეკლარაციის ფაილები (Declaration Files) ეწოდებათ. ისინი შეიცავენ მხოლოდ ტიპების, ინტერფეისებისა და მოდულების სიგნატურების აღწერას, ყოველგვარი შესასრულებელი კოდის გარეშე. ისინი საჭიროა იმისათვის, რომ TS-მა შეძლოს მუშაობა ძველ JavaScript ბიბლიოთეკებთან ან გლობალურ ცვლადებთან (მაგ. window ობიექტის გასაფართოებლად)."
-//         },
-//         docLink: "https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html",
-//         docLabel: "Declaration Files — Handbook"
-//     },
+<span class="kw">function</span> <span class="fn">process</span>(x: <span class="type">any</span>) {
+  <span class="fn">assertString</span>(x);
+  <span class="fn">assertNumber</span>(x);
+  <span class="kw">let</span> y = x; <span class="cmt">// Какой тип у y?</span>
+}`,
+        options: [
+            { ru: "never, так как переменная не может быть строкой и числом одновременно", en: "never, since a variable cannot be both a string and a number simultaneously", ka: "never, რადგან ცვლადი ვერ იქნება ერთდროულად სტრიქონიც და რიცხვიც" },
+            { ru: "any, так как компилятор запутается", en: "any, because the compiler gets confused by the clash", ka: "any, რადგან კომპილატორი დაიბნევა" },
+            { ru: "string | number, как объединение двух проверок", en: "string | number, as a union representing both assertions", ka: "string | number, როგორც ორი შემოწმების გაერთიანება" },
+            { ru: "unknown, так как тип становится неопределенным", en: "unknown, because the actual type becomes completely indeterminate", ka: "unknown, რადგან რეალური ტიპი ხდება განუსაზღვრელი" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Последовательные утверждения сужают тип поочередно. Сначала `x` становится `string`. Затем утверждение, что `string` является `number`, заводит логику в тупик, и тип превращается в `never` (недостижимый код).",
+            en: "Sequential assertions narrow the type step-by-step. First, `x` becomes `string`. Then, asserting that a `string` is a `number` leads to a logical dead-end, collapsing the type down to `never`.",
+            ka: "თანამიმდევრული მტკიცებები ავიწროებენ ტიპს ეტაპობრივად. ჯერ `x` ხდება `string`. შემდეგ მტკიცება, რომ `string` არის `number`, ლოგიკას ჩიხში აქცევს და ტიპი გარდაიქმნება `never`-ად."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking",
+        docLabel: "Never Type Narrowing — Handbook"
+    },
+    {
+        id: 372,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Рекомендуется ли использовать тип 'unknown' вместо 'any' для аргумента в сигнатуре кастомного Type Guard?",
+            en: "Is it recommended to use the 'unknown' type instead of 'any' for the argument in a custom Type Guard signature?",
+            ka: "რეკომენდებულია თუ არა 'unknown' ტიპის გამოყენება 'any'-ის ნაცვლად არგუმენტისთვის კასტომური Type Guard-ის სიგნატურაში?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">isBuffer</span>(val: <span class="type">unknown</span>): val <span class="kw">is</span> <span class="type">Buffer</span> {
+  <span class="kw">return</span> val <span class="kw">instanceof</span> <span class="type">Buffer</span>;
+}`,
+        options: [
+            { ru: "Да, использование unknown безопаснее, так как заставляет делать проверку внутри функции, не позволяя случайных операций с any", en: "Yes, using unknown is safer because it forces strict safety checks inside the function body, preventing accidental operations permitted by any", ka: "დიახ, unknown-ის გამოყენება უფრო უსაფრთხოა, რადგან გვაიძულებს შემოწმების ჩატარებას ფუნქციის შიგნით და ხელს უშლის ნებისმიერ შემთხვევით ოპერაციას any-სთან" },
+            { ru: "Нет, TypeScript запрещает использовать unknown в предикатах типов", en: "No, TypeScript forbids using the unknown type inside type predicates", ka: "არა, TS კრძალავს unknown ტიპის გამოყენებას ტიპის პრედიკატებში" },
+            { ru: "Нет, при использовании unknown функция обязана быть асинхронной", en: "No, when using unknown, the function is strictly required to be asynchronous", ka: "არა, unknown-ის გამოყენებისას ფუნქცია ვალდებულია იყოს ასინქრონული" },
+            { ru: "Разницы нет, так как компилятор одинаково обрабатывает any и unknown в тайп-гардах", en: "There is no functional difference as the compiler treats any and unknown identically in type guards", ka: "სხვაობა არ არის, რადგან კომპილატორი ერთნაირად ამუშავებს any-ს და unknown-ს type guard-ებში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Использование `unknown` вместо `any` в кастомных Type Guards считается лучшей практикой. Тип `unknown` обеспечивает максимальную безопасность, запрещая любые действия с объектом внутри функции до того, как будет проведена явная рантайм-проверка.",
+            en: "Using `unknown` instead of `any` in custom Type Guards is considered a best practice. The `unknown` type provides maximum type safety by disallowing operations on the object inside the function prior to runtime checks.",
+            ka: "`unknown`-ის გამოყენება `any`-ს ნაცვლად კასტომურ Type Guard-ებში საუკეთესო პრაქტიკად ითვლება. `unknown` ტიპი უზრუნველყოფს მაქსიმალურ უსაფრთხოებას, კრძალავს რა ნებისმიერ მოქმედებას ობიექტზე ფუნქციის შიგნით, სანამ არ ჩატარდება რეალური runtime შემოწმება."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#unknown",
+        docLabel: "Unknown type — Handbook"
+    },
+    {
+        id: 373,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Можно ли с помощью 'is' сузить тип конкретного вложенного свойства объекта, передав его в функцию?",
+            en: "Can you use an 'is' predicate to narrow the type of a specific nested object property by passing it into a function?",
+            ka: "შესაძლებელია თუ არა 'is'-ის საშუალებით ობიექტის კონკრეტული ჩადგმული (nested) თვისების ტიპის შევიწროება მისი ფუნქციაში გადაცემით?"
+        },
+        code: `<span class="kw">interface</span> <span class="type">User</span> { id: <span class="type">string</span> | <span class="type">number</span> }
+<span class="kw">function</span> <span class="fn">checkId</span>(id: <span class="type">string</span> | <span class="type">number</span>): id <span class="kw">is</span> <span class="type">string</span> { <span class="kw">return typeof</span> id === <span class="str">'string'</span>; }
 
-//     // 21. IMPORT TYPE
-//     {
-//         id: 27,
-//         category: { ru: "Окружение и Модули", en: "Environment & Modules", ka: "გარემო და მოდულები" },
-//         tag: "environment",
-//         question: {
-//             ru: "В чем выгода использования синтаксиса 'import type' вместо обычного импорта?",
-//             en: "What is the optimization benefit of utilizing 'import type' over a normal import?",
-//             ka: "რა უპირატესობა აქვს 'import type' სინტაქსის გამოყენებას ჩვეულებრივი იმპორტის ნაცვლად?"
-//         },
-//         code: `<span class="kw">import type</span> { <span class="type">UserDataType</span> } from <span class="str">"./models"</span>;`,
-//         options: [
-//             { ru: "Гарантирует, что импорт полностью вырежется из финального JS-кода, не допуская появления пустых импортов в сборке", en: "Guarantees the import statement is erased from production JS, avoiding ghost dependency bloat", ka: "გარანტიას იძლევა, რომ იმპორტი სრულად ამოიჭრება საბოლოო JS კოდიდან, რაც თავიდან აგვაცილებს ზედმეტ ბლოტს ბანდლში" },
-//             { ru: "Позволяет импортировать файлы гораздо быстрее в асинхронном фоне", en: "Forces dependencies to resolve at accelerated async multi-threaded background tracks", ka: "საშუალებას გვაძლევს უფრო სწრაფად მოვახდინოთ ფაილების იმპორტი ასინქრონულ ფონზე" },
-//             { ru: "Защищает код от межсайтового скриптинга (XSS-атак)", en: "Secures external endpoint arrays preventing dynamic cross-site scripting web attacks", ka: "იცავს კოდს საიტთაშორისი სკრიპტინგისგან (XSS შეტევები)" },
-//             { ru: "Разрешает циклические зависимости между классами", en: "Overrides dependency errors bypassing looping class inheritance boundaries", ka: "ხსნის კლასებს შორის ციკლური დამოკიდებულებების შეცდომებს" }
-//         ],
-//         correct: 0,
-//         explanation: {
-//             ru: "Синтаксис `import type` сообщает компилятору и сборщику (Vite, Webpack), что импортируемая сущность используется *исключительно* как тип данных. При компиляции эта строчка будет удалена на 100%. Обычный импорт, даже если импортируется только тип, иногда может сбить с толку сборщик, из-за чего в итоговом JS-файле останется пустая строчка `import {} from './models'`, которая может приводить к проблемам с циклическими зависимостями (circular dependencies) или мешать Tree Shaking.",
-//             en: "The explicit declaration `import type` instructs bundlers (like Vite, Webpack, or esbuild) that the imported resource represents a type interface constraint only. During build compilation, this line is 100% wiped clean. Standard imports of types can confuse older module targets, leaving ghost runtime footprints (`import {} from './models'`) that slow down optimal Tree Shaking.",
-//             ka: "`import type` სინტაქსი მიუთითებს კომპილატორსა და ბანდლერს (Vite, Webpack), რომ იმპორტირებული ერთეული გამოიყენება *მხოლოდ* როგორც მონაცემთა ტიპი. კომპილაციისას ეს ხაზი 100%-ით წაიშლება. ჩვეულებრივმა იმპორტმა შეიძლება გამოიწვიოს ცარიელი ხაზების დარჩენა JS-ში (`import {} from './models'`), რაც ხელს უშლის Tree Shaking პროცესს."
-//         },
-//         docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
-//         docLabel: "Importing Types — Handbook"
-//     },
+<span class="kw">function</span> <span class="fn">run</span>(u: <span class="type">User</span>) {
+  <span class="kw">if</span> (<span class="fn">checkId</span>(u.id)) { <span class="cmt">/* Сузится ли тип u.id здесь? */</span> }
+}`,
+        options: [
+            { ru: "Нет, сужение сработает только для локального аргумента, переданного в функцию, но не обновит тип свойства u.id внутри родительского объекта", en: "No, narrowing only applies to the local argument passed, but will not trace back to update the property type u.id inside the parent object", ka: "არა, შევიწროება იმუშავებს მხოლოდ გადაცემული ლოკალური არგუმენტისთვის, მაგრამ არ განაახლებს u.id თვისების ტიპს მშობელ ობიექტში" },
+            { ru: "Да, TypeScript автоматически отслеживает связи свойств и сузит u.id до string", en: "Yes, TypeScript automatically tracks property references and narrows u.id to string", ka: "დიახ, TS ავტომატურად ადევნებს თვალს თვისებების კავშირებს და შეავიწროებს u.id-ს string-მდე" },
+            { ru: "Да, но только если объект u объявлен через ключевое слово let", en: "Yes, but only if the object 'u' was declared using the let keyword", ka: "დიახ, მაგრამ მხოლოდ იმ შემთხვევაში, თუ u ობიექტი გამოცხადებულია let ქივორდით" },
+            { ru: "Код вызовет синтаксическую ошибку на этапе компиляции", en: "The code will trigger a syntax error during the compilation stage", ka: "კოდი გამოიწვევს სინტაქსურ შეცდომას კომპილაციის ეტაპზე" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "В TypeScript передача свойства объекта `u.id` в обычную функцию-гвард изолирует значение. Предикат сузит копию аргумента (параметр `id`), но сам объект `u` и его свойство `u.id` в месте вызова не изменят тип. Для сужения свойства нужно передавать весь объект.",
+            en: "In TypeScript, passing an object property like `u.id` into a standard guard function isolates the value. The predicate narrows the local parameter copy, but the parent object `u` and its property `u.id` remain unchanged at the call site. To narrow a property, you must pass the whole object.",
+            ka: "TS-ში ობიექტის თვისების `u.id` გადაცემა ჩვეულებრივ guard ფუნქციაში ახდენს მნიშვნელობის იზოლირებას. პრედიკატი შეავიწროებს ლოკალური პარამეტრის ასლს, მაგრამ თავად `u` ობიექტი და მისი `u.id` თვისება გამოძახების ადგილზე ტიპს არ შეიცვლიან. თვისების შესავიწროებლად საჭიროა მთლიანი ობიექტის გადაცემა."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+        docLabel: "Narrowing Limitations — Handbook"
+    },
+    {
+        id: 374,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Каким будет возвращаемый тип функции, если использовать предикат 'asserts', совмещенный с проверкой?",
+            en: "What will be the return type of a function that uses the 'asserts' predicate combined with a type check?",
+            ka: "რა იქნება ფუნქციის დასაბრუნებელი ტიპი, თუ გამოვიყენებთ 'asserts' პრედიკატს შემოწმებასთან კომბინაციაში?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">assertValid</span>(x: <span class="type">any</span>): <span class="kw">asserts</span> x <span class="kw">is</span> { valid: <span class="type">boolean</span> } {
+  <span class="kw">if</span> (!x || <span class="kw">typeof</span> x !== <span class="str">'object'</span>) <span class="kw">throw new</span> <span class="fn">Error</span>();
+}`,
+        options: [
+            { ru: "void", en: "void", ka: "void" },
+            { ru: "boolean", en: "boolean", ka: "boolean" },
+            { ru: "never", en: "never", ka: "never" },
+            { ru: "unknown", en: "unknown", ka: "unknown" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Любая функция утверждения (Assertion Function) не возвращает значимого рантайм-значения. На уровне типов её возвращаемый тип всегда эквивалентен `void`, несмотря на то, что её главная цель — модификация типов в контексте выполнения.",
+            en: "Any Assertion Function does not return a meaningful runtime value. At the type level, its return type is always equivalent to `void`, despite its primary goal of modifying types within the execution context.",
+            ka: "ნებისმიერი მტკიცების ფუნქცია (Assertion Function) არ აბრუნებს რაიმე მნიშვნელოვან მნიშვნელობას runtime-ში. ტიპების დონეზე მისი დასაბრუნებელი ტიპი ყოველთვის არის `void`, მიუხედავად იმისა, რომ მისი მთავარი მიზანია ტიპების მოდიფიკაცია შესრულების კონტექსტში."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#assertion-functions",
+        docLabel: "Assertion Functions Return — Handbook"
+    },
+    {
+        id: 375,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Как поведет себя TypeScript в блоке else, если кастомный Type Guard отсекает один из трех типов в объединении?",
+            en: "How will TypeScript behave in an else block if a custom Type Guard rules out one of three types in a union?",
+            ka: "როგორ მოიქცევა TypeScript else ბლოკში, თუ კასტომური Type Guard გამორიცხავს გაერთიანებაში (union) არსებული სამი ტიპიდან ერთ-ერთს?"
+        },
+        code: `<span class="kw">type</span> <span class="type">Status</span> = <span class="str">"loading"</span> | <span class="str">"success"</span> | <span class="str">"error"</span>;
+<span class="kw">function</span> <span class="fn">isLoading</span>(s: <span class="type">Status</span>): s <span class="kw">is</span> <span class="str">"loading"</span> { <span class="kw">return</span> s === <span class="str">"loading"</span>; }
 
-//     // 22. CONFIGURATION (TSCONFIG.JSON)
-//     {
-//         id: 28,
-//         category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
-//         tag: "configuration",
-//         question: {
-//             ru: "За что отвечает флаг strictNullChecks в файле настроек tsconfig.json?",
-//             en: "What behavior does strictNullChecks enforce when turned on inside tsconfig.json?",
-//             ka: "რაზეა პასუხისმგებელი strictNullChecks ფლაგი tsconfig.json პარამეტრების ფაილში?"
-//         },
-//         code: `<span class="cm">// tsconfig.json</span>
-// { <span class="str">"compilerOptions"</span>: { <span class="str">"strictNullChecks"</span>: <span class="kw">true</span> } }`,
-//         options: [
-//             { ru: "Запрещает неявно присваивать null и undefined любым типам данных без явного union", en: "Disallows implicitly assigning null and undefined to properties unless explicitly defined in a type union", ka: "კრძალავს null-ისა და undefined-ის მინიჭებას ნებისმიერ ტიპზე, თუ ისინი მკაფიოდ არ არის მითითებული union ტიპში" },
-//             { ru: "Автоматически конвертирует все значения null в пустые строки", en: "Transforms runtime null values into safe blank text strings automatically", ka: "ავტომატურად აქცევს ყველა null მნიშვნელობას ცარიელ სტრიქონად" },
-//             { ru: "Вырезает блоки кода, где переменная равна undefined, для оптимизации", en: "Deletes unused logic blocks tracking undefined states to reduce bundle sizes", ka: "ოპტიმიზაციისთვის შლის კოდის ბლოკებს, სადაც ცვლადი undefined-ის ტოლია" },
-//             { ru: "Проверяет скорость работы асинхронных баз данных", en: "Monitors internal latency thresholds processing server database callbacks", ka: "ამოწმებს ასინქრონული მონაცემთა ბაზების მუშაობის სიჩქარეს" }
-//         ],
-//         correct: 0,
-//         explanation: {
-//             ru: "Когда флаг `strictNullChecks` отключен (false), значения `null` и `undefined` можно легально присвоить переменной любого типа, например, строке или объекту, что часто приводило к знаменитым ошибкам 'Cannot read property of undefined' в рантайме. Включение этого флага заставляет TypeScript расценивать `null` и `undefined` как отдельные полноценные типы данных. Теперь, если вы хотите допустить отсутствие значения, вы обязаны написать тип явно через Union: `string | null`.",
-//             en: "When `strictNullChecks` is disabled, `null` and `undefined` act as legal values for any datatype, opening doors for runtime application crashes. Turning this flag on turns `null` and `undefined` into strict distinct datatypes. If a property can experience missing states, you are forced to define it as an explicit union signature like `string | null`.",
-//             ka: "როდესაც `strictNullChecks` გამორთულია (false), `null` და `undefined` მნიშვნელობების მინიჭება შესაძლებელია ნებისმიერი ტიპის ცვლადზე, რაც ხშირად იწვევს შეცდომებს runtime-ში. ამ ფლაგის ჩართვა აიძულებს TS-ს განიხილოს `null` და `undefined` როგორც ცალკეული დამოუკიდებელი ტიპები. თუ გსურთ მათი დაშვება, უნდა მიუთითოთ Union ტიპით: `string | null`."
-//         },
-//         docLink: "https://www.typescriptlang.org/docs/handbook/tsconfig-json.html",
-//         docLabel: "TSConfig Reference — Documentation"
-//     }
+<span class="kw">function</span> <span class="fn">handle</span>(s: <span class="type">Status</span>) {
+  <span class="kw">if</span> (<span class="fn">isLoading</span>(s)) { <span class="cmt">/* s: "loading" */</span> }
+  <span class="kw">else</span> { <span class="cmt">// Какой тип у s здесь? // }</span>
+}`,
+        options: [
+            { ru: '"success" | "error"', en: '"success" | "error"', ka: '"success" | "error"' },
+            { ru: "Status (все три типа)", en: "Status (all three types)", ka: "Status (სამივე ტიპი)" },
+            { ru: "never", en: "never", ka: "never" },
+            { ru: "string", en: "string", ka: "string" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "TypeScript умеет вычитать типы. Если кастомный Type Guard подтверждает тип \"loading\" в блоке \"if\", то в блоке `else` компилятор автоматически убирает \"loading\" из исходного объединения, оставляя \"success\" | \"error\".",
+            en: "TypeScript understands type subtraction. If a custom Type Guard confirms the \"loading\" type in the \"if\" block, the compiler automatically subtracts \"loading\" from the original union in the `else` block, leaving \"success\" | \"error\".",
+            ka: "TypeScript-ს შეუძლია ტიპების გამოკლება. თუ კასტომური Type Guard ადასტურებს \"loading\" ტიპს \"if\" ბლოკში, მაშინ `else` ბლოკში კომპილატორი ავტომატურად აშორებს მას საწყისი გაერთიანებიდან და ტოვებს \"success" | "error\"-ს."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html",
+        docLabel: "Control Flow Analysis — Handbook"
+    },
+    {
+        id: 376,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Разрешено ли в кастомном Type Guard передавать дополнительные аргументы, помимо проверяемого объекта?",
+            en: "Is it allowed to pass additional arguments into a custom Type Guard besides the object being verified?",
+            ka: "ნებადართულია თუ არა კასტომურ Type Guard-ში დამატებითი არგუმენტების გადაცემა, შესამოწმებელი ობიექტის გარდა?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">isType</span>(val: <span class="type">any</span>, targetSchema: <span class="type">string</span>): val <span class="kw">is</span> <span class="type">Record&lt;string, any&gt;</span> {
+  <span class="kw">return typeof</span> val === <span class="str">'object'</span> && val !== <span class="kw">null</span>;
+}`,
+        options: [
+            { ru: "Да, функция-гвард может принимать любое количество дополнительных аргументов, предикат применяется только к указанному имени переменной", en: "Yes, a guard function can take any number of additional arguments; the predicate only applies to the specified variable name", ka: "დიახ, guard ფუნქციას შეუძლია მიიღოს ნებისმიერი რაოდენობის დამატებითი არგუმენტი; პრედიკატი გამოიყენება მხოლოდ მითითებული ცვლადის სახელისთვის" },
+            { ru: "Нет, защитник типа должен принимать строго один аргумент", en: "No, a type guard must accept strictly one argument", ka: "არა, type guard-მა უნდა მიიღოს მკაცრად მხოლოდ ერთი არგუმენტი" },
+            { ru: "Можно, но дополнительные аргументы должны иметь тип только number", en: "Yes, but additional arguments are restricted to the number type only", ka: "შესაძლებელია, მაგრამ დამატებითი არგუმენტები უნდა იყოს მხოლოდ number ტიპის" },
+            { ru: "Можно только в том случае, если функция возвращает строку", en: "It is only possible if the function returns a string instead of a boolean", ka: "შესაძლებელია მხოლოდ იმ შემთხვევაში, თუ ფუნქცია ბულევანის ნაცვლად აბრუნებს სტრიქონს" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "В TypeScript синтаксис `parameterName is Type` требует, чтобы `parameterName` соответствовал одному из аргументов функции. Наличие других параметров никак не нарушает работу гварда.",
+            en: "In TypeScript, the `parameterName is Type` syntax requires `parameterName` to match one of the function's arguments. Having other parameters alongside it does not interfere with the guard's behavior.",
+            ka: "TS-ში `parameterName is Type` სინტაქსი მოითხოვს, რომ `parameterName` შეესაბამებოდეს ფუნქციის ერთ-ერთ არგუმენტს. სხვა პარამეტრების არსებობა ხელს არ უშლის guard-ის მუშაობას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
+        docLabel: "Type Predicates Syntax — Handbook"
+    },
+    {
+        id: 377,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Можно ли объявить предикат типа 'is' непосредственно внутри инлайн-кода коллбэка без вынесения его в отдельную именованную функцию?",
+            en: "Can you declare an 'is' type predicate directly inside an inline callback without extracting it to a named function?",
+            ka: "შესაძლებელია თუ არა 'is' ტიპის პრედიკატის გამოცხადება პირდაპირ ინლაინ ქოლბექის შიგნით მისი ცალკე სახელობით ფუნქციად გატანის გარეშე?"
+        },
+        code: `<span class="kw">const</span> filtered = [<span class="str">"hello"</span>, <span class="kw">null</span>].<span class="fn">filter</span>(
+  (x): x <span class="kw">is</span> <span class="type">string</span> =&gt; x !== <span class="kw">null</span>
+);`,
+        options: [
+            { ru: "Да, это абсолютно валидный синтаксис для стрелочных функций-коллбэков", en: "Yes, this is completely valid syntax for inline arrow function callbacks", ka: "დიახ, ეს აბსოლუტურად ვალიდური სინტაქსია ინლაინ ისრიანი ქოლბექ ფუნქციებისთვის" },
+            { ru: "Нет, инлайн-функции не могут содержать предикаты типов", en: "No, inline functions are strictly prohibited from containing type predicates", ka: "არა, ინლაინ ფუნქციებში ტიპის პრედიკატების შემცველობა მკაცრად აკრძალულია" },
+            { ru: "Можно, но только если используется компилятор Babel, а не tsc", en: "Yes, but only if using the Babel compiler instead of native tsc", ka: "შესაძლებელია, მაგრამ მხოლოდ იმ შემთხვევაში, თუ გამოიყენება Babel კომპილატორი და არა ნატივური tsc" },
+            { ru: "Предикат сработает, но тип filtered все равно останется any", en: "The predicate will run, but the resulting filtered type will default to any", ka: "პრედიკატი იმუშავებს, მაგრამ filtered-ის ტიპი მაინც დარჩება any" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Стрелочные функции, используемые как анонимные коллбэки (например, внутри методов массивов), могут содержать полноценные аннотации предикатов типов `(x): x is string => ...`.",
+            en: "Arrow functions used as anonymous callbacks (e.g., inside array methods) can fully contain type predicate annotations like `(x): x is string => ...`.",
+            ka: "ისრიან ფუნქციებს, რომლებიც გამოიყენება ანონიმურ ქოლბექებად (მაგალითად მასივის მეთოდებში), სრულად შეუძლიათ შეიცავდნენ ტიპის პრედიკატის ანოტაციებს `(x): x is string => ...`."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#using-type-predicates",
+        docLabel: "Type Predicates — Handbook"
+    },
+    {
+        id: 378,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Почему внутри кастомного Type Guard часто приходится использовать приведение к 'any' или 'as', как показано в примере?",
+            en: "Why is it often necessary to use a cast to 'any' or 'as' inside a custom Type Guard body, as shown in the example?",
+            ka: "რატომ გვიწევს ხშირად კასტომური Type Guard-ის შიგნით 'any'-ზე დაყვანა ან 'as'-ის გამოყენება, როგორც ეს მაგალითშია ნაჩვენები?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">isBird</span>(x: <span class="type">unknown</span>): x <span class="kw">is</span> { fly: <span class="type">Function</span> } {
+  <span class="kw">return</span> (x <span class="kw">as any</span>)?.fly !== <span class="kw">undefined</span>;
+}`,
+        options: [
+            { ru: "Потому что изначальный тип unknown или общий тип запрещает прямое обращение к потенциально отсутствующим свойствам", en: "Because the initial unknown or general type prohibits direct access to properties that might not exist", ka: "იმის გამო, რომ საწყისი unknown ან ზოგადი ტიპი კრძალავს პირდაპირ მიმართვას ისეთ თვისებებზე, რომლებიც შეიძლება არ არსებობდეს" },
+            { ru: "Это требование стандарта ECMAScript для всех проверок объектов", en: "This is a mandatory ECMAScript standard requirement for all object property lookups", ka: "ეს არის ECMAScript სტანდარტის სავალდებულო მოთხოვნა ობიექტის ყველა შემოწმებისთვის" },
+            { ru: "Без as any функция автоматически вернет false", en: "Without 'as any', the function will automatically execute and return false", ka: "as any-ის გარეშე ფუნქცია ავტომატურად შეასრულებს მუშაობას და დააბრუნет false-ს" },
+            { ru: "Это устаревший подход, замененный на оператор проверки типов reflect", en: "This is a deprecated pattern replaced by the newer reflect type check operator", ka: "ეს არის მოძველებული მიდგომა, რომელიც ჩანაცვლდა reflect ტიპის შემოწმ성의 ოპერატორით" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Поскольку на входе мы имеем обобщенный тип (например, `unknown`), TypeScript не разрешает нам читать свойство `fly`. Чтобы безопасно проверить его наличие в рантайме, разработчик временно отключает строгую проверку внутри гварда с помощью `as any`.",
+            en: "Since the input is a general type like `unknown`, TypeScript prevents us from directly accessing the `fly` property. To safely check its existence at runtime, the developer temporarily bypasses strict checks inside the guard using `as any`.",
+            ka: "ვინაიდან შესავალზე გვაქვს ზოგადი ტიპი (მაგალითად `unknown`), TS არ გვაძლევს `fly` თვისების პირდაპირ წაკითხვის უფლებას. runtime-ში მისი არსებობის უსაფრთხოდ შესამოწმებლად, დეველოპერი დროებით თიშავს მკაცრ შემოწმებას guard-ის შიგნით `as any`-ს გამოყენებით."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-assertions",
+        docLabel: "Type Assertions — Handbook"
+    },
+    {
+        id: 379,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Какая настройка в tsconfig.json критически важна для того, чтобы функция 'asserts x is string' эффективно отсекала null/undefined типы?",
+            en: "Which tsconfig.json setting is critically important for an 'asserts x is string' function to effectively filter out null/undefined types?",
+            ka: "tsconfig.json-ის რომელი პარამეტრია კრიტიკულად მნიშვნელოვანი იმისთვის, რომ 'asserts x is string' ფუნქციამ ეფექტურად ჩამოაჭრას null/undefined ტიპები?"
+        },
+        code: `<span class="str">"compilerOptions"</span>: {
+  <span class="str">"?????????????????"</span>: <span class="kw">true</span>
+}`,
+        options: [
+            { ru: "strictNullChecks", en: "strictNullChecks", ka: "strictNullChecks" },
+            { ru: "noImplicitAny", en: "noImplicitAny", ka: "noImplicitAny" },
+            { ru: "alwaysStrict", en: "alwaysStrict", ka: "alwaysStrict" },
+            { ru: "experimentalDecorators", en: "experimentalDecorators", ka: "experimentalDecorators" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Если опция `strictNullChecks` выключена, типы `null` и `undefined` неявно входят в состав любого типа (включая `string`). В таком случае сужение типа функцией утверждения теряет смысл, так как компилятор не изолирует null-значения отдельно.",
+            en: "If the `strictNullChecks` option is disabled, `null` and `undefined` are implicitly part of every type (including `string`). In this case, narrowing via an assertion function becomes redundant because the compiler doesn't isolate null values.",
+            ka: "თუ `strictNullChecks` ოფცია გამორთულია, `null` და `undefined` არაპირდაპირ შედიან ნებისმიერი ტიპის შემადგენლობაში (მათ შორის `string`-შიც). ასეთ შემთხვევაში ტიპის შევიწროება აზრს კარგავს, რადგან კომპილატორი არ ახდენს null მნიშვნელობების იზოლირებას."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#strictNullChecks",
+        docLabel: "strictNullChecks — TSConfig Reference"
+    },
+    {
+        id: 380,
+        category: { ru: "Advanced Type Narrowing", en: "Advanced Type Narrowing", ka: "პროდვინუტი ტიპის შევიწროება" },
+        tag: "advanced-narrowing",
+        question: {
+            ru: "Можно ли использовать предикаты типов в перегрузках функций (Function Overloads)?",
+            en: "Is it possible to use type predicates inside function overloads?",
+            ka: "შესაძლებელია თუ არა ტიპის პრედიკატების გამოყენება ფუნქციის გადატვირთვებში (Function Overloads)?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">validate</span>(x: <span class="type">string</span>): <span class="type">boolean</span>;
+<span class="kw">function</span> <span class="fn">validate</span>(x: <span class="type">unknown</span>): x <span class="kw">is</span> <span class="type">Record&lt;string, any&gt;</span>;
+<span class="kw">function</span> <span class="fn">validate</span>(x: <span class="type">any</span>): <span class="type">any</span> { <span class="kw">return true</span>; }`,
+        options: [
+            { ru: "Да, предикаты типа можно применять к отдельным сигнатурам перегрузки для гибкого управления типами при вызове", en: "Yes, type predicates can be declared on specific overload signatures to finely control type inference depending on the invocation", ka: "დიახ, ტიპის პრედიკატები შეიძლება გამოყენებულ იქნას გადატვირთვის ცალკეულ სიგნატურებში გამოძახებისას ტიპების მოქნილი მართვისთვის" },
+            { ru: "Нет, предикат типа должен быть прописан только в финальной функции реализации", en: "No, a type predicate can only be specified in the final implementation signature", ka: "არა, ტიპის პრედიკატი უნდა გაიწეროს მხოლოდ რეალიზაციის ფინალურ ფუნქციაში" },
+            { ru: "Можно, но только если все сигнатуры возвращают один и тот же предикат", en: "Yes, but only if all overload signatures return the exact same predicate", ka: "შესაძლებელია, მაგრამ მხოლოდ იმ შემთხვევაში, თუ ყველა სიგნატურა აბრუნებს ერთსა და იმავე პრედიკატს" },
+            { ru: "Нет, использование перегрузок совместно с 'is' заблокировано компилятором", en: "No, combining function overloads with 'is' predicates is blocked by the compiler", ka: "არა, გადატვირთვების გამოყენება 'is' პრედიკატებთან ერთად ბლოკირებულია კომპილატორის მიერ" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "В TypeScript вы можете комбинировать перегрузку функций и предикаты типов. Компилятор будет выбирать нужную сигнатуру на основе переданного аргумента, и если выбрана сигнатура с `is`, тип будет успешно сужен.",
+            en: "In TypeScript, you can safely combine function overloads with type predicates. The compiler resolves the correct signature based on the arguments passed, and if the matching overload uses `is`, type narrowing will trigger successfully.",
+            ka: "TypeScript-ში შეგიძლიათ შეუთავსოთ ფუნქციების გადატვირთვა და ტიპების პრედიკატები. კომპილატორი შეარჩევს საჭირო სიგნატურას გადაცემული არგუმენტის მიხედვით და თუ არჩეულ სიგნატურას აქვს `is`, ტიპის შევიწროება წარმატებით ამუშავდება."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/functions.html#function-overloads",
+        docLabel: "Function Overloads — Handbook"
+    },
+
+    // 20. DECLARE GLOBAL / MODULES (.D.TS)
+    {
+        id: 381,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Зачем нужны файлы с расширением .d.ts в экосистеме TypeScript?",
+            en: "What is the core purpose of .d.ts declaration files in TypeScript?",
+            ka: "რისთვის არის საჭირო .d.ts გაფართოების ფაილები TypeScript ეკოსისტემაში?"
+        },
+        code: `<span class="cm">// index.d.ts</span>
+<span class="kw">declare module</span> <span class="str">"legacy-lib"</span> { <span class="kw">export function</span> <span class="fn">oldFunc</span>(): <span class="type">void</span>; }`,
+        options: [
+            { ru: "Для描述ания типов и интерфейсов существующего JavaScript-кода без генерации итогового JS", en: "To hold purely architectural types for existing JavaScript code without emitting runtime JS", ka: "არსებული JavaScript კოდის ტიპებისა და ინტერფეისების აღსაწერად, საბოლოო JS ფაილის გენერაციის გარეშე" },
+            { ru: "Это файлы для автоматического документирования разметки HTML5", en: "They function as build targets documentation formatting global HTML5 canvas layers", ka: "ეს არის ფაილები HTML5 მარკაპის ავტომატური დოკუმენტირებისთვის" },
+            { ru: "В них пишется логика работы баз данных проекта", en: "They hold dynamic logic connecting active database queries", ka: "მათში იწერება პროექტის მონაცემთა ბაზების მუშაობის ლოგიკა" },
+            { ru: "Они автоматически переводют код на другие языки программирования", en: "They translate standard variables into target low-level bytecode scripts", ka: "ისინი ავტომატურად თარგმნიან კოდს პროგრამირების სხვა ენებზე" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Файлы с расширением `.d.ts` называются Declaration Files (файлы деклараций). Они содержат исключительно описание типов, интерфейсов и сигнатур модулей, но не содержат никакой исполняемой логики. Сборщик полностью игнорирует их при создании продакшн-кода. Они нужны, чтобы подружить TypeScript со старыми JavaScript-библиотеками или объявить глобальные переменные (например, расширить объект `window` через `declare global`).",
+            en: "Files ending in `.d.ts` are Declaration Files. They store exclusively type signatures, blueprints, and interface abstractions. They contain zero operational runtime code, meaning compilers filter them out from production builds. They serve as bridging maps enabling TS projects to interact with raw, un-typed standard JS dependencies safely.",
+            ka: "`.d.ts` გაფართოების ფაილებს დეკლარაციის ფაილები (Declaration Files) ეწოდებათ. ისინი შეიცავენ მხოლოდ ტიპების, ინტერფეისებისა და მოდულების სიგნატურების აღწერას, ყოველგვარი შესასრულებელი კოდის გარეშე. ისინი საჭიროა იმისათვის, რომ TS-მა შეძლოს მუშაობა ძველ JavaScript ბიბლიოთეკებთან ან გლობალურ ცვლადებთან (მაგ. window ობიექტის გასაფართოებლად)."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html",
+        docLabel: "Declaration Files — Handbook"
+    },
+    {
+        id: 382,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Каким образом конструкция declare global {} влияет на глобальную область видимости внутри модульного файла?",
+            en: "How does the declare global {} block affect the global scope when used inside a module file?",
+            ka: "როგორ მოქმედებს declare global {} კონსტრუქცია გლობალურ ხედვის არეზე მოდულურ ფაილში?"
+        },
+        code: `<span class="kw">declare global</span> {
+  <span class="kw">interface</span> <span class="type">Window</span> {
+    <span class="prop">customConfig</span>: <span class="type">string</span>;
+  }
+}`,
+        options: [
+            { ru: "Добавляет свойство customConfig в глобальный интерфейс Window, позволяя использовать его везде в коде", en: "Adds the customConfig property to the global Window interface, making it accessible anywhere in the codebase", ka: "ამატებს customConfig თვისებას Window გლობალურ ინტერფეისში, რაც მის გამოყენებას ხელმისაწვდომს ხდის კოდის ნებისმიერ ადგილას" },
+            { ru: "Создает изолированную копию Window, доступную только в текущем файле", en: "Creates an isolated copy of Window that is only accessible within the current file scope", ka: "ქმნის Window-ის იზოლირებულ ასლს, რომელიც ხელმისაწვდომია მხოლოდ მიმდინარე ფაილში" },
+            { ru: "Заменяет стандартный интерфейс Window на новый, удаляя встроенные методы", en: "Completely overwrites the standard Window interface, deleting all native browser methods", ka: "ანაცვლებს სტანდარტულ Window ინტერფეისს ახლით და შლის ჩაშენებულ მეთოდებს" },
+            { ru: "Этот код вызовет ошибку, так как интерфейс Window нельзя расширять", en: "This code triggers an error because the native Window interface cannot be extended", ka: "ეს კოდი გამოიწვევს შეცდომას, რადგან Window ინტერფეისის გაფართოება აკრძალულია" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Поскольку TypeScript поддерживает слияние интерфейсов (Interface Merging), повторное объявление интерфейса `Window` внутри блока `declare global` расширяет существующий тип Window глобально. Это необходимо, если файл является внешним модулем (содержит импорты или экспорты).",
+            en: "Because TypeScript supports Interface Merging, re-declaring the `Window` interface inside a `declare global` block safely extends the existing global Window object. This is specifically required when adding global definitions from inside an ES module file.",
+            ka: "ვინაიდან TS მხარს უჭერს ინტერფეისების შერწყმას (Interface Merging), `Window` ინტერფეისის ხელახალი გამოცხადება `declare global` ბლოკში აფართოებს არსებულ Window ობიექტს გლობალურად. ეს აუცილებელია, თუ ფაილი წარმოადგენს ES მოდულს."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/declaration-merging.html",
+        docLabel: "Declaration Merging — Handbook"
+    },
+    {
+        id: 383,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Что превращает файл деклараций .d.ts из глобального скрипта в изолированный модуль с точки зрения TypeScript?",
+            en: "What turns a .d.ts declaration file from a global script into an isolated module in TypeScript?",
+            ka: "რა აქცევს .d.ts დეკლარაციის ფაილს გლობალური სკრიპტიდან იზოლირებულ მოდულად TypeScript-ის თვალსაზრისით?"
+        },
+        code: `<span class="kw">import</span> { <span class="type">SomeType</span> } <span class="kw">from</span> <span class="str">"./types"</span>;
+<span class="kw">declare const</span> <span class="prop">API_KEY</span>: <span class="type">string</span>;`,
+        options: [
+            { ru: "Наличие хотя бы одной инструкции import или export на верхнем уровне файла", en: "The presence of at least one top-level import or export statement in the file", ka: "ფაილის ზედა დონეზე თუნდაც ერთი import ან export ინსტრუქციის არსებობა" },
+            { ru: "Использование ключевого слова declare перед константами", en: "The use of the declare keyword preceding variable declarations", ka: "declare ქივორდის გამოყენება კონსტანტების წინ" },
+            { ru: "Добавление специальной директивы настроек в tsconfig.json", en: "Adding a specific target configuration entry inside tsconfig.json", ka: "tsconfig.json-ში სპეციალური პარამეტრების დირექტივის დამატება" },
+            { ru: "Расширение файла должно быть строго .module.d.ts", en: "The file extension must explicitly match .module.d.ts format", ka: "ფაილის გაფართოება მკაცრად უნდა იყოს .module.d.ts" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "В TypeScript любой файл, содержащий `import` или `export` на верхнем уровне, считается модулем. Декларации внутри такого файла больше не попадают в глобальную область видимости автоматически. Чтобы сделать их глобальными из модуля, приходится использовать `declare global`.",
+            en: "In TypeScript, any file containing a top-level `import` or `export` is processed as an ES module. Types written within it lose global behavior. To expose types globally from an ES module file, you must enclose them in a `declare global` block.",
+            ka: "TS-ში ნებისმიერი ფაილი, რომელიც შეიცავს `import` ან `export`-ს ზედა დონეზე, მიიჩნევა მოდულად. ასეთ ფაილში არსებული დეკლარაციები ავტომატურად აღარ ხვდება გლობალურ არეში. მათ გასაგლობალებლად საჭიროა `declare global`-ში მოთავსება."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/modules.html",
+        docLabel: "Modules — Handbook"
+    },
+    {
+        id: 384,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Для чего используется символ звездочки (*) при объявлении модулей в файлах деклараций?",
+            en: "Why is the asterisk (*) wild card character used when declaring modules in declaration files?",
+            ka: "რისთვის გამოიყენება ვარსკვლავის (*) სიმბოლო დეკლარაციის ფაილებში მოდულების გამოცხადებისას?"
+        },
+        code: `<span class="kw">declare module</span> <span class="str">"*.css"</span> {
+  <span class="kw">const</span> <span class="prop">content</span>: { [<span class="prop">className</span>: <span class="type">string</span>]: <span class="type">string</span> };
+  <span class="kw">export default</span> <span class="prop">content</span>;
+}`,
+        options: [
+            { ru: "Для создания шаблона (wildcard), позволяющего импортировать любые файлы с данным расширением как модули", en: "To create a wildcard pattern allowing any file with that extension to be imported as a valid module", ka: "შაბლონის (wildcard) შესაქმნელად, რაც საშუალებას იძლევა ნებისმიერი ფაილი მოცემული გაფართოებით დაიმპორტდეს როგორც მოდული" },
+            { ru: "Для импорта всех зависимостей из внешней папки node_modules", en: "To force automated imports of all sub-dependencies residing in node_modules", ka: "node_modules გარე საქაღალდიდან ყველა დამოკიდებულების დასაიმპორტებლად" },
+            { ru: "Это указывает компилятору на необходимость архивации стилей", en: "It acts as a instruction telling the compiler to minify global styles", ka: "ეს მიუთითებს კომპილატორს სტილების არქივაციის საჭიროებაზე" },
+            { ru: "Этот синтаксис запрещен и используется только для CSS-интеграций в Webpack", en: "This syntax is invalid and exclusively interpreted by Webpack CSS loaders", ka: "ეს სინტაქსი აკრძალულია და გამოიყენება მხოლოდ Webpack-ში CSS ინტეგრაციებისთვის" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Объявления модулей по маске (Wildcard Declarations) сообщают TypeScript, как типизировать не-шаблонные файлы при импорте (например, CSS-модули, SVG, картинки). Конструкция `declare module '*.css'` разрешает импорт любого CSS-файла в проекте без ошибок компиляции.",
+            en: "Wildcard module declarations tell TypeScript how to resolve imports for non-code assets (like CSS modules, SVGs, or images). The `declare module '*.css'` block enables developers to safely import any CSS stylesheet without compilation issues.",
+            ka: "მოდულების გამოცხადება შაბლონით (Wildcard Declarations) ატყობინებს TS-ს, თუ როგორ მოახდინოს არაკოდური ფაილების ტიპიზაცია იმპორტისას (მაგ. CSS მოდულები, SVG). კონსტრუქცია `declare module '*.css'` ნებას რთავს ნებისმიერი CSS ფაილის იმპორტს პროექტში."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/modules.html#wildcard-module-declarations",
+        docLabel: "Wildcard Module Declarations — Handbook"
+    },
+    {
+        id: 385,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Что произойдет при повторном объявлении существующего внешнего модуля через declare module в локальном файле деклараций?",
+            en: "What happens when you re-declare an existing external module using declare module in a local declaration file?",
+            ka: "რა მოხდება ლოკალურ დეკლარაციის ფაილში არსებული გარე მოდულის ხელახალი გამოცხადებისას declare module-ის საშუალებით?"
+        },
+        code: `<span class="kw">import</span> <span class="str">"express"</span>;
+<span class="kw">declare module</span> <span class="str">"express"</span> {
+  <span class="kw">interface</span> <span class="type">Request</span> { <span class="prop">user</span>?: { id: <span class="type">string</span> }; }
+}`,
+        options: [
+            { ru: "Произойдет расширение (аугментация) модуля: новое свойство добавится к существующему интерфейсу Request", en: "Module augmentation occurs: the new property merges into the existing Request interface definition", ka: "მოხდება მოდულის გაფართოება (აუგმენტაცია): ახალი თვისება დაემატება Request არსებულ ინტერფეისს" },
+            { ru: "Локальное объявление полностью перезапишет типы express, уничтожив старые", en: "The local declaration completely overrides the express types, destroying previous definitions", ka: "ლოкаალური დეკლარაცია სრულად გადაწერს express-ის ტიპებს, წაშლის რა ძველებს" },
+            { ru: "TypeScript выдаст ошибку о дублировании идентификатора модуля", en: "TypeScript triggers a duplicate identifier compilation error immediately", ka: "TypeScript გამოაგდებს შეცდომას მოდულის იდენტიფიკატორის დუბლირების შესახებ" },
+            { ru: "Этот код добавит свойство только в рантайме, но не изменит типы", en: "This operation operates at runtime only, offering no modifications to types", ka: "ეს კოდი თვისებას დაამატებს მხოლოდ runtime-ში, მაგრამ არ შეცვლის ტიპებს" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Это называется расширением модуля (Module Augmentation). Если вы импортируете модуль, а затем объявляете его через `declare module`, TypeScript не перезаписывает его, а мержит интерфейсы внутри него. Это частый паттерн для добавления кастомных свойств в популярные библиотеки вроде Express или Fastify.",
+            en: "This is known as Module Augmentation. If you import a module first, and then reference it via `declare module`, TypeScript merges your new definitions into the existing library types. This is widely used to append custom fields to request objects in libraries like Express.",
+            ka: "ამას მოდულის გაფართოება (Module Augmentation) ეწოდება. თუ ჯერ აიმპორტებთ მოდულს, ხოლო შემდეგ აცხადებთ მას `declare module`-ით, TS არ გადაწერს მას, არამედ შეაზავებს შიდა ინტერფეისებს. ეს ხშირი პატერნია Express-ში კასტომური თვისებების დასამატებლად."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/modules.html#ambient-modules",
+        docLabel: "Module Augmentation — Handbook"
+    },
+    {
+        id: 386,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Каков рантайм-эффект от компиляции переменной, объявленной с помощью ключевого слова declare?",
+            en: "What runtime footprint does a variable compiled with the declare keyword produce?",
+            ka: "რა runtime ეფექტი აქვს declare ქივორდით გამოცხადებული ცვლადის კომპილაციას?"
+        },
+        code: `<span class="kw">declare const</span> <span class="prop">__VERSION__</span>: <span class="type">string</span>;`,
+        options: [
+            { ru: "Никакого рантайм-кода не генерируется; конструкция служит исключительно для информирования компилятора", en: "Zero runtime code is generated; the structure exists solely to inform the compiler about external entities", ka: "არანაირი runtime კოდი არ გენერირდება; კონსტრუქცია ემსახურება მხოლოდ კომპილატორის ინფორმირებას" },
+            { ru: "Создается глобальная переменная var в итоговом файле JavaScript", en: "It compiles down to a global var declaration in the emitted JavaScript asset", ka: "გამომავალ JavaScript ფაილში იქმნება გლობალური var ცვლადი" },
+            { ru: "Значение переменной замораживается через Object.freeze()", en: "The runtime value of the constant is frozen utilizing Object.freeze() mechanisms", ka: "ცვლადის მნიშვნელობა იყინება Object.freeze()-ის საშუალებით" },
+            { ru: "Переменная перемещается в глобальное хранилище sessionStorage", en: "The variable context moves automatically into the browser's sessionStorage container", ka: "ცვლადი ავტომატურად გადადის გლობალურ sessionStorage საცავში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Ключевое слово `declare` создает так называемую окружающую декларацию (Ambient Declaration). Она сообщает TypeScript: «Эта переменная существует где-то в окружении (например, внедрена вебпаком или глобальным скриптом)». В итоговый JavaScript-код эта строчка не компилируется вообще.",
+            en: "The `declare` keyword creates an Ambient Declaration. It simply promises TypeScript: 'This variable already exists in the environment (e.g., injected by Webpack, Vite, or a CDN script)'. It leaves zero footprint in the compiled JavaScript output.",
+            ka: "ქივორდი `declare` ქმნის ე.წ. გარემო დეკლარაციას (Ambient Declaration). ის ეუბნება TS-ს: „ეს ცვლადი უკვე არსებობს გარემოში (მაგ. ჩასმულია Webpack-ის ან CDN-ის მიერ)“. საბოლოო JS კოდში ეს ხაზი საერთოდ არ კომპილირდება."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/declaration-files/by-example.html",
+        docLabel: "Ambient Declarations — Handbook"
+    },
+    {
+        id: 387,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Что произойдет, если попытаться присвоить значение переменной внутри блока объявлений или файла .d.ts?",
+            en: "What happens if you attempt to assign an initial value to a variable inside an ambient context or a .d.ts file?",
+            ka: "რა მოხდება, თუ ვცდით მნიშვნელობის მინიჭებას ცვლადზე ambient კონტექსტში ან .d.ts ფაილში?"
+        },
+        code: `<span class="kw">declare const</span> <span class="prop">CONFIG</span> = { <span class="prop">url</span>: <span class="str">"localhost"</span> };`,
+        options: [
+            { ru: "TypeScript выдаст ошибку компиляции, так как инициализация запрещена в ambient-контекстах", en: "TypeScript throws a compilation error because initializers are forbidden in ambient contexts", ka: "TypeScript გამოაგდებს კომპილაციის შეცდომას, რადგან ინიციალიზაცია აკრძალულია ambient კონტექსტებში" },
+            { ru: "Значение скомпилируется как значение по умолчанию", en: "The code compiles successfully, setting the block as a fallback default global state", ka: "კოდი ჩვეულებრივ დაკომპილირდება, მნიშვნელობა კი ჩაითვლება default მნიშვნელობად" },
+            { ru: "Объект превратится в интерфейс с именем CONFIG", en: "The value configuration shape compiles down directly into a structured interface named CONFIG", ka: "ობიექტი ავტომატურად გადაიქცევა ინტერფეისად, სახელით CONFIG" },
+            { ru: "Ошибка возникнет только в рантайме при попытке чтения", en: "No syntax rules break until runtime execution attempts to evaluate the constant lookup", ka: "შეცდომა წარმოიშობა მხოლოდ runtime-ში მნიშვნელობის წაკითხვის მცდელობისას" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Файлы деклараций и ключевое слово `declare` описывают только типы и структуру, но не могут содержать реальные исполняемые значения (инициализаторы). Исключение составляют только константные перечисления (const enums) и литеральные значения примитивов.",
+            en: "Declaration contexts and the `declare` modifier describe purely architectural shapes and cannot include executable initializers. Trying to assign a concrete runtime object literal throws a compilation error immediately.",
+            ka: "დეკლარაციის კონტექსტები და `declare` მოდიფიკატორი აღწერენ მხოლოდ სტრუქტურას და არ შეიძლება შეიცავდნენ რეალურ მნიშვნელობებს. ობიექტის ლიტერალის მინიჭების მცდელობა დაუყოვნებლივ იწვევს კომპილაციის შეცდომას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/declaration-files/do-s-and-don-ts.html",
+        docLabel: "Do's and Don'ts — Handbook"
+    },
+    {
+        id: 388,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Для чего используется синтаксис с тройным слэшем '/// <reference types=\"...\" />' на первой строке файла?",
+            en: "What is the purpose of the triple-slash directive '/// <reference types=\"...\" />' placed at the top of a file?",
+            ka: "რისთვის გამოიყენется სამმაგი სლეშის სინტაქსი '/// <reference types=\"...\" />' ფაილის პირველ ხაზზე?"
+        },
+        code: `/// &lt;<span class="kw">reference types</span>=<span class="str">"node"</span> /&gt;`,
+        options: [
+            { ru: "Явно указывает компилятору включить типы указанного пакета в процесс компиляции текущего файла", en: "Explicitly instructs the compiler to include the type definitions of the specified package for this file's compilation", ka: "აშკარად მიუთითებს კომპილატორს, რომ ჩართოს მითითებული პაკეტის ტიპები მიმდინარე ფაილის კომპილაციის პროცესში" },
+            { ru: "Импортирует реальный исполняемый код библиотеки в рантайме", en: "Imports the compiled execution logic of that dependency at runtime", ka: "ახდენს ბიბლიოთეკის რეალური შესასრულებელი კოდის იმპორტს runtime-ში" },
+            { ru: "Служит декоратором для комментариев в формате JSDoc", en: "Acts as a structural decorator configuration for JSDoc formatting utilities", ka: "ემსახურება როგორც დეკორატორი JSDoc ფორმატის კომენტარებისთვის" },
+            { ru: "Этот синтаксис устарел и полностью игнорируется начиная с TS 3.0", en: "This syntax is deprecated and completely ignored since TypeScript 3.0 editions", ka: "ეს სინტაქსი მოძველებულია და სრულად იგნორირდება TS 3.0 ვერსიიდან" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Директивы с тройным слэшем (Triple-Slash Directives) служат для управления зависимостями компиляции. Инструкция `reference types` сообщает компилятору, что текущий файл зависит, например, от типов Node.js (`@types/node`), и заставляет TS подгрузить их.",
+            en: "Triple-slash directives act as compiler commands. The `/// <reference types='node' />` directive informs TypeScript that the current file relies on the global types specified in the dependency package, forcing TS to resolve them.",
+            ka: "სამმაგი სლეშის დირექტივები (Triple-Slash Directives) წარმოადგენენ ბრძანებებს კომპილატორისთვის. `/// <reference types='node' />` მიუთითებს, რომ მიმდინარე ფაილი დამოკიდებულია მითитებულ პაკეტზე და აიძულებს TS-ს ჩატვირთოს ისინი."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/triple-slash-directives.html",
+        docLabel: "Triple-Slash Directives — Handbook"
+    },
+    {
+        id: 389,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Какую роль выполняет свойство 'skipLibCheck' в конфигурационном файле проекта?",
+            en: "What role does the 'skipLibCheck' property play in the project's configuration file?",
+            ka: "რა როლს ასრულებს 'skipLibCheck' თვისება პროექტის კონფიგურაციის ფაილში?"
+        },
+        code: `<span class="str">"skipLibCheck"</span>: <span class="kw">true</span>`,
+        options: [
+            { ru: "Пропускает проверку типов во всех файлах деклараций (*.d.ts), ускоряя сборку и игнорируя ошибки в node_modules", en: "Skips type checking of all declaration files (*.d.ts), speeding up build performance and ignoring mismatches in node_modules", ka: "გამოტოვებს ტიპების შემოწმებას ყველა დეკლარაციის ფაილში (*.d.ts), რაც აჩქარებს ბილდს და აიგნორებს შეცდომებს node_modules-ში" },
+            { ru: "Запрещает установку любых внешних библиотек через npm", en: "Blocks developers from pulling down automated types during standard npm installs", ka: "კრძალავს ნებისმიერი გარე ბიბლიოთეკის ინსტალაციას npm-ის საშუალებით" },
+            { ru: "Игнорирует проверку типов во всем проекте, включая исходный код", en: "Completely disables type enforcement across the entire local codebase and scripts", ka: "აიგნორებს ტიპების შემოწმებას მთელ პროექტში, საწყისი კოდის ჩათვლით" },
+            { ru: "Отключает генерацию соурсмапов (.js.map)", en: "Disables the output emission profiles creating downstream source maps (.js.map)", ka: "თიშავს სორსმაპების (.js.map) გენერაციას" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Включение `skipLibCheck: true` заставляет компилятор не тратить время на полную валидацию файлов `*.d.ts` (особенно внутри сторонних библиотек в `node_modules`). Это значительно ускоряет компиляцию и спасает, если две разные библиотеки привнесли конфликтующие глобальные типы.",
+            en: "Enabling `skipLibCheck: true` stops the compiler from validating type internal correctness inside `*.d.ts` files (mostly targeting third-party files inside `node_modules`). It drastically boosts compilation speeds and bypasses node_modules type bugs.",
+            ka: "`skipLibCheck: true`-ს ჩართვა აიძულებს კომპილატორს არ დახარჯოს დრო `*.d.ts` ფაილების ვალიდაციაზე (განსაკუთრებით `node_modules`-ში). ეს საგრძნობლად აჩქარებს კომპილაციას და გვიცავს ბიბლიოთეკებს შორის ტიპების კონფლიქტისგან."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#skipLibCheck",
+        docLabel: "skipLibCheck — TSConfig Reference"
+    },
+    {
+        id: 390,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "В чем разница между declare namespace и declare module при написании деклараций окружения?",
+            en: "What is the difference between declare namespace and declare module when writing ambient declarations?",
+            ka: "რა განსხვავებაა declare namespace-სა და declare module-ს შორის გარემო დეკლარაციების წერისას?"
+        },
+        code: `<span class="kw">declare namespace</span> <span class="type">App</span> { <span class="kw">type</span> <span class="type">Id</span> = <span class="type">string</span>; }
+<span class="kw">declare module</span> <span class="str">"app-core"</span> { <span class="kw">export type</span> <span class="type">Id</span> = <span class="type">string</span>; }`,
+        options: [
+            { ru: "namespace создает глобальный объект типов, а module описывает импортируемый внешний ES-модуль с текстовым именем", en: "namespace defines a globally accessible type container, while module describes an external ES module resolved via a string identifier", ka: "namespace ქმნის ტიპების გლობალურ ობიექტს, ხოლო module აღწერს დასაიმპორტებელ გარე ES მოდულს სტრიქონული სახელით" },
+            { ru: "Разницы нет, это устаревшие синонимы, добавленные для совместимости", en: "There is no functional distinction; they represent deprecated historical legacy aliases", ka: "სხვაობა არ არის, ესენი მოძველებული სინონიმებია თავსებადობისთვის" },
+            { ru: "namespace может компилироваться в реальный JS-объект, а module — никогда", en: "A namespace block compiles into a runtime JavaScript object, whereas ambient modules never do", ka: "namespace შეიძლება დაკომპილირდეს რეალურ JS ობიექტად, ხოლო ambient module — არასდროს" },
+            { ru: "module может использоваться только внутри файлов с расширением .tsx", en: "The module target keyword is strictly isolated for files ending in .tsx extension layout", ka: "module-ის გამოყენება შეიძლება მხოლოდ .tsx გაფართოების ფაილებში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "В контексте `.d.ts` файлов `declare namespace` используется для группировки глобально доступных типов под одним именем без всяких импортов. `declare module 'x'` описывает структуру, которую разработчик будет получать только через явный вызов `import ... from 'x'`.",
+            en: "Inside `.d.ts` structures, `declare namespace` models globally available variables/types enclosed under a shared name without imports. `declare module 'x'` targets externalized code paths that must be brought in using `import ... from 'x'` statements.",
+            ka: "`.d.ts` ფაილებში `declare namespace` გამოიყენება გლობალურად ხელმისაწვდომი ტიპების დასაჯგუფებლად იმპორტების გარეშე. `declare module 'x'` კი აღწერს სტრუქტურას, რომელსაც მივიღებთ მხოლოდ აშკარა `import ... from 'x'` გამოძახებით."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/namespaces-and-modules.html",
+        docLabel: "Namespaces and Modules — Handbook"
+    },
+    {
+        id: 391,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Для чего в файле деклараций применяется специальная директива export as namespace?",
+            en: "Why is the special export as namespace directive utilized in declaration files?",
+            ka: "რისთვის გამოიყენება სპეციალური დირექტივა export as namespace დეკლარაციის ფაილში?"
+        },
+        code: `<span class="kw">export as namespace</span> <span class="type">MyLibrary</span>;`,
+        options: [
+            { ru: "Для описания UMD-библиотек, которые можно использовать и через import, и как глобальную переменную через тег script", en: "To type UMD libraries that can be consumed either via imports or via a global variable injected by a script tag", ka: "UMD ბიბლიოთეკების აღსაწერად, რომელთა გამოყენებაც შეიძლება როგორც import-ით, ისე გლობალური ცვლადის სახით script ტეგის საშუალებით" },
+            { ru: "Для экспорта всех интерфейсов проекта в один глобальный файл", en: "To aggregate all disconnected source interfaces down into a singular build definition", ka: "პროექტის ყველა ინტერფეისის ერთ გლობალურ ფაილში დასაექსპორტებლად" },
+            { ru: "Она сообщает сборщику о необходимости скомпилировать код в формат CommonJS", en: "It provides instructions to build systems targeting formatting conversions to CommonJS layouts", ka: "ის ატყობინებს ბილდერს კოდის CommonJS ფორმატში კომპილაციის საჭიროებაზე" },
+            { ru: "Это инструкция для публикации пакета в реестр npm", en: "It functions as an operational manifest tag allowing successful npm publishing flows", ka: "ეს არის ინსტრუქცია პაკეტის npm რეესტრში გამოსაქვეყნებლად" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Директива `export as namespace` описывает так называемые UMD (Universal Module Definition) модули. Она позволяет типам работать в двух режимах: если в коде есть импорты, библиотека ведет себя как модуль; если импортов нет, её типы доступны глобально через указанное имя.",
+            en: "The `export as namespace` syntax is designed for UMD (Universal Module Definition) structures. It enables types to act conditionally: if module imports are detected, it acts as a modular import; otherwise, its interface maps onto global scripts.",
+            ka: "დირექტივა `export as namespace` აღწერს ე.წ. UMD მოდულებს. ის საშუალებას აძლევს ტიპებს იმუშაონ ორ რეჟიმში: თუ კოდში არის იმპорტები, ბიბლიოთეკა იქცევა როგორც მოდული, ხოლო თუ იმპორტები არ არის — ხელმისაწვდომია გლობალურად."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/declaration-files/templates/module-d-ts.html",
+        docLabel: "Library Templates — Handbook"
+    },
+    {
+        id: 392,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Допускается ли использование относительных путей (например, './utils') внутри директивы declare module?",
+            en: "Is it allowed to use relative file paths (e.g., './utils') inside a declare module directive?",
+            ka: "ნებადართულია თუ არა ფარდობითი გზების (მაგ. './utils') გამოყენება declare module დირექტივის შიგნით?"
+        },
+        code: `<span class="kw">declare module</span> <span class="str">"./utils"</span> { <span class="cmt">/*...*/</span> }`,
+        options: [
+            { ru: "Нет, пути в declare module должны быть строго абсолютными строковыми именами пакетов, относительные пути вызовут ошибку", en: "No, names in declare module must match absolute dependency strings; relative paths are invalid and throw errors", ka: "არა, გზები declare module-ში მკაცრად აბსოლუტური სტრიქონული პაკეტის სახელები უნდა იყოს, ფარდობითი გზები გამოიწვევს შეცდომას" },
+            { ru: "Да, это стандартный способ переопределения локальных файлов проекта", en: "Yes, this represents a standard syntax pattern used to patch local architecture files", ka: "დიახ, ეს არის პროექტის ლოკალური ფაილების გადაწერის სტანდარტული გზა" },
+            { ru: "Можно, но только если в tsconfig.json выключена опция strict", en: "Yes, but only provided that the main strict compilation rule is set to false", ka: "შესაძლებელია, მაგრამ მხოლოდ იმ შემთხვევაში, თუ tsconfig.json-ში გამორთულია strict ოფცია" },
+            { ru: "Относительные пути преобразуются в абсолютные на этапе рантайма", en: "Relative paths are evaluated and mapped into absolute strings at runtime dynamically", ka: "ფარდობითი გზები აბსოლუტურში გარდაიქმნება runtime-ის ეტაპზე დინამიურად" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "В TypeScript директива `declare module \"name\"` предназначена для объявления внешних (ambient) не-относительных модулей (как в node_modules). Использование относительных путей вроде `./utils` в ней нелегально и не приведет к связыванию с реальным локальным файлом.",
+            en: "In TypeScript, `declare module \"name\"` is strictly designed for non-relative external packages (like ambient node_modules). Injecting relative paths like `./utils` is invalid and will fail to link against actual local source files.",
+            ka: "TS-ში `declare module \"name\"` განკუთვნილია გარე (ambient) არა-ფარდობითი მოდულებისთვის (როგორც node_modules). მასში ფარდობითი გზების (მაგ. `./utils`) გამოყენება არავალიდურია და არ დაუკავშირდება რეალურ ლოკალურ ფაილს."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/modules.html#ambient-modules",
+        docLabel: "Ambient Modules — Handbook"
+    },
+    {
+        id: 393,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Какая важная особенность накладывается на использование 'const enum' внутри ambient-файлов деклараций (.d.ts)?",
+            en: "What critical behavior change occurs when using a 'const enum' inside an ambient declaration file (.d.ts)?",
+            ka: "რა მნიშვნელოვანი თავისებურება ახასიათებს 'const enum'-ის გამოყენებას ambient დეკლარაციის ფაილებში (.d.ts)?"
+        },
+        code: `<span class="kw">declare const enum</span> <span class="type">HttpMethods</span> { <span class="prop">GET</span> = <span class="str">"GET"</span> }`,
+        options: [
+            { ru: "При компиляции значения подставляются инлайново в места использования, но сам объект перечисления в JS-код не генерируется", en: "During compilation, values are inlined directly at consumption sites, while the enum object itself emits no runtime JS footprint", ka: "კომპილაციისას მნიშვნელობები პირდაპირ ინლაინად ჩაისმება გამოყენების ადგილებზე, მაგრამ თავად enum ობიექტი JS კოდში არ გენერირდება" },
+            { ru: "Они принудительно превращаются в обычные JS-массивы", en: "They are forced by the compiler to materialize into native standard JS array layers", ka: "ისინი იძულებით გარდაიქმნებიან ჩვეულებრივ JS მასივებად" },
+            { ru: "Их запрещено использовать, если в проекте не установлен Babel", en: "They are banned from source builds unless the system sets up an active Babel transpiler", ka: "მათი გამოყენება აკრძალულია, თუ პროექტში არ არის დაყენებული Babel" },
+            { ru: "Они автоматически шифруют строковые ключи в числовые хеши", en: "They automatically optimize code execution by converting text keys into hashed integers", ka: "ისინი ავტომატურად შიფრავენ სტრიქონულ ქლიავებს რიცხვით ჰეშებად" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Поведение `const enum` заключается в том, что они полностью исчезают после компиляции, а в коде остаются только их сырые значения. В файлах `.d.ts` они разрешены, так как помогают компилятору инлайнить значения без генерации кода самого перечисления.",
+            en: "The unique feature of `const enum` is that they are entirely erased during compilation; their references are replaced by raw inline values. Inside `.d.ts` files, this allows type-safe value inlining without runtime overhead.",
+            ka: "`const enum`-ის თავისებურება იმაში მდგომარეობს, რომ ისინი სრულად ქრებიან კომპილაციის შემდეგ, კოდში კი მხოლოდ მათი პირდაპირი მნიშვნელობები რჩება. `.d.ts` ფაილებში ისინი ნებადართულია მნიშვნელობების ინლაინინგისთვის."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/enums.html#const-enums",
+        docLabel: "Const Enums — Handbook"
+    },
+    {
+        id: 394,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Какое свойство в tsconfig.json отвечает за автоматическое создание файлов деклараций (.d.ts) при сборке проекта?",
+            en: "Which tsconfig.json property triggers the automated generation of declaration files (.d.ts) during a build?",
+            ka: "tsconfig.json-ის რომელი თვისება პასუხობს პროექტის ბილდისას დეკლარაციის ფაილების (.d.ts) ავტომატურ შექმნაზე?"
+        },
+        code: `<span class="str">"compilerOptions"</span>: {
+  <span class="str">"???????????"</span>: <span class="kw">true</span>
+}`,
+        options: [
+            { ru: "declaration", en: "declaration", ka: "declaration" },
+            { ru: "emitDeclarationOnly", en: "emitDeclarationOnly", ka: "emitDeclarationOnly" },
+            { ru: "sourceMap", en: "sourceMap", ka: "sourceMap" },
+            { ru: "removeComments", en: "removeComments", ka: "removeComments" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг \"declaration\": true` в конфигурационном файле заставляет компилятор TypeScript (`tsc`) автоматически генерировать соответствующий `.d.ts` файл для каждого вашего `.ts` или `.tsx` файла при сборке. Это необходимо при создании библиотек для npm.",
+            en: "Setting \"declaration\": true` tells the TypeScript compiler (`tsc`) to automatically output matching `.d.ts` declaration files alongside your compiled `.js` code. This is mandatory when publishing reusable npm libraries.",
+            ka: "`\"declaration\": true` ალამი კონფიგურაციაში აიძულებს TS კომპილატორს (`tsc`) ავტომატურად დააგენერიროს შესაბამისი `.d.ts` ფაილი თითოეული `.ts` თუ `.tsx` ფაილისთვის ბილდის დროს. ეს აუცილებელია npm ბიბლიოთეკების შექმნისას."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#declaration",
+        docLabel: "declaration — TSConfig Reference"
+    },
+    {
+        id: 395,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "В каком сценарии полезно использовать флаг 'emitDeclarationOnly' в tsconfig.json?",
+            en: "In what scenario is it useful to enable the 'emitDeclarationOnly' flag in tsconfig.json?",
+            ka: "რომელ სცენარშია სასარგებლო 'emitDeclarationOnly' ალამის გამოყენება tsconfig.json-ში?"
+        },
+        code: `<span class="str">"emitDeclarationOnly"</span>: <span class="kw">true</span>`,
+        options: [
+            { ru: "Когда за транспиляцию кода в JavaScript отвечает другой инструмент (например, Babel или esbuild), а от tsc нужны только файлы типов", en: "When code transpilation to JS is handled by another tool (like Babel or esbuild), and you only need tsc to output type files", ka: "როდესაც კოდის ჯავასკრიპტში ტრანსპილაციაზე სხვა ინსტრუმენტი აგებს პასუხს (მაგ. Babel ან esbuild), ხოლო tsc-სგან მხოლოდ ტიპების ფაილები გვჭირდება" },
+            { ru: "Когда нужно временно скрыть ошибки типизации во всем проекте", en: "When developers want to temporarily hide strict type check errors in a project", ka: "როდესაც საჭიროა დროებით დაიმალოს ტიპიზაციის შეცდომები მთელ პროექტში" },
+            { ru: "Для компиляции проекта исключительно в асинхронном режиме", en: "To configure build systems to bundle tasks in purely asynchronous processes", ka: "პროექტის ექსკლუზიურად ასინქრონულ რეჟიმში კომპილაციისთვის" },
+            { ru: "Этот флаг запрещает создание любых файлов, кроме карты ресурсов (.map)", en: "This flag prevents the creation of any asset files except source maps (.map)", ka: "ეს ალამი კრძალავს ნებისმიერი ფаილის შექმნას, რესურსების რუკის (.map) გარდა" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `emitDeclarationOnly: true` указывает TypeScript, что не нужно генерировать `.js` файлы. Это идеальный паттерн, если сборкой занимается сверхбыстрый `esbuild` или `Vite` (которые не умеют создавать `.d.ts`), а проверку типов и генерацию деклараций вы делегируете `tsc`.",
+            en: "The `emitDeclarationOnly: true` flag stops TypeScript from emitting `.js` code files. This is perfect when using ultra-fast loaders like `esbuild` or `Vite` for bundles (which ignore types) while delegating type files output strictly to `tsc`.",
+            ka: "`emitDeclarationOnly: true` ალამი მიუთითებს TS-ს, რომ არ არის საჭირო `.js` ფაილების გენერირება. ეს იდეალური პატერნია, როდესაც ბილდზე მუშაობს სწრაფი `esbuild` ან `Vite`, ხოლო ტიპების შემოწმებას და დეკლარაციებს აცალებთ `tsc`-ს."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#emitDeclarationOnly",
+        docLabel: "emitDeclarationOnly — TSConfig Reference"
+    },
+    {
+        id: 396,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Каким образом TypeScript по умолчанию находит типы для сторонних JavaScript-библиотек, установленных без встроенных типов?",
+            en: "How does TypeScript locate type definitions by default for third-party JavaScript libraries installed without native types?",
+            ka: "როგორ პოულობს TypeScript ნაგულისხმევად ტიპებს იმ გარე JavaScript ბიბლიოთეკებისთვის, რომლებიც დაყენებულია ჩაშენებული ტიპების გარეშე?"
+        },
+        code: `<span class="kw">import</span> <span class="prop">_</span> <span class="kw">from</span> <span class="str">"lodash"</span>; <span class="cmt">// Где ищутся типы?</span>`,
+        options: [
+            { ru: "Автоматически просматривает специальную папку node_modules/@types", en: "It automatically scans the dedicated node_modules/@types special directory", ka: "ავტომატურად ათვალიერებს სპეციალურ საქაღალდეს node_modules/@types" },
+            { ru: "Скачивает типы напрямую из интернета во время каждой компиляции", en: "It fetches matching types directly from live web servers during each compilation run", ka: "ტვირთავს ტიპებს პირდაპირ ინტერნეტიდან ყოველი კომპილაციის დროს" },
+            { ru: "Запрашивает ручной импорт файла через директиву include в каждом скрипте", en: "It requests developers to manually declare explicit absolute file paths using include rules", ka: "მოითხოვს ფაილის ხელით იმპორტს include დირექტივის საშუალებით ყოველ სკრიპტში" },
+            { ru: "TypeScript не умеет работать со сторонними JS-библиотеками без встроенных типов", en: "TypeScript completely fails to interface with un-typed external dependencies without built-in types", ka: "TypeScript-ს არ შეუძლია მუშაობა გარე JS ბიბლიოთეკებთან ჩაშენებული ტიპების გარეშე" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "По умолчанию TypeScript автоматически ищет типы в директории `node_modules/@types` (организация DefinitelyTyped на npm). Любой установленный пакет вроде `@types/lodash` подхватывается компилятором автоматически без дополнительных настроек.",
+            en: "By default, TypeScript automatically looks for definitions in the `node_modules/@types` folder (managed by the DefinitelyTyped community repository). Packages like `@types/lodash` are discovered automatically by the compiler resolution engine.",
+            ka: "ნაგულისხმევად TS ავტომატურად ეძებს ტიპებს `node_modules/@types` საქაღალდეში (DefinitelyTyped ორგანიზაცია npm-ზე). ნებისმიერი დაყენებული პაკეტი, მაგალიथად `@types/lodash`, ავტომატურად აინთება კომპილატორის მიერ."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/declaration-files/consumption.html",
+        docLabel: "Type Consumption — Handbook"
+    },
+    {
+        id: 397,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Что произойдет, если в блоке declare global объявить интерфейс, свойства которого конфликтуют по типу с уже существующим встроенным типом?",
+            en: "What happens if you declare an interface inside declare global whose property types conflict with an already existing built-in type?",
+            ka: "რა მოხდება, თუ declare global ბლოკში გამოვაცხადებთ ინტერფეისს, რომლის თვისებებიც ტიპობრივად კონფლიქტში მოდის უკვე არსებულ ჩაშენებულ ტიპთან?"
+        },
+        code: `<span class="kw">declare global</span> {
+  <span class="kw">interface</span> <span class="type">Document</span> { <span class="prop">body</span>: <span class="type">number</span>; } <span class="cmt">// Конфликт: body должен быть HTMLElement</span>
+}`,
+        options: [
+            { ru: "TypeScript выдаст ошибку компиляции из-за несовместимого слияния типов свойств", en: "TypeScript triggers a compilation error due to incompatible property type merging", ka: "TypeScript გამოაგდებს კომპილაციის შეცდომას თვისებების ტიპების შეუსაბამო შერწყმის გამო" },
+            { ru: "Новый тип полностью заменит старый без предупреждений", en: "The newly introduced type completely replaces the native one without any warnings", ka: "ახალი ტიპი სრულად ჩაანაცვლებს ძველს ყოველგვარი გაფრთხილების გარეშე" },
+            { ru: "Свойства автоматически объединятся в тип-пересечение (HTMLElement & number)", en: "Properties are automatically synthesized into an intersection type (HTMLElement & number)", ka: "თვისებები ავტომატურად გაერთიანდება კვეთის ტიპად (HTMLElement & number)" },
+            { ru: "Конфликт проявится только во время исполнения кода в браузере", en: "The error behaves silently until browser engine runtimes crash upon property access", ka: "კონფლიქტი თავს იჩენს მხოლოდ ბრაუზერში კოდის შესრულების დროს" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "При слиянии интерфейсов (Interface Merging) свойства с одинаковыми именами обязаны иметь абсолютно идентичные или совместимые типы. Если попытаться изменить тип существующего свойства (например, сделать `body` числом вместо `HTMLElement`), компилятор выдаст ошибку несовместимости.",
+            en: "When performing interface merging, properties sharing identical names must share identical or fully compatible types. Trying to overwrite an existing native field with an incompatible type causes an immediate compilation error.",
+            ka: "ინტერფეისების შერწყმისას (Interface Merging) იდენტური სახელის მქონე თვისებებს აუცილებლად უნდა ჰქონდეთ იდენტური ან თავსებადი ტიპები. არსებული თვისების ტიპის შეცვლის მცდელობა იწვევს კომპილაციის შეცდომას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/declaration-merging.html#merging-interfaces",
+        docLabel: "Merging Interfaces — Handbook"
+    },
+    {
+        id: 388,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Как работает сокращенное объявление модуля 'declare module \"external-lib\";' без фигурных скобок и тела?",
+            en: "How does a shorthand module declaration like 'declare module \"external-lib\";' work without a body?",
+            ka: "როგორ მუშაობს მოდულის შემოკლებული გამოცხადება 'declare module \"external-lib\";' ფიგურული ფრჩხილებისა და ტანის გარეშე?"
+        },
+        code: `<span class="kw">declare module</span> <span class="str">"untyped-library"</span>;`,
+        options: [
+            { ru: "Позволяет импортировать эту библиотеку, автоматически присваивая всем её экспортам тип any", en: "Allows the module to be imported normally, implicitly treating all its exports as type any", ka: "საშუალებას იძლევა მოხდეს ამ ბიბლიოთეკის იმპორტი, რის დროსაც მის ყველა ექსპორტს ავტომატურად ენიჭება any ტიპი" },
+            { ru: "Вызывает ошибку парсинга, так как тело модуля является обязательным", en: "Triggers a syntax parsing error because an empty module body is strictly prohibited", ka: "იწვევს პარსინგის შეცდომას, რადგან მოდულის ტანის არსებობა სავალდებულოა" },
+            { ru: "Помечает библиотеку как удаленную и запрещает её импорт в проекте", en: "Marks the package as deprecated and explicitly bans imports targeting it", ka: "ნიშნავს ბიბლიოთეკას როგორც წაშლილს და კრძალავს მის იმპорტს პროექტში" },
+            { ru: "Такой синтаксис заставляет компилятор искать типы в репозитории GitHub", en: "This syntax signals the compiler to attempt remote resolution via public GitHub indexes", ka: "ასეთი სინტაქსი აიძულებს კომპილატорს ეძებოს ტიპები GitHub რეპოზიტორიაში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Это называется сокращенным объявлением окружающего модуля (Shorthand Ambient Module). Оно применяется, когда вам нужно быстро заглушить ошибку отсутствия типов для старой JS-библиотеки. При этом всё, что вы импортируете из неё, получает тип `any`.",
+            en: "This is known as a Shorthand Ambient Module declaration. It is used to quickly silence errors for un-typed legacy JavaScript libraries. Any import pulled from this module defaults entirely to the unsafe `any` type.",
+            ka: "ამას ეწოდება გარემო მოდულის შემოკლებული გამოცხადება (Shorthand Ambient Module). ის გამოიყენება ძველი JS ბიბლიოთეკისთვის ტიპების არარსებობის შეცდომის სწრაფად ჩასახშობად. ამ დროს ყველაფერი, რასაც მისგან აიმპორტებთ, იღებს `any` ტიპს."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/modules.html#shorthand-ambient-modules",
+        docLabel: "Shorthand Ambient Modules — Handbook"
+    },
+    {
+        id: 399,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Для чего в файлах деклараций старого формата используется конструкция 'import m = require(\"...\")'?",
+            en: "Why is the legacy 'import m = require(\"...\")' construct used inside older declaration files?",
+            ka: "რისთვის გამოიყენება ძველი ფორმატის დეკლარაციის ფაილებში კონსტრუქცია 'import m = require(\"...\")'?"
+        },
+        code: `<span class="kw">import</span> log = <span class="kw">require</span>(<span class="str">"legacy-logger"</span>);`,
+        options: [
+            { ru: "Для корректного описания экспортов модулей в формате CommonJS / AMD", en: "To correctly model and type module exports originating from CommonJS / AMD module formats", ka: "CommonJS / AMD ფორმატის მოდულების ექსპორტის სწორად აღსაწერად" },
+            { ru: "Для динамической ленивой загрузки типов по требованию", en: "To facilitate dynamic, lazy resolution of definitions based on application logic", ka: "მოთხოვნის შესაბამისად ტიპების დინამიური, ლეიზი ჩატვირთვისთვის" },
+            { ru: "Это требование для импорта файлов исключительно с расширением .json", en: "It acts as a strict requirement used only when consuming raw .json data assets", ka: "ეს არის მოთხოვნა ექსკლუზიურად .json გაფართოების ფაილების დასაიმპორტებლად" },
+            { ru: "Данная конструкция эквивалентна созданию глубокой копии объекта", en: "This operation evaluates at runtime to execute deep structural object cloning utilities", ka: "მოცემული კონსტრუქცია ექვივალენტურია ობიექტის ღრმა ასლის შექმნისა" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Конструкция `import x = require(\"...\")` — это традиционный синтаксис TypeScript для импорта модулей, работающих в формате CommonJS (где экспорт идет через `module.exports = ...`). В файлах деклараций это гарантирует точное соответствие типов старым библиотекам Node.js.",
+            en: "The `import x = require(\"...\")` syntax is TypeScript's traditional pattern designed to match CommonJS module formats using `module.exports`. In declaration files, it ensures accurate typing against old Node.js packages.",
+            ka: "კონსტრუქცია `import x = require(\"...\")` არის TS-ის ტრადიციული სინტაქსი CommonJS ფორმატის მოდულების დასაიმპორტებლად (სადაც ექსპორტი ხდება `module.exports = ...`-ით). დეკლარაციის ფაილებში ეს უზრუნველყოფს ძველი Node.js პაკეტების ზუსტ ტიპიზაციას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/modules.html#export--and-import--require",
+        docLabel: "export = and import = require — Handbook"
+    },
+    {
+        id: 400,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment",
+        question: {
+            ru: "Можно ли использовать declare для описания структуры глобальной функции, принимающей коллбэк?",
+            en: "Is it possible to use the declare keyword to map the signature of a global function that accepts a callback?",
+            ka: "შესაძლებელია თუ არა declare-ის გამოყენება იმ გლობალური ფუნქციის სტრუქტურის აღსაწერად, რომელიც იღებს ქოლბექს?"
+        },
+        code: `<span class="kw">declare function</span> <span class="fn">onGlobalEvent</span>(<span class="prop">cb</span>: (<span class="prop">e</span>: <span class="type">Event</span>) =&gt; <span class="kw">void</span>): <span class="kw">void</span>;`,
+        options: [
+            { ru: "Да, declare отлично описывает функции, включая типы аргументов, их количество и возвращаемое значение", en: "Yes, declare perfectly describes standalone functions, including argument signatures, count, and return types", ka: "დიახ, declare შესანიშნავად აღწერს ფუნქციებს, არგუმენტების ტიპების, მათი რაოდენობისა და დასაბრუნებელი მნიშვნელობის ჩათვლით" },
+            { ru: "Нет, для функций с коллбэками declare использовать запрещено", en: "No, using declare with functions that accept callback arguments triggers a syntax error", ka: "არა, ქოლბექების მქონე ფუნქციებისთვის declare-ის გამოყენება აკრძალულია" },
+            { ru: "Можно, но только внутри классов, помеченных как ambient", en: "Yes, but strictly restricted to definitions nested inside an ambient class layout", ka: "შესაძლებელია, მაგრამ მხოლოდ ambient-ად მონიშნული კლასების შიგნით" },
+            { ru: "Флаг declare заставит функцию автоматически выполняться каждую секунду", en: "The declare modifier instructs execution loops to fire this logic every single second", ka: "declare ალამი აიძულებს ფუნქციას ავტომატურად შესრულდეს ყოველ წამს" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Ключевое слово `declare function` позволяет вам объявить сигнатуру любой глобальной функции (например, добавленной сторонним скриптом аналитики или расширением браузера). Вы можете полностью специфицировать типы аргументов и коллбэков, чтобы получить автокомплит в коде.",
+            en: "The `declare function` syntax allows you to map out the shape of any standalone global function (e.g., injected by analytics trackers or extensions). It supports complete type safety definitions for parameters and their sub-callbacks.",
+            ka: "სინტაქსი `declare function` გაძლევთ საშუალებას აღწეროთ ნებისმიერი გლობალური ფუნქციის სტრუქტურა (მაგ. ანალიტიკის სკრიპტის მიერ დამატებულის). ის სრულად უჭერს მხარს პარამეტრებისა და ქოლბექების ტიპიზაციას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/declaration-files/by-example.html",
+        docLabel: "Global Functions — Handbook"
+    },
+
+    // 21. IMPORT TYPE
+    {
+        id: 401,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "В чем выгода использования синтаксиса 'import type' вместо обычного импорта?",
+            en: "What is the optimization benefit of utilizing 'import type' over a normal import?",
+            ka: "რა უპირატესობა აქვს 'import type' სინტაქსის გამოყენებას ჩვეულებრივი იმპორტის ნაცვლად?"
+        },
+        code: `<span class="kw">import type</span> { <span class="type">UserDataType</span> } from <span class="str">"./models"</span>;`,
+        options: [
+            { ru: "Гарантирует, что импорт полностью вырежется из финального JS-кода, не допусная появления пустых импортов в сборке", en: "Guarantees the import statement is erased from production JS, avoiding ghost dependency bloat", ka: "გარანტიას იძლევა, რომ იმპორტი სრულად ამოიჭრება საბოლოო JS კოდიდან, რაც თავიდან აგვაცილებს ზედმეტ ბლოტს ბანდლში" },
+            { ru: "Позволяет импортировать файлы гораздо быстрее в асинхронном фоне", en: "Forces dependencies to resolve at accelerated async multi-threaded background tracks", ka: "საშუალებას გვაძლევს უფრო სწრაფად მოვახდინოთ ფაილების იმპორტი ასინქრონულ ფონზე" },
+            { ru: "Защищает код от межсайтового скриптинга (XSS-атак)", en: "Secures external endpoint arrays preventing dynamic cross-site scripting web attacks", ka: "იცავს კოდს საიტთაშორისი სკრიპტინგისგან (XSS შეტევები)" },
+            { ru: "Разрешает циклические зависимости между классами", en: "Overrides dependency errors bypassing looping class inheritance boundaries", ka: "ხსნის კლასებს შორის ციკლური დამოკიდებულებების შეცდომებს" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Синтаксис `import type` сообщает компилятору и сборщику (Vite, Webpack), что импортируемая сущность используется *исключительно* как тип данных. При компиляции эта строчка будет удалена на 100%. Обычный импорт, даже если импортируется только тип, иногда может сбить с толку сборщик, из-за чего в итоговом JS-файле останется пустая строчка `import {} from './models'`, которая может приводить к проблемам с циклическими зависимостями (circular dependencies) или мешать Tree Shaking.",
+            en: "The explicit declaration `import type` instructs bundlers (like Vite, Webpack, or esbuild) that the imported resource represents a type interface constraint only. During build compilation, this line is 100% wiped clean. Standard imports of types can confuse older module targets, leaving ghost runtime footprints (`import {} from './models'`) that slow down optimal Tree Shaking.",
+            ka: "`import type` სინტაქსი მიუთითებს კომპილატორსა და ბანდლერს (Vite, Webpack), რომ იმპორტირებული ერთეული გამოიყენება *მხოლოდ* როგორც მონაცემთა ტიპი. კომპილაციისას ეს ხაზი 100%-ით წაიშლება. ჩვეულებრივმა იმპორტმა შეიძლება გამოიწвиოს ცარიელი ხაზების დარჩენა JS-ში (`import {} from './models'`), რაც ხელს უშლის Tree Shaking პროცესს."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
+        docLabel: "Importing Types — Handbook"
+    },
+    {
+        id: 402,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Что произойдет с импортом класса User и типа UserRole после компиляции данного смешанного синтаксиса в JavaScript?",
+            en: "What happens to the User class and UserRole type imports after compiling this mixed inline syntax into JavaScript?",
+            ka: "რა დაემართება User კლასისა და UserRole ტიპის იმპორტს ამ შერეული ინლაინ სინტაქსის JavaScript-ში კომპილაციის შემდეგ?"
+        },
+        code: `<span class="kw">import</span> { <span class="fn">User</span>, <span class="kw">type</span> <span class="type">UserRole</span> } <span class="kw">from</span> <span class="str">"./users"</span>;`,
+        options: [
+            { ru: "Класс User останется в импортах, а ключевое слово type и импорт UserRole будут полностью удалены", en: "The User class remains in the compiled imports, while the type modifier and UserRole are completely erased", ka: "User კლასი დარჩება იმპორტებში, ხოლო type ქივორდი და UserRole იმპორტი სრულად ამოიჭრება" },
+            { ru: "Вся строка импорта будет удалена, так как внутри присутствует ключевое слово type", en: "The entire import statement gets dropped because it contains an inline type token", ka: "იმპორტის მთელი ხაზი წაიშლება, რადგან შიგნით არის type ქივორდი" },
+            { ru: "Синтаксис вызовет ошибку компиляции, так как нельзя смешивать обычные и тип-импорты в одной строке", en: "This syntax triggers a compiler error because mixed imports are prohibited within a single declaration", ka: "სინტაქსი გამოიწვევს კომპილაციის შეცდომას, რადგან ჩვეულებრივი და ტიპის იმპორტების ერთ ხაზზე შერევა აკრძალულია" },
+            { ru: "UserRole превратится в обычную глобальную переменную в рантайме", en: "UserRole converts dynamically into a standard global variable at runtime", ka: "UserRole ავტომატურად გარდაიქმნება ჩვეულებრივ გლობალურ ცვლადად runtime-ში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "В TypeScript 4.5+ появился синтаксис инлайновых тип-импортов. Он позволяет в одной инструкции `import` импортировать как реальные рантайм-сущности (классы, функции), так и чистые типы. При компиляции TypeScript аккуратно вырежет только элементы с префиксом `type`, оставив реальный JS-код нетронутым.",
+            en: "Introduced in TS 4.5, inline type imports allow developers to mix runtime values (like classes) and pure types inside a single `import` declaration block. The compiler target cleanly leaves value references while stripping items prefixed with the `type` keyword.",
+            ka: "TS 4.5+ ვერსიებში გამოჩნდა ინლაინ ტიპის იმპორტების სინტაქსი. ის საშუალებას გვაძლევს ერთ `import` ინსტრუქციაში შევურიოთ როგორც რეალური კომპონენტები (კლასები, ფუნქციები), ისე სუფთა ტიპები. კომპილაციისას TS ამოჭრის მხოლოდ `type` პრეფიქსის მქონე ელემენტებს."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names",
+        docLabel: "Type Modifiers on Import Names — Release Notes"
+    },
+    {
+        id: 403,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Какое ограничение накладывается на переменную, если класс импортирован с использованием синтаксиса 'import type'?",
+            en: "What restriction is enforced if a class is imported using the 'import type' syntax?",
+            ka: "რა შეზღუდვა წესდება ცვლადზე, თუ კლასი იმპორტირებულია 'import type' სინტაქსის გამოყენებით?"
+        },
+        code: `<span class="kw">import type</span> { <span class="type">Logger</span> } <span class="kw">from</span> <span class="str">"./logger"</span>;
+<span class="cmt">// Какое действие вызовет ошибку компиляции?</span>`,
+        options: [
+            { ru: "Попытка создать экземпляр класса через оператор new (new Logger())", en: "Attempting to instantiate the class using the new operator (new Logger())", ka: "კლასის ეგზემპლარის შექმნის მცდელობა new ოპერატორის საშუალებით (new Logger())" },
+            { ru: "Использование Logger в качестве аннотации типа аргумента функции", en: "Utilizing Logger as a type annotation for a function argument parameter", ka: "Logger-ის გამოყენება ფუნქციის არგუმენტის ტიპის ანოტაციად" },
+            { ru: "Передача Logger в качестве параметра в обобщенный тип (Generic)", en: "Passing Logger as a parameter argument into a generic configuration profile", ka: "Logger-ის გადაცემა პარამეტრად ჯენერიკ ტიპში (Generic)" },
+            { ru: "Использование Logger внутри файлов деклараций .d.ts", en: "Referencing the Logger import signature anywhere inside global .d.ts layout maps", ka: "Logger-ის გამოყენება .d.ts დეკლარაციის ფაილების შიგნით" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Поскольку классы в JavaScript являются одновременно и типом (для аннотаций), и значением (функцией-конструктором в рантайме), импорт через `import type` полностью стирает его рантайм-часть. Вы можете использовать `Logger` как тип данных, но попытка вызвать `new Logger()` вызовет ошибку компиляции, так как конструктор не был импортирован.",
+            en: "Classes represent both a value (constructor function) and a type structural signature. Importing a class with `import type` eliminates its value nature. You can safely use it for declarations, but invoking `new Logger()` fails because the runtime constructor block was omitted.",
+            ka: "ვინაიდან კლასები JS-ში ერთდროულად წარმოადგენენ ტიპსაც და მნიშვნელობასაც (კონსტრუქტორს runtime-ში), `import type`-ით იმპორტირება სრულად შლის მის runtime ნაწილს. თქვენ შეგიძლიათ გამოიყენოთ `Logger` ტიპის მისათითებლად, მაგრამ `new Logger()` გამოიწვევს შეცდომას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
+        docLabel: "Importing Types — Handbook"
+    },
+    {
+        id: 404,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "В чем смысл использования синтаксиса реэкспорта 'export type { T } from ...'?",
+            en: "What is the primary purpose of utilizing the re-export 'export type { T } from ...' syntax?",
+            ka: "რა აზრი აქვს რეექსპორტის 'export type { T } from ...' სინტაქსის გამოყენებას?"
+        },
+        code: `<span class="kw">export type</span> { <span class="type">APIOptions</span> } <span class="kw">from</span> <span class="str">"./api"</span>;`,
+        options: [
+            { ru: "Предоставляет доступ к сущности исключительно как к типу, гарантируя её удаление из итогового кода этого модуля", en: "Exposes the resource strictly as a type target, ensuring its complete erasure from this module's compiled file", ka: "ხელმისაწვდომს ხდის კომპონენტს ექსკლუზიურად როგორც ტიპს, რაც უზრუნველყოფს მის ამოჭრას ამ მოდულის საბოლოო კოდიდან" },
+            { ru: "Автоматически превращает экспортируемый тип в глобальное пространство имен namespace", en: "Forces the exported identifier structure to serialize into a global namespace abstraction", ka: "ავტომატურად გარდაქმნის დაექსპორტებულ ტიპს გლობალურ namespace ხედვის არედ" },
+            { ru: "Шифрует имя типа, защищая сборку от декомпиляции", en: "Encrypts the production export identifiers to protect code bundles from reverse-engineering", ka: "შიფრავს ტიპის სახელს, რითაც იცავს ბანდლს დეკომპილაციისგან" },
+            { ru: "Позволяет экспортировать только приватные свойства классов", en: "Allows modular code setups to selectively publish private class fields safely", ka: "საშუალებას იძლევა მოხდეს მხოლოდ კლასების პრივატული თვისებების ექსპორტი" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Синтаксис `export type` работает зеркально к `import type`. Он позволяет модулю стать транзитной точкой (реэкспортировать сущность), явно указывая компилятору, что данная вещь является чистым типом. Это предотвращает появление лишних операционных связей на этапе сборки и сохраняет чистоту Tree Shaking.",
+            en: "The `export type` declaration acts symmetrically to `import type`. It allows a module to re-export an identifier while assuring the compiler that it is explicitly a type. This eliminates unnecessary structural linking steps and preserves optimal bundle sizes.",
+            ka: "`export type` სინტაქსი მუშაობს `import type`-ს ანალოგიურად. ის საშუალებას აძლევს მოდულს გახდეს ტრანზიტული წერტილი (მოახდინოს რეექსპორტი) და მიუთითებს კომპილატორს, რომ ეს არის სუფთა ტიპი, რაც იცავს Tree Shaking-ის სისუფთავეს."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
+        docLabel: "Exporting Types — Handbook"
+    },
+    {
+        id: 405,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Как строгое свойство 'verbatimModuleSyntax' в tsconfig.json меняет правила импорта типов?",
+            en: "How does the strict 'verbatimModuleSyntax' flag in tsconfig.json change type import enforcement?",
+            ka: "როგორ ცვლის მკაცრი თვისება 'verbatimModuleSyntax' tsconfig.json-ში ტიპების იმპორტის წესებს?"
+        },
+        code: `<span class="str">"verbatimModuleSyntax"</span>: <span class="kw">true</span>`,
+        options: [
+            { ru: "Оно обязывает использовать 'import type' для всех сущностей, являющихся типами, запрещая их импорт через обычный import", en: "It mandates using explicit 'import type' for all pure types, throwing errors if they are pulled via normal imports", ka: "ის ავალდებულებს 'import type'-ის გამოყენებას ყველა იმ კომპონენტისთვის, რომელიც ტიპია, და კრძალავს მათ იმპორტს ჩვეულებრივი import-ით" },
+            { ru: "Оно автоматически переводит весь синтаксис импортов в формат CommonJS (require)", en: "It forces all module import signatures across code bases to resolve as standard CommonJS require operations", ka: "ის ავტომატურად გადაიყვანს იმპორტების მთელ სინტაქსს CommonJS (require) ფორმატში" },
+            { ru: "Оно отключает возможность импорта файлов с расширением .json", en: "It completely disables the built-in capability to natively parse and import external raw .json files", ka: "ის თიშავს .json გაფართოების ფაილების იმპორტის შესაძლებლობას" },
+            { ru: "Оно принудительно делает все импорты динамическими в рантайме", en: "It converts static module paths into dynamic async evaluations at runtime execution states", ka: "ის იძულებით აქცევს ყველა იმპორტს დინამიურ იმპორტად runtime-ში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `verbatimModuleSyntax` (появившийся в TS 5.0 взамен устаревших `importsNotUsedAsValues` и `preserveValueImports`) требует максимальной предсказуемости. Если вы импортируете только тип, вы *обязаны* написать `import type`. Обычный `import` оставит строку импорта «как есть» без элиминации типов со стороны TS, что важно для современных нативных ESM-сред.",
+            en: "The `verbatimModuleSyntax` flag (introduced in TS 5.0 to supersede old flags) creates strict, visible module rules. Any import targeting a pure type *must* use explicit type modifiers. TS will copy value imports unchanged, preventing type-elision guesswork entirely.",
+            ka: "`verbatimModuleSyntax` ალამი (რომელიც TS 5.0 ვერსიაში გამოჩნდა) მოითხოვს მაქსიმალურ სიზუსტეს. თუ აიმპორტებთ მხოლოდ ტიპს, თქვენ *ვალდებული ხართ* დაწეროთ `import type`. ჩვეულებრივი `import` დატოვებს ხაზს ისე, როგორც არის, რაც მნიშვნელოვანია ESM გარემოსთვის."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#verbatimModuleSyntax",
+        docLabel: "verbatimModuleSyntax – TSConfig Reference"
+    },
+    {
+        id: 406,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემо და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Каким образом 'import type' помогает решить проблему циклических зависимостей (Circular Dependencies) в рантайме?",
+            en: "How does 'import type' help mitigate circular dependency runtime failures?",
+            ka: "როგორ ეხმარება 'import type' ციკლური დამოკიდებულებების (Circular Dependencies) პრობლემის მოგვარებაში runtime-ში?"
+        },
+        code: `<span class="cm">// Модуль А импортирует тип из Б. Модуль Б импортирует класс из А.</span>
+<span class="kw">import type</span> { <span class="type">B_Type</span> } <span class="kw">from</span> <span class="str">"./moduleB"</span>;`,
+        options: [
+            { ru: "Поскольку тип полностью удаляется при компиляции, физическая циклическая связь между JS-файлами исчезает", en: "Because type imports are erased during build, the physical cyclic evaluation loop between generated JS files is broken", ka: "ვინაიდან ტიპი სრულად იშლება კომპილაციისას, ფიზიკური ციკლური კავშირი გენერირებულ JS ფაილებს შორის ქრება" },
+            { ru: "Он объединяет два конфликтующих файла в один на этапе сборки", en: "It forces compiling modules to combine both conflicting scripts into a singular unified source pipeline", ka: "ის აერთიანებს ორ კონფლიქტურ ფაილს ერთში ბილდის ეტაპზე" },
+            { ru: "Он задерживает выполнение импорта до тех пор, пока весь DOM не загрузится", en: "It delays module route evaluation steps until browser assets finalize complete global DOM rendering", ka: "ის აყოვნებს იმპორტის შესრულებას იქამდე, სანამ მთელი DOM არ ჩაიტვირთება" },
+            { ru: "Этот синтаксис заменяет импорт на вызов функции fetch()", en: "This declaration automatically transforms standard assets calls into async background browser fetch() scripts", ka: "ეს სინტაქსი იმპორტს ანაცვლებს fetch() ფუნქციის გამოძახებით" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Циклическая зависимость опасна в JavaScript, когда два модуля ссылаются на исполняемые значения друг друга во время инициализации, что приводит к `ReferenceError: Cannot access before initialization`. Если один из модулей ссылается на другой только через `import type`, этой связи в скомпилированном JS просто не существует, и цикл разрывается.",
+            en: "Circular dependencies cause bugs in JavaScript when modules access each other's live values during initialization, triggering a `ReferenceError`. Because `import type` is completely removed upon compilation, the virtual loop disappears from final code execution routes.",
+            ka: "ციკლური დამოკიდებულება სახიფათოა JS-ში, როდესაც ორი მოდული ინიციალიზაციისას მიმართავს ერთმანეთის მნიშვნელობებს (`ReferenceError`). თუ ერთ-ერთი მოდული მეორეს მიმართავს მხოლოდ `import type`-ით, ეს კავშირი კომპილირებულ JS-ში საერთოდ აღარ არსებობს და ციკლი წყდება."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
+        docLabel: "Importing Types — Handbook"
+    },
+    {
+        id: 407,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Какая ошибка компиляции возникнет при попытке прочитать свойство обычного JS-объекта, импортированного через import type?",
+            en: "What compilation error occurs when trying to access a property of a plain JS object imported via import type?",
+            ka: "რა კომპილაციის შეცდომა მოხდება იმ ჩვეულებრივი JS ობიექტის თვისების წაკითხვის მცდელობისას, რომელიც იმპორტირებულია import type-ით?"
+        },
+        code: `<span class="kw">import type</span> { <span class="prop">APP_CONFIG</span> } <span class="kw">from</span> <span class="str">"./config"</span>;
+<span class="kw">console</span>.<span class="fn">log</span>(<span class="prop">APP_CONFIG</span>.<span class="prop">apiKey</span>);`,
+        options: [
+            { ru: "'APP_CONFIG' cannot be used as a value because it was imported using 'import type'", en: "'APP_CONFIG' cannot be used as a value because it was imported using 'import type'", ka: "'APP_CONFIG' cannot be used as a value because it was imported using 'import type'" },
+            { ru: "Property 'apiKey' does not exist on type 'object'", en: "Property 'apiKey' does not exist on type 'object'", ka: "Property 'apiKey' does not exist on type 'object'" },
+            { ru: "Cannot read property 'apiKey' of undefined в рантайме", en: "Cannot read property 'apiKey' of undefined at runtime", ka: "Cannot read property 'apiKey' of undefined runtime-ში" },
+            { ru: "Ошибки не будет, компилятор автоматически исправит импорт на обычный", en: "No error will be thrown; the compiler resolves the mistake by auto-converting the layout to standard imports", ka: "შეცდომა არ მოხდება, კომპილატორი ავტომატურად გამოასწორებს იმპორტს ჩვეულებრივით" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Поскольку `import type` дает железную гарантию удаления импорта из сборки, TypeScript строго запрещает использовать импортированные таким образом сущности там, где требуются реальные значения (например, чтение свойств, вызов функций, передача в переменные). Вы получите понятную ошибку компиляции.",
+            en: "Because `import type` provides a guarantee of complete build erasure, TypeScript explicitly forbids using these imports in value positions (such as passing objects, running methods, or log commands), raising a specific type-as-value error.",
+            ka: "ვინაიდან `import type` იძლევა გარანტიას იმპორტის სრულად ამოჭრაზე, TS მკაცრად კრძალავს ასე იმპორტირებული კომპონენტების გამოყენებას მნიშვნელობების პოზიციაში (მაგ. თვისების წაკითხვა, ფუნქციის გამოძახება) და აგდებს შესაბამის კომპილაციის შეცდომას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
+        docLabel: "Importing Types — Handbook"
+    },
+    {
+        id: 408,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Какая конструкция позволяет одновременно экспортировать переменную и тип в одной строке, используя встроенные (inline) модификаторы?",
+            en: "Which construct allows exporting a value and a type together in a single statement using inline modifiers?",
+            ka: "რომელი კონსტრუქცია იძლევა საშუალებას ერთ ხაზზე დავაექსპორტოთ ცვლადიც და ტიპიც ინლაინ მოდიფიკატორების გამოყენებით?"
+        },
+        code: `<span class="cmt">// Какая строка синтаксически верна в современном TS?</span>`,
+        options: [
+            { ru: "export { apiData, type UserIT };", en: "export { apiData, type UserIT };", ka: "export { apiData, type UserIT };" },
+            { ru: "export { apiData, UserIT as type };", en: "export { apiData, UserIT as type };", ka: "export { apiData, UserIT as type };" },
+            { ru: "export type { apiData }, UserIT;", en: "export type { apiData }, UserIT;", ka: "export type { apiData }, UserIT;" },
+            { ru: "export inline { apiData, UserIT };", en: "export inline { apiData, UserIT };", ka: "export inline { apiData, UserIT };" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "По аналогии со встроенными импортами типов, TypeScript поддерживает встроенные тип-экспорты: `export { value, type PureType };`. Это избавляет от необходимости писать две отдельные строчки `export` для одного файла-источника.",
+            en: "Mirroring inline type imports, modern TypeScript natively supports explicit inline type exports: `export { value, type PureType };`. This avoids duplicating block export declarations pointing to the same source module location.",
+            ka: "ინლაინ იმპორტების ანალოგიურად, TS მხარს უჭერს ინლაინ ტიპის ექსპორტსაც: `export { value, type PureType };`. ეს გვაცილებს ერთი ფაილისთვის ორი სხვადასხვა `export` ხაზის წერის საჭიროებას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names",
+        docLabel: "Type Modifiers on Export Names — Release Notes"
+    },
+    {
+        id: 409,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Каким образом явное разделение через 'import type' улучшает процесс оптимизации кода (Tree Shaking) сборщиками?",
+            en: "How does clean separation via 'import type' enhance the Tree Shaking optimization process in modern bundlers?",
+            ka: "როგორ აუმჯობესებს 'import type'-ით მკაფიო განცალკევება კოდის ოპტიმიზაციის (Tree Shaking) პროცესს ბანდლერების მიერ?"
+        },
+        code: `<span class="kw">import type</span> { <span class="type">HeavyInterface</span> } <span class="kw">from</span> <span class="str">"./heavy-module"</span>;`,
+        options: [
+            { ru: "Сборщик сразу видит, что модуль используется только на уровне типов, и может полностью вырезать исходный файл из бандла, если из него не импортированы реальные значения", en: "The bundler instantly recognizes that the module is used only for types, enabling it to fully discard the source file if no runtime values are imported", ka: "ბანდლერი მაშინვე ხედავს, რომ მოდული გამოიყენება მხოლოდ ტიპების დონეზე, და შეუძლიа სრულად ამოჭრას საწყისი ფაილი ბანდლიდან, თუ მისგან რეალური მნიშვნელობები არ არის იმპორტირებული" },
+            { ru: "Он автоматически сжимает код тяжелого модуля алгоритмом Gzip", en: "It forces compiling files to apply advanced Gzip compression patterns on heavy resource scripts", ka: "ის ავტომატურად კუმშავს მძიმე მოდულის კოდს Gzip ალგორითმით" },
+            { ru: "Инструкция заставляет браузер кэшировать импортируемый модуль навечно", en: "The tag commands browser asset caches to hold the target code package permanently inside internal files", ka: "ინსტრუქცია აიძულებს ბრაუზერს მოახდინოს იმპორტირებული მოდულის სამუდამო ქეშირება" },
+            { ru: "Разделение типов ускоряет математические вычисления внутри функций", en: "Separating types accelerates arithmetic execution loops inside runtime operations", ka: "ტიპების განცალკევება აჩქარებს მათემატიკურ გამოთვლებს ფუნქციების შიგნით" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Для качественного Tree Shaking сборщик должен точно знать, импортируется ли из файла реальный код или только типы. Без `import type` сборщик может перестраховаться и включить неиспользуемый JS-код модуля в финальную сборку, боясь нарушить рантайм-логику или побочные эффекты (side effects).",
+            en: "For optimal Tree Shaking, bundlers must easily distinguish between importing executable side-effect logic or plain compilation metadata. Using `import type` rules out runtime usage, allowing engines to drop untouched dependencies safely.",
+            ka: "ხარისხიანი Tree Shaking-ისთვის ბანდლერმა ზუსტად უნდა იცოდეს, ფაილიდან რეალური კოდი იმპორტირდება თუ მხოლოდ ტიპები. `import type`-ის გარეშე ბანდლერმა შეიძლება თავი დაიზღვიოს და გამოუყენებელი კოდი მაინც ჩასვას ბანდლში, რათა არ დაარღვიოს runtime ლოგიკა."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
+        docLabel: "Importing Types — Handbook"
+    },
+    {
+        id: 410,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Каков правильный синтаксис для импорта типа, который экспортирован из другого модуля по умолчанию (default export)?",
+            en: "What is the correct syntax to import a type that is exposed as a default export from another module?",
+            ka: "როგორია სწორი სინტაქსი იმ ტიპის დასაიმპორტებლად, რომელიც სხვა მოდულიდან დაექსპорტებულია ნაგულისხმევად (default export)?"
+        },
+        code: `<span class="cmt">// Как правильно импортировать дефолтный тип?</span>`,
+        options: [
+            { ru: "import type DefaultType from './module';", en: "import type DefaultType from './module';", ka: "import type DefaultType from './module';" },
+            { ru: "import { type default as DefaultType } from './module';", en: "import { type default as DefaultType } from './module';", ka: "import { type default as DefaultType } from './module';" },
+            { ru: "import type { default } as DefaultType from './module';", en: "import type { default } as DefaultType from './module';", ka: "import type { default } as DefaultType from './module';" },
+            { ru: "import default type DefaultType from './module';", en: "import default type DefaultType from './module';", ka: "import default type DefaultType from './module';" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Для импорта дефолтного экспорта типа используется интуитивный синтаксис: `import type Name from './file';`. Фигурные скобки не требуются, точно так же, как и при обычном дефолтном импорте значений.",
+            en: "To consume a type exposed via a default export, use the intuitive statement: `import type Name from './file';`. No curly braces are required, behaving identically to standard default runtime module lookups.",
+            ka: "ნაგულისხმები (default) ტიპის იმპორტისთვის გამოიყენება ინტუიციური სინტაქსი: `import type Name from './file';`. ფიგურული ფრჩხილები არ არის საჭირო, ისევე როგორც ჩვეულებრივი default იმპорტის დროს მნიშვნელობებისთვის."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
+        docLabel: "Importing Types — Handbook"
+    },
+    {
+        id: 411,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Обязательно ли использовать ключевое слово 'type' (import type) внутри файлов деклараций .d.ts при импорте типов?",
+            en: "Is it strictly necessary to use the 'type' keyword modifier (import type) inside global .d.ts declaration files?",
+            ka: "სავალდებულოა თუ არა 'type' ქივორდის (import type) გამოყენება .d.ts დეკლარაციის ფაილებში ტიპების იმპორტისას?"
+        },
+        code: `<span class="cm">// Внутри некоторого глобального файла types.d.ts</span>
+<span class="kw">import</span> { <span class="type">SomeInterface</span> } <span class="kw">from</span> <span class="str">"./module"</span>;`,
+        options: [
+            { ru: "Нет, внутри .d.ts файлов любые импорты по умолчанию расцениваются как импорты типов, так как файлы деклараций не генерируют JS-код", en: "No, inside .d.ts files all imports default to type imports because declaration assets produce no runtime JavaScript output", ka: "არა, .d.ts ფაილების შიგნით ნებისმიერი იმპორტი ნაგულისხმევად მიიჩნევა ტიპის იმპორტად, რადგან დეკლარაციის ფაილები არ აგენერირებენ JS კოდს" },
+            { ru: "Да, иначе компилятор выдаст ошибку о невозможности импортировать значения в d.ts", en: "Yes, failing to do so prompts compiler faults prohibiting runtime variables inside d.ts assets", ka: "დიახ, წინააღმდეგ შემთხვევაში კომპილატორი გამოაგდებს შეცდომას d.ts ფაილში მნიშვნელობების იმპორტის შეუძლებლობაზე" },
+            { ru: "Да, это жесткое требование спецификации ECMAScript", en: "Yes, it represents an unalterable architectural constraint defined by standard ECMAScript specs", ka: "დიახ, ეს არის ECMAScript სპეციფიკაციის მკაცრი მოთხოვნა" },
+            { ru: "Импорты вообще запрещены внутри файлов с расширением .d.ts", en: "Module imports are fundamentally banned from appearing anywhere within files ending in .d.ts", ka: "იმპორტები საერთოდ აკრძალულია .d.ts გაფართოების ფაილებში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Поскольку файлы с расширением `.d.ts` являются чисто декларативными контекстами (в них нет и не может быть исполняемого кода), компилятор TypeScript знает, что абсолютно любые импорты в них совершаются только ради типов. Писать `import type` в них можно, но это не несет практической пользы.",
+            en: "Because `.d.ts` declaration files represent ambient, non-executable contexts, the type engine assumes 100% of internal imports serve structural typing goals only. Adding `import type` inside them is syntactically legal but redundant.",
+            ka: "ვინაიდან `.d.ts` გაფართოების ფაილები წარმოადგენენ წმინდა დეკლარაციულ კონტექსტს (მათში არ არის შესასრულებელი კოდი), TS კომპილატორმა იცის, რომ ნებისმიერი იმპორტი ხდება მხოლოდ ტიპებისთვის. მათში `import type`-ის წერა ნებადართულია, მაგრამ ზედმეტია."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/declaration-files/introduction.html",
+        docLabel: "Declaration Files — Handbook"
+    },
+    {
+        id: 412,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და мოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Какое поведение включает значение 'error' для старого флага 'importsNotUsedAsValues' в конфигурации проекта?",
+            en: "What behavior is triggered by setting the legacy 'importsNotUsedAsValues' flag to 'error'?",
+            ka: "რა ქცევას რთავს 'error' მნიშვნელობა ძველი ალმისთვის 'importsNotUsedAsValues' პროექტის კონფიგურაციაში?"
+        },
+        code: `<span class="str">"importsNotUsedAsValues"</span>: <span class="str">"error"</span> <span class="cmt">// Режим работы</span>`,
+        options: [
+            { ru: "Компилятор выдает ошибку, если сущность используется только как тип, но импортирована через обычный import вместо import type", en: "The compiler throws an error if an identifier is used only as a type but was brought in via a standard import instead of import type", ka: "კომპილატორი აგდებს შეცდომას, თუ კომპონენტი გამოიყენется მხოლოდ როგორც ტიპი, მაგრამ იმპორტირებულია ჩვეულებრივი import-ით, 'import type'-ის ნაცვლად" },
+            { ru: "Автоматически прерывает сборку при наличии любых неиспользуемых локальных переменных", en: "Forces build pipelines to instantly fail if the scanner hits unused local variable declarations", ka: "ავტომატურად წყვეტს ბილდს ნებისმიერი გამოუყენებელი ლოკალური ცვლადის არსებობისას" },
+            { ru: "Запрещает импорт сторонних библиотек, написанных без использования TypeScript", en: "Blocks developers from pulling in external un-typed JavaScript assets from node_modules packages", ka: "კრძალავს იმ გარე ბიბლიოთეკების იმპორტს, რომლებიც არ არის დაწერილი TypeScript-ში" },
+            { ru: "Этот флаг принудительно включает минификацию кода всех импортируемых модулей", en: "This property directs compiling tasks to automatically minify instructions across imported lines", ka: "ეს ალამი იძულებით რთავს ყველა იმპორტირებული მოდულის კოდის მინიფიკაციას" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Исторический флаг `importsNotUsedAsValues: \"error\"` использовался до TS 5.0 для строгого контроля чистоты сборки. Он заставлял разработчиков явно разделять код и типы. В современном коде этот флаг заменен более понятной и строгой опцией `verbatimModuleSyntax`.",
+            en: "The historical `importsNotUsedAsValues: \"error\"` flag forced strict type/value separation before TS 5.0. It raised errors if types skipped explicit modifiers. Modern project setups deprecate this in favor of the cleaner `verbatimModuleSyntax` configuration.",
+            ka: "ისტორიული ალამი `importsNotUsedAsValues: \"error\"` გამოიყენებოდა TS 5.0 ვერსიამდე ბანდლის სისუფთავის მკაცრი კონტროლისთვის. ის აიძულებდა დეველოპერებს მკაფიოდ გაეყოთ კოდი და ტიპები. თანამედროვე პროექტებში ის შეცვლილია `verbatimModuleSyntax` ოფციით."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#importsNotUsedAsValues",
+        docLabel: "importsNotUsedAsValues — TSConfig Reference"
+    },
+    {
+        id: 413,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Является ли валидной конструкция 'import type * as Types' для импорта всех типов из модуля под единым пространством имен?",
+            en: "Is the namespace construct 'import type * as Types' valid for grouping all types from a module under a single identifier?",
+            ka: "არის თუ არა ვალიდური კონსტრუქცია 'import type * as Types' მოდულიდან ყველა ტიპის დასაიმპორტებლად ერთიანი ხედვის არის ქვეშ?"
+        },
+        code: `<span class="kw">import type * as</span> <span class="type">ApiTypes</span> <span class="kw">from</span> <span class="str">"./api-schema"</span>;`,
+        options: [
+            { ru: "Да, это полностью валидный синтаксис, позволяющий сгруппировать все типы модуля в объект типов ApiTypes без импорта рантайм-кода", en: "Yes, it is a fully valid syntax that aggregates all types from the target module into an ApiTypes type container with zero runtime footprint", ka: "დიახ, ეს სრულიად ვალიდური სინტაქსია, რომელიც საშუალებას იძლევა მოდულის ყველა ტიპი დაჯგუფდეს ApiTypes ტიპების ობიექტში runtime კოდის იმპორტის გარეშე" },
+            { ru: "Нет, синтаксис со звездочкой (*) запрещен совместно со словом type и вызовет ошибку парсинга", en: "No, using an asterisk (*) modifier alongside the type token is illegal and causes a syntax parsing fault", ka: "არა, ვარსკვლავიანი (*) სინტაქსი აკრძალულია type ქივორდთან ერთად და გამოიწვევს პარსინგის შეცდომას" },
+            { ru: "Можно, но только если модуль api-schema является файлом формата JSON", en: "Yes, but strictly conditional on the api-schema asset matching a static formatted JSON file source", ka: "შესაძლებელია, მაგრამ მხოლოდ იმ შემთხვევაში, თუ api-schema მოდული არის JSON ფორმატის ფაილი" },
+            { ru: "Этот импорт сработает только в том случае, если в файле нет ни одного экспорта", en: "This syntax evaluation operates successfully only if the source file provides zero export keywords", ka: "ეს იმპორტი იმუშავებს მხოლოდ იმ შემთხვევაში, თუ ფაილში არ არის არცერთი ექსპორტი" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Конструкция `import type * as Name from './module'` абсолютно легальна в TypeScript. Она создает защищенное пространство имен, содержащее исключительно типы из целевого модуля. Любая попытка обратиться к `Name` как к объекту со значениями в коде вызовет ошибку компиляции.",
+            en: "The syntax `import type * as Name from './module'` is fully valid in TypeScript. It creates a isolated type-only namespace context grouping definitions from that module. Interacting with `Name` in a value role yields compilation errors.",
+            ka: "კონსტრუქცია `import type * as Name from './module'` აბსოლუტურად ლეგალურია TS-ში. ის ქმნის დაცულ ტიპების ხედვის არეს, რომელიც შეიცავს ექსკლუზიურად სამიზნე მოდულის ტიპებს. კოდში `Name`-ისთვის როგორც ობიექტისთვის მიმართვის მცდელობა გამოიწვევს შეცდომას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
+        docLabel: "Importing Types — Handbook"
+    },
+    {
+        id: 414,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "К какому багу в рантайме может привести использование класса в декораторах (например, в NestJS), если этот класс импортирован через 'import type'?",
+            en: "What runtime failure can occur when passing a class to metadata decorators (e.g., in NestJS) if that class is imported via 'import type'?",
+            ka: "რა ბაგამდე შეიძლება მიგვიყვანოს დეკორატორებში კლასის გამოყენებამ (მაგ. NestJS-ში), თუ ეს კლასი იმპორტირებულია 'import type'-ის საშუალებით?"
+        },
+        code: `<span class="kw">import type</span> { <span class="type">UserService</span> } <span class="kw">from</span> <span class="str">"./user.service"</span>;
+<span class="fn">@Injectable</span>()
+<span class="kw">class</span> <span class="fn">AppController</span> { <span class="kw">constructor</span>(<span class="kw">private</span> <span class="prop">service</span>: <span class="type">UserService</span>) {} }`,
+        options: [
+            { ru: "Декоратор потеряет доступ к классу в рантайме, что вызовет ошибку внедрения зависимостей (Dependency Injection Error) из-за удаления ссылки на класс", en: "The decorator loses access to the class token at runtime, causing Dependency Injection failures because the class value reference was erased", ka: "დეკორატორი დაკარგავს კლასთან წვდომას runtime-ში, რაც გამოიწვევს დამოკიდებულებების ინექციის შეცდომას (Dependency Injection Error) კლასის რეფერენსის წაშლის გამო" },
+            { ru: "Код успешно выполнится, так как декораторы работают исключительно во время компиляции", en: "The code runs cleanly because decorators only evaluate metadata contexts during initial compilation cycles", ka: "კოდი წარმატებით შესრულდება, რადგან დეკორატორები მუშაობენ ექსკლუზიურად კომპილაციის დროს" },
+            { ru: "TypeScript автоматически перепишет декоратор в обычную функцию высшего порядка", en: "TypeScript resolves the dependency by auto-converting the decorator statement into an anonymous function", ka: "TypeScript ავტომატურად გადაწერს დეკორატორს ჩვეულებრივ მაღალირიგის ფუნქციად" },
+            { ru: "Класс UserService принудительно превратится в интерфейс прямо внутри NestJS", en: "The UserService container is dynamically forced to morph into an interface contract straight inside NestJS", ka: "UserService კლასი იძულებით გადაიქცევა ინტერფეისად პირდაპირ NestJS-ის შიგნით" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Такие фреймворки, как NestJS, TypeORM или Angular, используют экспериментальные метаданные декораторов (`emitDecoratorMetadata`), считывая классы-конструкторы в рантайме для внедрения зависимостей. Если импортировать класс через `import type`, TypeScript полностью сотрет упоминание этой сущности из JS, из-за чего декоратор получит `undefined` вместо класса, и DI упадет с ошибкой.",
+            en: "Frameworks like NestJS or Angular rely on decorator runtime reflection (`emitDecoratorMetadata`) to look up constructor signatures for Dependency Injection. If you import a dependency via `import type`, its runtime value is erased, rendering it `undefined` inside metadata loops and breaking DI.",
+            ka: "ისეთი ფრეიმვორკები, როგორიცაა NestJS ან Angular, იყენებენ დეკორატორების რეფლექსიას (`emitDecoratorMetadata`) runtime-ში დამოკიდებულებების ჩასასმელად (DI). თუ კლასს დააიმპორტებთ `import type`-ით, TS სრულად წაშლის მას JS-იდან, რის გამოც დეკორატორი კლასის ნაცვლად მიიღებს `undefined`-ს და DI გაფუჭდება."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/decorators.html#metadata",
+        docLabel: "Metadata — Handbook"
+    },
+    {
+        id: 415,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Каков синтаксически верный способ переименования встроенного (inline) тип-импорта с использованием ключевого слова 'as'?",
+            en: "What is the correct syntax pattern for aliasing an inline type import using the 'as' keyword?",
+            ka: "როგორია ინლაინ ტიპის იმპორტის გადარქმევის (Aliasing) სინტაქსურად სწორი გზა 'as' ქივორდის გამოყენებით?"
+        },
+        code: `<span class="cmt">// Как правильно переименовать инлайновый тип при импорте?</span>`,
+        options: [
+            { ru: "import { value, type RemoteType as LocalType } from './module';", en: "import { value, type RemoteType as LocalType } from './module';", ka: "import { value, type RemoteType as LocalType } from './module';" },
+            { ru: "import { value, RemoteType as type LocalType } from './module';", en: "import { value, RemoteType as type LocalType } from './module';", ka: "import { value, RemoteType as type LocalType } from './module';" },
+            { ru: "import { value, type RemoteType as type LocalType } from './module';", en: "import { value, type RemoteType as type LocalType } from './module';", ka: "import { value, type RemoteType as type LocalType } from './module';" },
+            { ru: "import { value, as LocalType type RemoteType } from './module';", en: "import { value, as LocalType type RemoteType } from './module';", ka: "import { value, as LocalType type RemoteType } from './module';" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "При использовании инлайновых тип-импортов модификатор `type` должен стоять строго в начале конкретного элемента, перед его оригинальным именем. Переименование через `as` идет следом: `type RemoteType as LocalType`.",
+            en: "When implementing inline type imports, the `type` token prefix must sit exactly at the head of that specific item slot, before its source name. The alias clause follows naturally: `type RemoteType as LocalType`.",
+            ka: "ინლაინ ტიპის იმპორტების გამოყენებისას `type` მოდიფიკატორი უნდა იდგეს მკაცრად კონკრეტული ელემენტის დასაწყისში, მის ორიგინალ სახელამდე. გადარქმევა `as`-ით მოსდევს მას: `type RemoteType as LocalType`."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-4-5.html#type-modifiers-on-import-names",
+        docLabel: "Type Modifiers on Import Names — Release Notes"
+    },
+    {
+        id: 416,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Как можно извлечь тип данных из другого модуля динамически без написания верхней инструкции import, используя встроенный инлайн-синтаксис?",
+            en: "How can you dynamically extract a type signature from another module without a top-level import statement?",
+            ka: "როგორ შეიძლება სხვა მოდულიდან მონაცემთა ტიპის დინამიურად ამოღება ფაილის ზედა დონეზე import ინსტრუქციის დაწერის გარეშე?"
+        },
+        code: `<span class="cmt">// Как объявить тип на лету из файла "./schema"?</span>`,
+        options: [
+            { ru: "const data: import('./schema').ConfigType;", en: "const data: import('./schema').ConfigType;", ka: "const data: import('./schema').ConfigType;" },
+            { ru: "const data: import type('./schema').ConfigType;", en: "const data: import type('./schema').ConfigType;", ka: "const data: import type('./schema').ConfigType;" },
+            { ru: "const data: await import('./schema').ConfigType;", en: "const data: await import('./schema').ConfigType;", ka: "const data: await import('./schema').ConfigType;" },
+            { ru: "const data: typeof('./schema').ConfigType;", en: "const data: typeof('./schema').ConfigType;", ka: "const data: typeof('./schema').ConfigType;" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "TypeScript поддерживает динамические типы-импорты прямо в месте объявления переменной через конструкцию `import('./path')`. Обратите внимание: в позиции аннотации типов слово `type` писать не нужно, а само выражение не имеет ничего общего с асинхронным рантайм-вызовом `await import()`.",
+            en: "TypeScript natively allows on-the-fly type queries pointing to external assets using `import('./path')` syntax inside type annotation positions. Word `type` modifier is redundant here, and the expression emits zero runtime async bundle splitting.",
+            ka: "TS მხარს უჭერს დინამიურ ტიპის იმპორტებს პირდაპირ ცვლადის გამოცხადების ადგილას `import('./path')` კონსტრუქციის საშუალებით. გაითვალისწინეთ: ტიპის ანოტაციის პოზიციაში სიტყვა `type`-ს წერა არ არის საჭირო, და მას საერთო არაფერი აქვს `await import()`-თან."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#guidance-for-module-authors",
+        docLabel: "Modules Guidance — Handbook"
+    },
+    {
+        id: 417,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Почему во многих проектах со стандартными настройками обычный import интерфейса (без слова type) всё равно не попадает в итоговый JavaScript?",
+            en: "Why does a standard import of a pure interface (without the type keyword) still get erased from final JS in most default project configurations?",
+            ka: "რატომ არ ხვდება ბევრ პროექტში სტანდარტული პარამეტრებით ინტერფეისის ჩვეულებრივი import (სიტყვა type-ის გარეშე) საბოლოო JavaScript კოდში?"
+        },
+        code: `<span class="kw">import</span> { <span class="type">IProps</span> } <span class="kw">from</span> <span class="str">"./interfaces"</span>; <span class="cmt">// Без "type"</span>`,
+        options: [
+            { ru: "TypeScript по умолчанию проводит статический анализ потока (Type Elision) и автоматически вырезает импорты, если они используются только как типы", en: "TypeScript executes default static checking (Type Elision) and automatically drops import statements if they resolve exclusively into types", ka: "TypeScript ნაგულისხმევად ატარებს სტატიკურ ანალიზს (Type Elision) და ავტომატურად ჭრის იმპორტებს, თუ ისინი გამოიყენება მხოლოდ როგორც ტიპები" },
+            { ru: "Интерфейсы компилируются в пустые JS-объекты во время сборки", en: "Interfaces are compiled down into empty operational JS object maps during compilation phases", ka: "ინტერფეისები ბილდის დროს ცარიელ JS ობიექტებად კომპილირდებიან" },
+            { ru: "Браузеры научились нативно понимать интерфейсы TypeScript", en: "Modern browser engines have evolved to natively parse and execute active TypeScript interfaces", ka: "ბრაუზერებმა ისწავლეს TypeScript ინტერფეისების ნატივურად გაგება" },
+            { ru: "Это происходит только благодаря работе плагина Terser", en: "This optimization is exclusively achieved due to downstream execution of the Terser minifier plugin", ka: "ეს ხდება მხოლოდ Terser პლაგინის მუშაობის წყალობით" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Поведение компилятора TypeScript по умолчанию называется Type Elision (удаление типов). Если TS видит, что импортированная сущность нигде в коде не применяется как значение, он сам стирает строку импорта. Однако, `import type` нужен для того, чтобы зафиксировать это поведение явно и защитить сборку, если вы используете изолированную компиляцию файлов через Babel/esbuild.",
+            en: "By default, TypeScript performs a feature called Type Elision. If the engine sees that an imported entity is never evaluated in a value context, it strips the import statement automatically. Explicit `import type` is needed to bypass ambiguities during single-file Babel/esbuild compilations.",
+            ka: "TS კომპილატორის ნაგულისხმევ ქცევას ეწოდება Type Elision (ტიპების წაშლა). თუ TS ხედავს, რომ იმპორტირებული კომპონენტი კოდში არ გამოიყენება მნიშვნელობის სახით, ის თავად შლის იმპორტის ხაზს. თუმცა, `import type` საჭიროა ამ ქცევის აშკარად დასაფიქსირებლად Babel/esbuild-ის გამოყენებისას."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
+        docLabel: "Importing Types — Handbook"
+    },
+    {
+        id: 418,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Какую опасность предотвращает использование 'import type' при включенном флаге 'isolatedModules: true' в tsconfig.json?",
+            en: "What compilation vulnerability does 'import type' prevent when 'isolatedModules: true' is enabled in tsconfig.json?",
+            ka: "რა საფრთხეს აგვაცილებს თავიდან 'import type'-ის გამოყენება, როდესაც ჩართულია 'isolatedModules: true' ალამი tsconfig.json-ში?"
+        },
+        code: `<span class="str">"isolatedModules"</span>: <span class="kw">true</span>`,
+        options: [
+            { ru: "Ошибки сторонних транспиляторов (Babel, esbuild), которые обрабатывают каждый файл отдельно и не знают, является ли импорт типом или значением", en: "Errors from single-file transpilers (Babel, esbuild) that process assets independently and cannot detect whether an import is a type or a value", ka: "იმ გარე ტრანსპილერების (Babel, esbuild) შეცდომებს, რომლებიც თითოეულ ფაილს ცალ-ცალკე ამუშავებენ და არ იციან, იმპორტი ტიპია თუ მნიშვნელობა" },
+            { ru: "Возникновение утечек памяти при замыкании глобальных переменных", en: "Memory leak exposures triggered by unsafe global lexical scope closure patterns", ka: "მეხსიერების გაჟონვის წარმოქმნას გლობალური ცვლადების ჩაკეტვისას (closures)" },
+            { ru: "Этот флаг запрещает экспорт анонимных стрелочных функций", en: "This parameter blocks developers from publishing anonymous arrow function structures as exports", ka: "ეს ალამი კრძალავს ანონიმური ისრიანი ფუნქციების ექსპორტს" },
+            { ru: "Возникновение синтаксических коллизий между тегами JSX и дженериками", en: "Syntax resolution collisions between active JSX markup tags and standard strict generic tags", ka: "სინტაქსური კონფლიქტების წარმოქმნას JSX ტეგებსა და ჯენერიკებს შორის" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Инструменты вроде Babel, SWC или esbuild компилируют файлы изолированно — они смотрят на один файл и не читают соседние. Если в файле написано `import { T } from './types'`, они не знают, чем является `T`. Если это интерфейс, они оставят импорт, и в рантайме случится краш из-за отсутствия экспорта. `import type` явно дает им понять: это тип, удаляй строку сразу.",
+            en: "Tools like Babel, SWC, or esbuild transpile assets independently, looking at one file at a time. Faced with `import { T } from './module'`, they cannot judge if `T` is an interface or a value. Leaving it in causes runtime crashes. Adding the `type` modifier guarantees they drop it immediately.",
+            ka: "ისეთი ინსტრუმენტები, როგორიცაა Babel ან esbuild, ფაილებს კომპილაციას უკეთებენ იზოლირებულად (უყურებენ მხოლოდ ერთ ფაილს). `import { T } from './types'`-ის დანახვისას მათ არ იციან რა არის `T`. თუ ეს ინტერფეისია, ისინი დატოვებენ იმპორტს და რეალურ დროში კოდი გაფუჭდება. `import type` აშკარად ეუბნება მათ: ეს ტიპია, წაშალე ხაზი მაშინვე."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#isolatedModules",
+        docLabel: "isolatedModules — TSConfig Reference"
+    },
+    {
+        id: 419,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემо და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Во что компилируется строка 'import type { User } from \"./types\"' в старом формате модулей CommonJS ( target: es5, module: commonjs )?",
+            en: "What does 'import type { User } from \"./types\"' compile into when targeting legacy CommonJS module formats?",
+            ka: "რაში კომპილირდება ხაზი 'import type { User } from \"./types\"' ძველი CommonJS მოდულების ფორმატში ( target: es5, module: commonjs )?"
+        },
+        code: `<span class="kw">import type</span> { <span class="type">User</span> } <span class="kw">from</span> <span class="str">"./types"</span>; <span class="cmt">// Target: CommonJS</span>`,
+        options: [
+            { ru: "Строка полностью исчезает, в скомпилированном JS-файле не создается вызов require()", en: "The statement completely disappears; no corresponding require() call is generated in the output JS file", ka: "ხაზი სრულად ქრება, დაკომპილირებულ JS ფაილში არანაირი require() გამოძახება არ იქმნება" },
+            { ru: "Превращается в пустой вызов: require(\"./types\");", en: "It converts into an empty operational package invocation: require(\"./types\");", ka: "გარდაიქმნება ცარიელ გამოძახებად: require(\"./types\");" },
+            { ru: "Превращается в объявление переменной var User = null;", en: "It compiles down to a global placeholder empty variable statement: var User = null;", ka: "გარდაიქმნება ცვლადის გამოცხადებად: var User = null;" },
+            { ru: "Вызывает синтаксическую ошибку, так как CommonJS не поддерживает тип-импорты", en: "It raises an explicit syntax compilation crash because CommonJS standards reject type-imports", ka: "იწვევს სინტაქსურ შეცდომას, რადგან CommonJS მხარს არ უჭერს ტიპის იმპორტებს" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Вне зависимости от того, компилируете ли вы код в современный ESM или старый CommonJS, TypeScript полностью элиминирует `import type`. В итоговом файле для Node.js не появится инструкция `require('./types')`, что исключает лишние дисковые операции ввода-вывода в рантайме.",
+            en: "Regardless of whether your target output format is standard modern ESM or legacy CommonJS, TypeScript fully removes `import type`. No `require('./types')` statement is injected into the emitted script, reducing unneeded runtime file-system I/O overhead.",
+            ka: "მიუხედავად იმისა, კოდს აკომპილირებთ თანამედროვე ESM-ში თუ ძველ CommonJS-ში, TS სრულად შლის `import type`-ს. საბოლოო ფაილში Node.js-ისთვის არანაირი `require('./types')` ინსტრუქცია არ გამოჩნდება, რაც გამორიცხავს ზედმეტ ოპერაციებს runtime-ში."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/2/modules.html#importing-types",
+        docLabel: "Importing Types — Handbook"
+    },
+    {
+        id: 420,
+        category: { ru: "Environment & Modules", en: "Environment & Modules", ka: "გარემო და მოდულები" },
+        tag: "environment-modules",
+        question: {
+            ru: "Каким образом синтаксис 'export type * from \"./modes\"' влияет на экспорт сущностей из указанного файла?",
+            en: "How does the 'export type * from \"./modes\"' syntax affect entity exports from the specified file?",
+            ka: "როგორ მოქმედებს სინტაქსი 'export type * from \"./modes\"' მითითებული ფაილიდან კომპონენტების ექსპორტზე?"
+        },
+        code: `<span class="kw">export type * from</span> <span class="str">"./models"</span>;`,
+        options: [
+            { ru: "Экспортирует абсолютно все сущности из файла ./models (и интерфейсы, и типы), но строго в качестве типов, отсекая их рантайм-значения", en: "Exports absolutely all entities from ./models (interfaces and types alike) but strictly as type assets, stripping away their runtime value properties", ka: "ახდენს აბსოლუტურად ყველა კომპონენტის (ინტერფეისებისც და ტიპებისც) ექსპორტს ./models ფაილიდან, მაგრამ მკაცრად როგორც ტიპების, და ჭრის მათ runtime მნიშვნელობებს" },
+            { ru: "Вызовет ошибку, так как экспортировать по маске (*) совместно со словом type нельзя", en: "Triggers a validation error because wildcard (*) exports are illegal when combined with the type modifier keyword", ka: "გამოიწვევს შეცდომას, რადგან შაბლონით (*) ექსპორტი type ქივორდთან ერთად აკრძალულია" },
+            { ru: "Экспортирует только те типы, имена которых начинаются с заглавной буквы", en: "Filters the file targets, selectively exporting interfaces whose identifiers begin with capital letters", ka: "აექსპორტებს მხოლოდ იმ ტიპებს, რომელთა სახელებიც იწყება მთავრული (დიდი) ასოთი" },
+            { ru: "Данный синтаксис предназначен исключительно для экспорта константных массивов", en: "This structural statement layout is engineered exclusively to manage exports for constant immutable arrays", ka: "ეს სინტაქსი განკუთვნილია ექსკლუზიურად კონსტანტური მასივების დასაექსპორტებლად" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Синтаксис `export type * from './module'` (появившийся в TS 5.0) позволяет массово экспортировать сущности. Если в файле `./models` был объявлен класс или функция, этот реэкспорт сделает их доступными наружу *только* в качестве типов. Попытка импортировать их отсюда как значения и запустить приведет к ошибке компиляции.",
+            en: "The `export type * from './module'` syntax (added in TS 5.0) facilitates bulk type-only re-exports. If `./models` contains executable variables or classes, they are re-published strictly under type limits, neutralizing value utilization downstream.",
+            ka: "სინტაქსი `export type * from './module'` (რომელიც TS 5.0-ში გამოჩნდა) საშუალებას გვაძლევს მასობრივად დავაექსპორტოთ კომპონენტები. თუ `./models` ფაილში იყო კლასი ან ფუნქცია, ეს რეექსპორტი მათ ხელმისაწვდომს გახდის *მხოლოდ* ტიპების სახით."
+        },
+        docLink: "https://www.typescriptlang.org/docs/handbook/release-notes/typescript-5-0.html#all-export-type-flux",
+        docLabel: "All export type Flux — Release Notes"
+    },
+
+    // 22. CONFIGURATION (TSCONFIG.JSON)
+    {
+        id: 421,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "За что отвечает флаг strictNullChecks в файле настроек tsconfig.json?",
+            en: "What behavior does strictNullChecks enforce when turned on inside tsconfig.json?",
+            ka: "რაზეა პასუხისმგებელი strictNullChecks ფლაგი tsconfig.json პარამეტრების ფაილში?"
+        },
+        code: `<span class="cm">// tsconfig.json</span>
+{ <span class="str">"compilerOptions"</span>: { <span class="str">"strictNullChecks"</span>: <span class="kw">true</span> } }`,
+        options: [
+            { ru: "Запрещает неявно присваивать null и undefined любым типам данных без явного union", en: "Disallows implicitly assigning null and undefined to properties unless explicitly defined in a type union", ka: "კრძალავს null-ისა და undefined-ის მინიჭებას ნებისმიერ ტიპზე, თუ ისინი მკაფიოდ არ არის მითითებული union ტიპში" },
+            { ru: "Автоматически конвертирует все значения null в пустые строки", en: "Transforms runtime null values into safe blank text strings automatically", ka: "ავტომატურად აქცევს ყველა null მნიშვნელობას ცარიელ სტრიქონად" },
+            { ru: "Вырезает блоки кода, где переменная равна undefined, для оптимизации", en: "Deletes unused logic blocks tracking undefined states to reduce bundle sizes", ka: "ოპტიმიზაციისთვის შლის კოდის ბლოკებს, სადაც ცვლადი undefined-ის ტოლია" },
+            { ru: "Проверяет скорость работы асинхронных баз данных", en: "Monitors internal latency thresholds processing server database callbacks", ka: "ამოწმებს ასინქრონული მონაცემთა ბაზების მუშაობის სიჩქარეს" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Когда флаг `strictNullChecks` отключен (false), значения `null` и `undefined` можно легально присвоить переменной любого типа, например, строке или объекту, что часто приводило к знаменитым ошибкам 'Cannot read property of undefined' в рантайме. Включение этого флага заставляет TypeScript расценивать `null` и `undefined` как отдельные полноценные типы данных. Теперь, если вы хотите допустить отсутствие значения, вы обязаны написать тип явно через Union: `string | null`.",
+            en: "When `strictNullChecks` is disabled, `null` and `undefined` act as legal values for any datatype, opening doors for runtime application crashes. Turning this flag on turns `null` and `undefined` into strict distinct datatypes. If a property can experience missing states, you are forced to define it as an explicit union signature like `string | null`.",
+            ka: "როდესაც `strictNullChecks` გამორთულია (false), `null` და `undefined` მნიშვნელობების მინიჭება შესაძლებელია ნებისმიერი ტიპის ცვლადზე, რაც ხშირად იწვევს შეცდომებს runtime-ში. ამ ფლაგის ჩართვა აიძულებს TS-ს განიხილოს `null` და `undefined` როგორც ცალკეული დამოუკიდებელი ტიპები. თუ გსურთ მათი დაშვება, უნდა მიუთითოთ Union ტიპით: `string | null`."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#strictNullChecks",
+        docLabel: "strictNullChecks — TSConfig Reference"
+    },
+    {
+        id: 422,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Какое ограничение накладывает на написание кода активация флага 'noImplicitAny'?",
+            en: "What restriction does the 'noImplicitAny' flag enforce during type checking?",
+            ka: "რა შეზღუდვას აწესებს კოდის წერაზე 'noImplicitAny' ფლაგის აქტივაცია?"
+        },
+        code: `<span class="cm">// tsconfig.json</span>
+{ <span class="str">"compilerOptions"</span>: { <span class="str">"noImplicitAny"</span>: <span class="kw">true</span> } }`,
+        options: [
+            { ru: "Генерирует ошибку, если компилятор не может автоматически вывести тип и неявно присваивает переменной или аргументу тип any", en: "Raises an error if the compiler cannot infer a type and defaults an expression or argument to an implicit any", ka: "აგენერირებს შეცდომას, თუ კომპილატორი ვერ ახდენს ტიპის ავტომატურ გამოყვანას და ცვლადს ან არგუმენტს არაპირდაპირ ანიჭებს any ტიპს" },
+            { ru: "Полностью запрещает использование ключевого слова any в кодовой базе проекта", en: "Completely bans any explicit usage of the any keyword anywhere inside the source codebase", ka: "სრულად კრძალავს any ქივორდის გამოყენებას პროექტის კოდში" },
+            { ru: "Заставляет разработчика писать javadoc-комментарии для всех публичных функций", en: "Requires developers to supply detailed Javadoc summary blocks above all exported functions", ka: "აიძულებს დეველოპერს დაწეროს javadoc-კომენტარები ყველა საჯარო ფუნქციისთვის" },
+            { ru: "Автоматически преобразует тип any в тип unknown во время компиляции", en: "Forces dynamic any signatures to compile down as type unknown at production outputs", ka: "ავტომატურად გარდაქმნის any ტიპს unknown ტიპად კომპილაციის დროს" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `noImplicitAny` защищает код от случайной потери типизации. Если вы забыли указать тип аргумента функции, и TypeScript не может вывести его из контекста, по умолчанию он бы присвоил `any`. С этим флагом компилятор выдаст ошибку, требуя указать тип явно (хотя бы тот же `any`, но уже осознанно).",
+            en: "The `noImplicitAny` property insulates code from accidental type drops. If an argument lacks notation and cannot be contextualized, TS defaults it to `any`. This flag flags those omissions as errors, requiring developer declaration.",
+            ka: "`noImplicitAny` ფლაგი იცავს კოდს ტიპიზაციის შემთხვევითი დაკარგვისგან. თუ დაგავწყდათ ფუნქციის არგუმენტის ტიპის მითითება და TS ვერ გამოაქვს ის კონტექსტიდან, ნაგულისხმევად მიენიჭებოდა `any`. ამ ფლაგით კომპილატორი გამოაგდებს შეცდომას."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#noImplicitAny",
+        docLabel: "noImplicitAny — TSConfig Reference"
+    },
+    {
+        id: 423,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Какое требование к объявлению свойств классов предъявляет флаг 'strictPropertyInitialization'?",
+            en: "What requirement for class properties does 'strictPropertyInitialization' mandate?",
+            ka: "რა მოთხოვნას აწესებს კლასის თვისებების გამოცხადებაზე 'strictPropertyInitialization' ფლაგი?"
+        },
+        code: `<span class="kw">class</span> <span class="type">User</span> {
+    <span class="prop">name</span>: <span class="type">string</span>; <span class="cmt">// Ошибка, если флаг включен и нет конструктора!</span>
+}`,
+        options: [
+            { ru: "Обязывает инициализировать все свойства класса непосредственно при объявлении или внутри constructor", en: "Mandates that all non-undefined class properties must be initialized directly or inside the class constructor", ka: "ავალდებულებს კლასის ყველა თვისების ინიციალიზაციას უშუალოდ გამოცხადებისას ან constructor-ის შიგნით" },
+            { ru: "Требует, чтобы все свойства классов были помечены ключевым словом readonly", en: "Requires that all structural properties defined within class frameworks carry a readonly token", ka: "მოითხოვს, რომ კლასების ყველა თვისება მონიშნული იყოს readonly ქივორდით" },
+            { ru: "Запрещает использовать геттеры и сеттеры для приватных полей класса", en: "Bans the integration of custom get and set accessors over private class scope definitions", ka: "კრძალავს გეტერებისა და სეტერების გამოყენებას კლასის პრივატული ველებისთვის" },
+            { ru: "Разрешает инициализацию полей класса исключительно через внешние фабрики", en: "Restricts class field evaluation assignments strictly through external factories operations", ka: "ნებას რთავს კლასის ველების ინიციალიზაციას ექსკლუზიურად გარე ფაბრიკების საშუალებით" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `strictPropertyInitialization` гарантирует, что свойства класса не останутся в состоянии `undefined` после создания экземпляра. Если свойство объявлено как `string`, вы обязаны либо дать ему дефолтное значение сразу, либо присвоить значение в `constructor`. Работает только при условии, что `strictNullChecks` также включен.",
+            en: "The `strictPropertyInitialization` configuration ensures class attributes are never left implicitly `undefined` post-instantiation. If defined as a `string`, you must assign a default value immediately or inside the `constructor`. Requires `strictNullChecks`.",
+            ka: "`strictPropertyInitialization` ფლაგი უზრუნველყოფს, რომ კლასის თვისებები არ დარჩეს `undefined` მდგომარეობაში ეგზემპლარის შექმნის შემდეგ. თუ თვისება გამოცხადებულია როგორც `string`, თქვენ ვალდებული ხართ მიანიჭოთ მნიშვნელობა გამოცხადებისას ან `constructor`-ში."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#strictPropertyInitialization",
+        docLabel: "strictPropertyInitialization — TSConfig Reference"
+    },
+    {
+        id: 424,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Каким образом флаг 'strictBindCallApply' повышает безопасность вызова функций в JavaScript?",
+            en: "How does the 'strictBindCallApply' flag enhance safety when handling function invocations?",
+            ka: "როგორ ზრდის 'strictBindCallApply' ფლაგი JavaScript-ში ფუნქციების გამოძახების უსაფრთხოებას?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">sum</span>(<span class="prop">a</span>: <span class="type">number</span>, <span class="prop">b</span>: <span class="type">number</span>) {}
+<span class="fn">sum</span>.<span class="fn">call</span>(<span class="kw">null</span>, <span class="str">"1"</span>, <span class="num">2</span>); <span class="cmt">// Какая настройка отловит передачу строки?</span>`,
+        options: [
+            { ru: "Она проверяет аргументы методов bind, call и apply на строгое соответствие сигнатуре оригинальной функции", en: "It checks arguments passed to bind, call, and apply methods against the original function signature", ka: "ის ამოწმებს bind, call და apply მეთოდების არგუმენტებს ორიგინალი ფუნქციის სიგნატურასთან მკაცრ შესაბამისობაზე" },
+            { ru: "Она полностью запрещает использование методов bind, call и apply, заменяя их стрелочными функциями", en: "It completely outlaws the use of bind, call, and apply methods, replacing them with arrow functions", ka: "ის სრულად კრძალავს bind, call და apply მეთოდების გამოყენებას და ანაცვლებს მათ ისრიანი ფუნქციებით" },
+            { ru: "Она автоматически биндит ключевое слово this к глобальному объекту window", en: "It automatically binds the this execution keyword context directly to the global window environment", ka: "ის ავტომატურად აბამს (bind) this ქივორდს window გლობალურ ობიექტთან" },
+            { ru: "Она делает все контексты функций неизменяемыми (immutable)", en: "It transitions all scope functions evaluation properties to rigid immutable structures", ka: "ის ფუნქციების ყველა კონტექსტს ხდის უცვლელად (immutable)" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "По умолчанию в старых версиях TS методы `.bind`, `.call` и `.apply` принимали любые аргументы без проверки типов (как `any`). Флаг `strictBindCallApply` заставляет компилятор анализировать типы передаваемых аргументов при использовании этих встроенных методов JS, предотвращая ошибки несоответствия сигнатуры.",
+            en: "In older TS profiles, runtime calls via `.bind`, `.call`, and `.apply` treated argument passing loosely as `any`. Enabling `strictBindCallApply` forces the analyzer to match array parameter types against the original signature structures accurately.",
+            ka: "ძველ ვერსიებში `.bind`, `.call` და `.apply` მეთოდები იღებდნენ ნებისმიერ არგუმენტს ტიპების შემოწმების გარეше (`any`). `strictBindCallApply` ფლაგი აიძულებს კომპილატორს გააანალიზოს გადაცემული არგუმენტების ტიპები ამ მეთოდების გამოყენებისას."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#strictBindCallApply",
+        docLabel: "strictBindCallApply — TSConfig Reference"
+    },
+    {
+        id: 425,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Что происходит с другими строгими проверками, если в tsconfig.json установить флаг 'strict': true?",
+            en: "What happens to other strict properties when 'strict': true is set inside tsconfig.json?",
+            ka: "რა ემართება სხვა მკაცრ შემოწმებებს, თუ tsconfig.json-ში მივუთითებთ ფლაგს 'strict': true?"
+        },
+        code: `<span class="cm">// tsconfig.json</span>
+{ <span class="str">"compilerOptions"</span>: { <span class="str">"strict"</span>: <span class="kw">true</span> } }`,
+        options: [
+            { ru: "Он работает как мета-флаг, автоматически включая группу строгих проверок (strictNullChecks, noImplicitAny и др.)", en: "It operates as a umbrella master flag, auto-enabling a collection of specific strict type checks", ka: "ის მუშაობს როგორც მეტა-ფლაგი, რაც ავტომატურად რთავს მკაცრი შემოწმებების ჯგუფს (strictNullChecks, noImplicitAny და სხვა)" },
+            { ru: "Он включает только проверку синтаксиса 'use strict' во всех JavaScript-файлах", en: "It strictly turns on standard JavaScript 'use strict' evaluation scanning rules over compiled targets", ka: "ის რთავს მხოლოდ 'use strict' სინტაქსის შემოწმებას ყველა JavaScript ფაილში" },
+            { ru: "Он отключает генерацию source maps для ускорения финальной сборки проекта", en: "It turns off source maps file publishing to optimize resource load limits during deployment builds", ka: "ის თიშავს source maps-ის გენერაციას პროექტის საბოლოო ბილდის დასაჩქარებლად" },
+            { ru: "Он переводит компилятор в многопоточный режим сборки", en: "It updates the compilation environment to leverage multi-threaded CPU operational pools", ka: "ის გადაიყვანს კომპილატორს მრავალნაკადიან (multi-threaded) ბილდის რეჟიმში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `strict: true` — это главный переключатель уровня безопасности в TypeScript. Он автоматически активирует широкую группу проверок, таких как `noImplicitAny`, `strictNullChecks`, `strictFunctionTypes`, `strictPropertyInitialization` и др. Вы можете точечно отключать их ниже в конфиге, оставив общий strict-режим.",
+            en: "The `strict: true` entry acts as an architectural master switch. It auto-activates a suite of validation sub-flags (`noImplicitAny`, `strictNullChecks`, etc.). Developers can still choose to granularly override individual options underneath.",
+            ka: "`strict: true` ფლაგი არის უსაფრთხоების მთავარი გადამრთველი TS-ში. ის ავტომატურად ააქტიურებს შემოწმებების ფართო ჯგუფს, როგორიცაა `noImplicitAny`, `strictNullChecks` და ა.შ. თქვენ შეგიძლიათ მათი ცალ-ცალკე გამორთვა კონფიგურაციაში ქვემოთ."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#strict",
+        docLabel: "strict — TSConfig Reference"
+    },
+    {
+        id: 426,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "В каком случае компилятор выдаст ошибку, если в настройках проекта активирован флаг 'noImplicitThis'?",
+            en: "Under what condition does the compiler throw an error when 'noImplicitThis' is activated?",
+            ka: "რა შემთხვევაში გამოაგდებს კომპილატორი შეცდომას, თუ პროექტის პარამეტრებში აქტიურია 'noImplicitThis' ფლაგი?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">logContext</span>() {
+    <span class="kw">console</span>.<span class="fn">log</span>(<span class="kw">this</span>.<span class="prop">id</span>); <span class="cmt">// Контекст не ясен</span>
+}`,
+        options: [
+            { ru: "Когда контекст 'this' внутри функции неявно получает тип any из-за отсутствия явной типизации контекста", en: "When the context 'this' inside a function evaluates implicitly to any due to a missing signature annotation", ka: "როდესაც 'this' კონტექსტი ფუნქციის შიგნით არაპირდაპირ იღებს any ტიპს კონტექსტის მკაფიო ტიპიზაციის არარსებობის გამო" },
+            { ru: "При любой попытке использовать стрелочные функции вместо обычных методов", en: "Whenever an arrow function construct is declared in place of standard prototype methods", ka: "ნებისმიერი მცდელობისას გამოიყენოს ისრიანი ფუნქციები ჩვეულებრივი მეთოდების ნაცვლად" },
+            { ru: "Если внутри классов ключевое слово this ссылается на приватное поле", en: "If the internal class scope keyword this targets a private marked member property field", ka: "თუ კლასების შიგნით this ქივორდი მიმართავს პრივატულ ველს" },
+            { ru: "Когда функция вызывается через метод call() без передачи контекста", en: "When an external call invocation runs without supplying an explicit structural context parameter", ka: "როდესაც ფუნქცია გამოიძახება call() მეთოდით კონტექსტის გადაცემის გარეშე" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `noImplicitThis` запрещает использовать ключевое слово `this` в изолированных функциях, где контекст вызова заранее неизвестен и по умолчанию сбрасывается в `any`. Чтобы решить эту проблему, разработчик должен явно указать тип `this` в качестве первого псевдо-аргумента функции: `function f(this: UserContext) {}`.",
+            en: "The `noImplicitThis` configuration flags unsafe usages of the `this` keyword inside standalone functions where the binding context resolves implicitly to `any`. To fix it, provide a pseudo-parameter type declaration: `function f(this: UserContext) {}`.",
+            ka: "`noImplicitThis` ფლაგი კრძალავს `this` ქივорდის გამოყენებას იზოლირებულ ფუნქციებში, სადაც გამოძახების კონტექსტი წინასწარ უცნობია და ნაგულისხმევად ჩამოდის `any`-ზე. გამოსასწორებლად უნდა მიეთითოს: `function f(this: UserContext) {}`."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#noImplicitThis",
+        docLabel: "noImplicitThis — TSConfig Reference"
+    },
+    {
+        id: 427,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "На что напрямую влияет опция 'target' в конфигурационном файле tsconfig.json?",
+            en: "What behavior does the 'target' option inside tsconfig.json control directly?",
+            ka: "რაზე ახდენს პირდაპირ გავლენას 'target' ოფცია tsconfig.json კონფიგურაციის ფაილში?"
+        },
+        code: `<span class="cm">// tsconfig.json</span>
+{ <span class="str">"compilerOptions"</span>: { <span class="str">"target"</span>: <span class="str">"es5"</span> } }`,
+        options: [
+            { ru: "Определяет версию ECMAScript, в которую будет скомпилирован исходный код (например, стрелочные функции превратятся в обычные для ES5)", en: "Specifies the ECMAScript version version that source structures compile down into (e.g., arrows become standard functions for ES5)", ka: "განსაზღვრავს ECMAScript-ის ვერსიას, რომელშიც დაკომპილირდება საწყისი კოდი (მაგ. ისრიანი ფუნქციები გარდაიქმნება ჩვეულებრივ ფუნქციებად ES5-ისთვის)" },
+            { ru: "Задает операционную систему, на которой разрешен запуск готового приложения", en: "Restricts target production operating system environments allowed to execute the bundle outputs", ka: "განსაზღვრავს ოპერაციულ სისტემას, რომელზეც ნებადართულია მზა აპლიკაციის გაშვება" },
+            { ru: "Управляет версией пакетного менеджера npm для скачивания внешних зависимостей", en: "Adjusts package manager execution dependencies profiles using upstream npm CLI checks", ka: "მართავს npm პაკეტების მენეჯერის ვერსიას გარე დამოკიდებულებების ჩამოსატვირთად" },
+            { ru: "Определяет максимальный объем оперативной памяти для сборщика проекта", en: "Allocates maximum memory space thresholds available to the compiler process loop", ka: "განსაზღვრავს ოპერატიული მეხსიერების მაქსიმალურ მოცულობას პროექტის ბანდლერისთვის" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Опция `target` указывает компилятору, синтаксис какого поколения JavaScript должен получиться на выходе. Если вы указали `ES5`, то все современные конструкции вроде классов, стрелочных функций и деструктуризации будут переписаны старыми конструкциями (прототипы, обычные функции). Если указать `ES2022`, то код останется максимально современным.",
+            en: "The `target` key defines the syntax version of the generated JavaScript code. Setting it to `ES5` rewrites modern features (classes, arrow functions) into legacy equivalents (prototypes, functions). Setting it to `ES2022+` preserves modern native code formats.",
+            ka: "`target` ოფცია მიუთითებს კომპილატორს, თუ რომელი თაობის JavaScript სინტაქსი უნდა მივიღოთ გამოსავალზე. თუ მიუთითებთ `ES5`-ს, ყველა თანამედроვე კონსტრუქცია (კლასები, ისრიანი ფუნქციები) გადაიწერება ძველი ალტერნატივებით (პროტოტიპები, ჩვეულებრივი ფუნქციები)."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#target",
+        docLabel: "target — TSConfig Reference"
+    },
+    {
+        id: 428,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Для чего используется массив настроек 'lib' в файле конфигурации компилятора?",
+            en: "What is the primary role of the 'lib' configuration array inside tsconfig.json?",
+            ka: "რისთვის გამოიყენება 'lib' პარამეტრების მასივი კომპილატორის კონფიგურაციის ფაილში?"
+        },
+        code: `<span class="cm">// tsconfig.json</span>
+{ <span class="str">"compilerOptions"</span>: { <span class="str">"lib"</span>: [<span class="str">"DOM"</span>, <span class="str">"ES2020"</span>] } }`,
+        options: [
+            { ru: "Сообщает компилятору, какие встроенные декларации типов рантайм-окружения (например, window, document, Promise) нужно подключить", en: "Tells the compiler which ambient runtime API definitions (like window, document, Promise) to include during checking", ka: "მიუთითებს კომპილატორს, თუ runtime გარემოს რომელი ჩაშენებული ტიპების დეკლარაციები (მაგალითად window, document, Promise) უნდა ჩაიტვირთოს" },
+            { ru: "Автоматически скачивает указанные npm-библиотеки в папку node_modules", en: "Automatically triggers network operations downloading external dependencies into project targets", ka: "ავტომატურად ტვირთავს მითითებულ npm ბიბლიოთეკებს node_modules საქაღალდეში" },
+            { ru: "Используется для шифрования исходных файлов перед публикацией пакета", en: "Provides source code encryption keys protecting library artifacts pre-deployment", ka: "გამოიყენება საწყისი ფაილების დასაშიფრად პაკეტის გამოქვეყნებამდე" },
+            { ru: "Ограничивает количество файлов, которые можно импортировать в один модуль", en: "Restricts maximum import count thresholds allowed inside single separate module scopes", ka: "ზღუდავს ფაილების რაოდენობას, რომელთა იმპорტიც შესაძლებელია ერთ მოდულში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Опция `lib` определяет список глобальных деклараций, которые будут доступны TypeScript во время статической проверки. Например, добавление `'DOM'` позволяет использовать объекты `document` и `window`, а `'ES2020'` добавляет типы для современных методов массивов или глобальных объектов вроде `Promise` и `Map`, не влияя на генерацию кода.",
+            en: "The `lib` array informs TypeScript about built-in browser/runtime declarations available during type analysis. Specifying `'DOM'` unlocks structures like `document` and `fetch`, while `'ES2020'` introduces typing mappings for structures like `Promise` or `Map`.",
+            ka: "`lib` ოფცია განსაზღვრავს გლობალური დეკლარაციების სიას, რომლებიც ხელმისაწვდომი იქნება TS-სთვის სტატიკური შემოწმებისას. მაგალითად, `'DOM'`-ის დამატება საშუალებას გვაძლევს გამოვიყენოთ `document` და `window` ობიექტები, ხოლო `'ES2020'` ამატებს ტიპებს `Promise` და `Map`-ისთვის."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#lib",
+        docLabel: "lib — TSConfig Reference"
+    },
+    {
+        id: 429,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Каков результат компиляции проекта, если в конфигурации tsconfig.json включен флаг 'declaration': true?",
+            en: "What artifacts are emitted alongside standard JS when 'declaration': true is active?",
+            ka: "რა არის პროექტის კომპილაციის შედეგი, თუ tsconfig.json კონფიგურაციაში ჩართულია ფლაგი 'declaration': true?"
+        },
+        code: `<span class="cm">// tsconfig.json</span>
+{ <span class="str">"compilerOptions"</span>: { <span class="str">"declaration"</span>: <span class="kw">true</span> } }`,
+        options: [
+            { ru: "Компилятор генерирует для каждого JS-файла соответствующий ему файл декларации типов с расширением .d.ts", en: "The compiler generates matching type definition files ending with a .d.ts extension for every compiled JS asset", ka: "კომპილატორი თითოეული JS ფაილისთვის აგენერირებს შესაბამის ტიპების დეკლარაციის ფაილს .d.ts გაფართოებით" },
+            { ru: "Проект компилируется исключительно в один монолитный файл с расширением .ts", en: "The entire source directory builds single-handedly into a standalone text file ending with .ts", ka: "პროექტი კომპილირდება ექსკლუზიურად ერთ მონოლითურ ფაილში .ts გაფართოებით" },
+            { ru: "Все комментарии из кода превращаются во внешнюю HTML-документацию", en: "Extracts code summary comments, turning blocks into an external web documentation layout", ka: "კოდიდან ყველა კომენტარი გარდაიქმნება გარე HTML დოკუმენტაციად" },
+            { ru: "Включается строгая проверка лицензий всех установленных npm-пакетов", en: "Enforces a strict compliance scan auditing open-source licenses over installed node packages", ka: "ირთვება ყველა დაინსტალირებული npm პაკეტის ლიცენზიების მკაცრი შემოწმება" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `declaration: true` необходим при создании библиотек. Он заставляет TypeScript генерировать файлы `.d.ts` (declaration files). В этих файлах содержится только информация о типах данных, экспортируемых из ваших JS-файлов, чтобы другие TypeScript-проекты могли корректно импортировать вашу библиотеку с сохранением автодополнения.",
+            en: "Setting `declaration: true` is crucial for shipping reusable libraries. It instructs TypeScript to output `.d.ts` declaration files alongside JavaScript bundles. These contain raw type maps that consumer applications use to achieve autocompletion.",
+            ka: "`declaration: true` ფლაგი აუცილებელია ბიბლიოთეკების შექმნისას. ის აიძულებს TS-ს დააგენერიროს `.d.ts` (დეკლარაციის) ფაილები. ეს ფაილები შეიცავს მხოლოდ ინფორმაციას მონაცემთა ტიპებზე, რათა სხვა TS პროექტებმა შეძლონ თქვენი ბიბლიოთეკის სწორად იმპორტირება."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#declaration",
+        docLabel: "declaration — TSConfig Reference"
+    },
+    {
+        id: 430,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Как меняется тип переменной ошибки 'e' в блоке catch(e) при активации флага 'useUnknownInCatchVariables'?",
+            en: "How does the 'useUnknownInCatchVariables' flag alter the type of error bindings inside catch(e) blocks?",
+            ka: "როგორ იცვლება შეცდომის ცვლადის 'e' ტიპი catch(e) ბლოკში 'useUnknownInCatchVariables' ფლაგის აქტივაციისას?"
+        },
+        code: `<span class="kw">try</span> {} <span class="kw">catch</span> (<span class="prop">e</span>) {
+    <span class="cmt">// Какой тип имеет "e" при включенном флаге?</span>
+}`,
+        options: [
+            { ru: "Переменная 'e' получает безопасный тип unknown вместо небезопасного any, заставляя делать проверку типов перед использованием", en: "The error binding 'e' defaults to unknown instead of unsafe any, forcing type narrowing checks before use", ka: "ცვლადი 'e' იღებს უსაფრთხო unknown ტიპს არაუსაფრთხო any-ის ნაცვლად, რაც აიძულებს დეველოპერს შეამოწმოს ტიპი გამოყენებამდე" },
+            { ru: "Переменная 'e' принудительно типизируется стандартным глобальным классом Error", en: "The variable 'e' transforms to carry an ironclad connection bound to the global Error instance class", ka: "ცვლადი 'e' იძულებით ტიპიზირდება სტანდაртული გლობალური Error კლასით" },
+            { ru: "Блок catch полностью перестает компилироваться, если внутри нет вызова console.error", en: "The catch scope is blocked from compiling if code fails to run an explicit console.error logger", ka: "catch ბლოკი საერთოდ წყვეტს კომპილაციას, თუ მის შიგნით არ არის console.error-ის გამოძახება" },
+            { ru: "Тип ошибки превращается в строку string", en: "The error instance notation converts automatically into a baseline primitive string", ka: "შეცდომის ტიპი გარდაიქმნება სტრიქონად (string)" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "В JavaScript через `throw` можно выбросить абсолютно любую сущность (строку, число, кастомный объект). Исторически в TS ошибка в `catch(e)` имела тип `any`, что небезопасно. Флаг `useUnknownInCatchVariables` (входит в `strict`) меняет дефолтный тип на `unknown`, заставляя нас проверять тип (например, `if (e instanceof Error)`) перед чтением свойств.",
+            en: "JavaScript allows throwing any entity format (numbers, strings) using `throw`. Historically, TS labeled error variables inside `catch(e)` as an insecure `any`. `useUnknownInCatchVariables` updates this behavior to `unknown`, mandating type narrowing filters.",
+            ka: "JS-ში `throw`-ს საშუალებით შესაძლებელია აბსოლუტურად ნებისმიერი კომპონენტის გასროლა (სტრიქონი, რიცხვი). ისტორიულად TS-ში `catch(e)`-ს ჰქონდა `any` ტიპი. `useUnknownInCatchVariables` ფლაგი ცვლის ნაგულისხმევ ტიპს `unknown`-ზე, რაც მოითხოვს ტიპის შემოწმებას (მაგ. `instanceof Error`)."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#useUnknownInCatchVariables",
+        docLabel: "useUnknownInCatchVariables — TSConfig Reference"
+    },
+    {
+        id: 431,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "За какой процесс отвечает опция 'moduleResolution' в конфигурационном файле tsconfig.json?",
+            en: "Which process does the 'moduleResolution' configuration property inside tsconfig.json govern?",
+            ka: "რომელ პროცესზეა პასუხისმგებელი 'moduleResolution' ოფცია tsconfig.json კონფიგურაციის ფაილში?"
+        },
+        code: `<span class="cm">// tsconfig.json</span>
+{ <span class="str">"compilerOptions"</span>: { <span class="str">"moduleResolution"</span>: <span class="str">"node"</span> } }`,
+        options: [
+            { ru: "Алгоритм, по которому TypeScript ищет физические файлы на диске на основе текстовых путей в инструкциях import", en: "The strategy algorithm TypeScript uses to locate physical files on the disk based on module import text strings", ka: "ალგორითმი, რომლის მიხედვითაც TypeScript ეძებს ფიზიკურ ფაილებს დისკზე import ინსტრუქციებში მითითებული ტექსტური გზების საფუძველზე" },
+            { ru: "Определяет стратегию автоматического обновления зависимостей в package.json", en: "The strategy framework guiding automatic library package versions updates inside package.json", ka: "განსაზღვრავს package.json-ში დამოკიდებულებების ავტომატური განახლების სტრატეგიას" },
+            { ru: "Разрешает или запрещает циклический импорт файлов в проекте", en: "Enables or disables cross-module looping import declarations from compiling inside source targets", ka: "რთავს ან თიშავს ფაილების ციკლურ იმპორტს პროექტში" },
+            { ru: "Управляет сетевыми запросами к удаленным репозиториям типов данных", en: "Manages outbound network routing handling remote repository queries checking missing types", ka: "მართავს ქსელურ მოთხოვნებს მონაცემთა ტიპების დისტანციურ რეპოზიტორიებში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Опция `moduleResolution` указывает компилятору конкретную стратегию поиска файлов при разборе импортов. Значения вроде `node16`, `nodenext` или `bundler` заставляют TS подражать поведению соответствующих сред (Node.js или современных сборщиков вроде Vite) при разрешении относительных и абсолютных путей к модулям.",
+            en: "The `moduleResolution` option instructs the compiler how to map an import string to a physical file on your hard drive. Formats like `node16` or `bundler` align TS file lookup steps with target execution engines or modern bundlers.",
+            ka: "`moduleResolution` ოფცია მიუთითებს კომპილატорს ფაილების ძებნის კონკრეტულ სტრატეგიაზე იმპორტების დამუშავებისას. ისეთი მნიშვნელობები, როგორიცაა `node16` ან `bundler`, აიძულებენ TS-ს მიჰყვეს შესაბამისი გარემოს ქცევას ფაილების ძებნისას."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#moduleResolution",
+        docLabel: "moduleResolution — TSConfig Reference"
+    },
+    {
+        id: 432,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Какую практическую выгоду дает включение флага 'skipLibCheck': true в настройках компилятора?",
+            en: "What practical performance optimization does setting 'skipLibCheck': true provide?",
+            ka: "რა პრაქტიკულ სარგებელს იძლევа ფლაგის 'skipLibCheck': true ჩართვა კომპილატორის პარამეტრებში?"
+        },
+        code: `<span class="cm">// tsconfig.json</span>
+{ <span class="str">"compilerOptions"</span>: { <span class="str">"skipLibCheck"</span>: <span class="kw">true</span> } }`,
+        options: [
+            { ru: "Ускоряет компиляцию, пропуская проверку типов внутри файлов деклараций (*.d.ts), включая папки node_modules", en: "Speeds up build times by skipping type analysis inside internal declaration files (*.d.ts), including node_modules", ka: "აჩქარებს კომპილაციას დეკლარაციის ფაილების (*.d.ts) შიგნით ტიპების შემოწმების გამოტოვებით, node_modules საქაღალდის ჩათვლით" },
+            { ru: "Полностью отключает проверку типов во всех файлах вашего приложения", en: "Completely terminates all active type system constraints running over your local codebase", ka: "სრულად თიშავს ტიპების შემოწმებას თქვენი აპლიკაციის ყველა ფაილში" },
+            { ru: "Позволяет пропускать тесты при запуске команды компиляции tsc", en: "Directs compiler actions to bypass execution of automated unit testing files during tsc runs", ka: "საშუალებას იძლევა გამოტოვებულ იქნას ტესტები tsc კომპილაციის ბრძანების გაშვებისას" },
+            { ru: "Игнорирует ошибки синтаксиса внутри файлов конфигурации .json", en: "Ignores syntax checking guidelines applied over structural project .json setting targets", ka: "აიგნორირებს სინტაქსურ შეცდომებს პროექტის .json კონფიგურაციის ფაილებში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `skipLibCheck: true` заставляет компилятор доверять типам из установленных библиотек (в `node_modules`). Он проверяет только типы вашего собственного исходного кода. Это значительно ускоряет время сборки и защищает ваш проект от падения, если в какой-то сторонней библиотеке содержатся мелкие внутренние ошибки типов.",
+            en: "Enabling `skipLibCheck: true` stops TypeScript from wasting time re-checking definition blocks (*.d.ts) inside `node_modules`. This noticeably optimizes build speed and cuts out compilation errors caused by minor internal issues in packages.",
+            ka: "`skipLibCheck: true` ფლაგი აიძულებს კომპილატორს ენდოს დაინსტალირებული ბიბლიოთეკების ტიპებს (`node_modules`). ის ამოწმებს მხოლოდ თქვენი საკუთარი კოდის ტიპებს. ეს საგრძნობლად აჩქარებს ბილდის დროს."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#skipLibCheck",
+        docLabel: "skipLibCheck — TSConfig Reference"
+    },
+    {
+        id: 433,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "В каком случае TypeScript прервет сборку проекта с ошибкой, если включен флаг 'noUnusedLocals'?",
+            en: "When does TypeScript halt compilation with an error if 'noUnusedLocals' is set to true?",
+            ka: "რა შემთხვევაში შეწყვეტს TypeScript პროექტის ბილდს შეცდომით, თუ ჩართულია 'noUnusedLocals' ფლაგი?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">calculate</span>() {
+    <span class="kw">const</span> <span class="prop">factor</span> = <span class="num">10</span>; <span class="cmt">// Переменная нигде не читается</span>
+}`,
+        options: [
+            { ru: "Если внутри функции объявлена локальная переменная, которая нигде в дальнейшем не считывается", en: "If a local variable is declared within a function scope but is never referenced anywhere else", ka: "თუ ფუნქციის შიგნით გამოცხადებულია ლოკალური ცვლადი, რომელიც შემდგომში არსად არ იკითხება" },
+            { ru: "Если в проекте присутствует файл, который не импортирован ни в один другой модуль", en: "If a standalone file exists in the directory structure without matching top-level imports", ka: "თუ პროექტში არსებობს ფაილი, რომელიც არ არის იმპორტირებული არცერთ სხვა მოდულში" },
+            { ru: "При попытке экспортировать переменную, значение которой равно null", en: "Whenever developer actions attempt to publish an export variable holding a primitive null value", ka: "ცვლადის დაექსპორტების მცდელობისას, რომლის მნიშვნელობაც null-ის ტოლია" },
+            { ru: "Если у функции отсутствует возвращаемый тип данных (return type)", en: "If an evaluated function structure skips providing an explicit trailing return type notation", ka: "თუ ფუნქციას არ გააჩნია დაბრუნებული მონაცემთა ტიპი (return type)" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `noUnusedLocals` работает как строгое правило линтера на уровне компилятора. Если вы создали локальную переменную, но забыли удалить её или использовать, TS посчитает это ошибкой. Это помогает поддерживать чистоту кодовой базы и не оставлять «мертвый» код.",
+            en: "The `noUnusedLocals` setting enforces clean code standards at compile-time. If you define a local variable but never read it, the build fails. This keeps codebases tidy and free from dead, unreferenced variables.",
+            ka: "`noUnusedLocals` ფლაგი მუშაობს როგორც ლინტერის მკაცრი წესი კომპილატორის დონეზე. თუ შექმენით ლოკალური ცვლადი, მაგრამ დაგავიწყდათ მისი გამოყენება ან წაშლა, TS ამას შეცდომად მიიჩნევს. ეს გვეხმარება კოდის სისუფთავის შენარჩუნებაში."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#noUnusedLocals",
+        docLabel: "noUnusedLocals — TSConfig Reference"
+    },
+    {
+        id: 434,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Как обойти ошибку компиляции при включенном флаге 'noUnusedParameters', если аргумент функции обязательно должен быть объявлен, но не используется?",
+            en: "How can you bypass a compilation error under 'noUnusedParameters' if a function argument must be declared but is not used?",
+            ka: "როგორ ავუაროთ გვერდი კომპილაციის შეცდომას ჩართული 'noUnusedParameters' ფლაგის დროს, თუ ფუნქციის არგუმენტი აუცილებლად უნდა იყოს გამოცხადებული, მაგრამ არ გამოიყენება?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">handleEvent</span>(<span class="prop">_event</span>: <span class="type">Event</span>) {
+    <span class="cmt">// Аргумент не используется. Как спастись от ошибки?</span>
+}`,
+        options: [
+            { ru: "Добавить префикс подчеркивания (_) к имени неиспользуемого аргумента функции", en: "Prefix the name of the unused function argument parameter with an underscore (_)", ka: "ფუნქციის გამოუყენებელი არგუმენტის სახელს დასაწყისში დავამატოთ ქვედა ტირე (_)" },
+            { ru: "Пометить аргумент ключевым словом private прямо в сигнатуре функции", en: "Mark the argument target with a private accessibility token directly within the scope signature", ka: "მოვნიშნოთ არგუმენტი private ქივორდით პირდაპირ ფუნქციის სიგნატურაში" },
+            { ru: "Обернуть имя аргумента в двойные фигурные скобки {{ event }}", en: "Enclose the targeted parameter name blocks within double curly brace structures {{ event }}", ka: "გავახვიოთ არგუმენტის სახელი ორმაგ ფიგურულ ფრჩხილებში {{ event }}" },
+            { ru: "Использовать специальный тип данных unused вместо обычного типа", en: "Swap the parameter's standard type mapping for a specialized pseudo-type called unused", ka: "გამოვიყენოთ სპეციალური მონაცემთა ტიპი unused ჩვეულებრივი ტიპის ნაცვლად" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `noUnusedParameters` ругается на неиспользуемые параметры функций. Однако часто в колбэках (например, в обработчиках событий) вам приходится объявлять аргумент (например, `event`), чтобы добраться до следующих аргументов. TypeScript официально разрешает игнорировать проверку для параметров, имена которых начинаются с подчеркивания (например, `_event`).",
+            en: "The `noUnusedParameters` flag warns against unused function parameters. For callbacks where position matters, you can satisfy the compiler by prefixing the unused parameter's name with a single underscore symbol (e.g., `_event`).",
+            ka: "`noUnusedParameters` ფლაგი რეაგირებს ფუნქციების გამოუყენებელ პარამეტრებზე. თუმცა ხშირად კოლბექებში გვიწევს არგუმენტის გამოცხადება. TS ოფიციალურად გვაძლევს ნებას გამოვტოვოთ შემოწმება იმ პარამეტრებისთვის, რომლებიც იწყება ქვედა ტირით (მაგ. `_event`)."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#noUnusedParameters",
+        docLabel: "noUnusedParameters — TSConfig Reference"
+    },
+    {
+        id: 435,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Какое поведение включает флаг 'exactOptionalPropertyTypes' в отношении опциональных свойств объектов?",
+            en: "What strict behavior does 'exactOptionalPropertyTypes' enforce regarding optional object fields?",
+            ka: "რა ქცევას რთავს 'exactOptionalPropertyTypes' ფლაგი ობიექტების არასავალდებულო (optional) თვისებებთან მიმართებაში?"
+        },
+        code: `<span class="kw">interface</span> <span class="type">Config</span> { <span class="prop">mode</span>?: <span class="str">"dark"</span> | <span class="str">"light"</span> }
+<span class="kw">const</span> <span class="prop">c</span>: <span class="type">Config</span> = { <span class="prop">mode</span>: <span class="kw">undefined</span> }; <span class="cmt">// Ошибка при этом флаге!</span>`,
+        options: [
+            { ru: "Запрещает явно присваивать значение undefined опциональному свойству; свойство должно либо соответствовать типу, либо вообще отсутствовать", en: "Disallows explicitly assigning undefined to an optional property; it must match the type exactly or be omitted completely", ka: "კრძალავს undefined-ის მკაфиო მინიჭებას არასავალდებულო თვისებაზე; თვისება ან უნდა შეესაბამებოდეს ტიპს, ან საერთოდ არ უნდა არსებობდეს ობიექტში" },
+            { ru: "Автоматически делает все свойства объекта обязательными (удаляет знак вопроса ?)", en: "Forces runtime object schemas to treat all elements as required, dropping the question mark (?) token", ka: "ავტომატურად აქცევს ობიექტის ყველა თვისებას სავალდებულოდ (შლის კითხვის ნიშანს ?)" },
+            { ru: "Требует, чтобы у каждого опционального свойства был задан дефолтный геттер", en: "Mandates that every optional field specification must carry a built-in default getter method fallback", ka: "მოითხოვს, რომ თითოეულ არასავალდებულო თვისებას ჰქონდეს გაწერილი ნაგულისხმევი გეტერი" },
+            { ru: "Разрешает использовать в качестве значений только числа", en: "Restricts value evaluations accepted by optional object shapes exclusively to primitive numbers", ka: "ნებაზე რთავს არასავალდებულო თვისებების მნიშვნელობებად მხოლოდ რიცხვების გამოყენებას" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "По умолчанию в TypeScript свойство `mode?: string` означает, что ключ может отсутствовать, ИЛИ он может физически существовать со значением `undefined`. Флаг `exactOptionalPropertyTypes` разделяет эти понятия. Если флаг включен, вы не имеете права написать `{ mode: undefined }`. Ключа либо вообще не должно быть в объекте, либо его значение должно быть строго строкой.",
+            en: "By default, `prop?: string` allows omitting the key OR providing it explicitly with an `undefined` value. Turning on `exactOptionalPropertyTypes` stops you from assigning `{ prop: undefined }` directly, drawing a line between a missing key and an undefined value.",
+            ka: "ნაგულისხმევად TS-ში თვისება `mode?: string` ნიშნავს, რომ გასაღები შეიძლება არ არსებობდეს, ან იარსებოს `undefined` მნიშვნელობით. `exactOptionalPropertyTypes` ფლაგი ყოფს ამ ორ ცნებას. ჩართვის შემთხვევაში თქვენ არ გაქვთ უფლება დაწეროთ `{ mode: undefined }`."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#exactOptionalPropertyTypes",
+        docLabel: "exactOptionalPropertyTypes — TSConfig Reference"
+    },
+    {
+        id: 436,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Какую ошибку в логике ветвления функций (if/else) позволяет отловить флаг 'noImplicitReturns'?",
+            en: "What function logic branching error (if/else) does 'noImplicitReturns' catch?",
+            ka: "რა შეცდომის პოვნაში გვეხმარება 'noImplicitReturns' ფლაგი ფუნქციების განშტოებების (if/else) ლოგიკაში?"
+        },
+        code: `<span class="kw">function</span> <span class="fn">check</span>(<span class="prop">v</span>: <span class="type">boolean</span>): <span class="type">string</span> {
+    <span class="kw">if</span> (<span class="prop">v</span>) <span class="kw">return</span> <span class="str">"Ok"</span>; <span class="cmt">// Ошибка, если v === false — функция вернет undefined!</span>
+}`,
+        options: [
+            { ru: "Гарантирует, что абсолютно все пути выполнения внутри функции (все ветки условий) возвращают значение явно через оператор return", en: "Ensures that all possible code execution paths inside a function explicitly return a value via a return statement", ka: "უზრუნველყოფს, რომ ფუნქციის შიგნით შესრულების აბსოლუტურად ყველა შესაძლო გზა (პირობის ყველა განშტოება) აბრუნებდეს მნიშვნელობას მკაфиოდ return ოპერატორის საშუალებით" },
+            { ru: "Запрещает возвращать из функции объекты, созданные анонимно", en: "Bans functions from outputting object literals initialized anonymously within return statements", ka: "კრძალავს ფუნქციიდან ანონიმურად შექმნილი ობიექტების დაბრუნებას" },
+            { ru: "Автоматически добавляет return null в конец любой пустой функции", en: "Injects a default return null instruction at the base block of any function containing empty structures", ka: "ავტომატურად ამატებს return null-ს ნებისმიერი ცარიელი ფუნქციის ბოლოში" },
+            { ru: "Запрещает использовать ключевое слово return внутри циклов forEach", en: "Disallows running the return modifier inside standard Array.prototype.forEach loop closures", ka: "კრძალავს return ქივორდის გამოყენებას forEach ციკლების შიგნით" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Если функция должна возвращать `string`, но в одном из условий `if` вы забыли написать `return`, то при невыполнении условия JS вернет `undefined`, что приведет к багу. Флаг `noImplicitReturns` проверяет граф выполнения функции и бьет тревогу, если хотя бы одна из веток логики не заканчивается явным вызовом `return`.",
+            en: "If a function declares a return signature but has a code pathway (e.g., an unhandled `else`) that fails to hit a `return` keyword, JavaScript implicitly returns `undefined`. `noImplicitReturns` analyzes branches and errors out if any path leaks.",
+            ka: "თუ ფუნქციამ უნდა დააბრუნოს `string`, მაგრამ ერთ-ერთ `if` პირობაში დაგავიწყდათ `return`-ის დაწერა, პირობის შეუსრულებლობისას JS დააბრუნებს `undefined`-ს. `noImplicitReturns` ფლაგი ამას ამოწმებს და გამოაქვს შეცდომა."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#noImplicitReturns",
+        docLabel: "noImplicitReturns — TSConfig Reference"
+    },
+    {
+        id: 437,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "В каком случае компилятор выдаст ошибку в блоке switch-case при включенном флаге 'noFallthroughCasesInSwitch'?",
+            en: "When does the compiler trigger a fault inside switch-case blocks under 'noFallthroughCasesInSwitch'?",
+            ka: "რა შემთხვევაში გამოაგდებს კომპილატორი შეცდომას switch-case ბლოკში, თუ ჩართულია 'noFallthroughCasesInSwitch' ფლაგი?"
+        },
+        code: `<span class="kw">switch</span> (<span class="prop">status</span>) {
+    <span class="kw">case</span> <span class="str">"loading"</span>:
+        <span class="fn">doSomething</span>(); <span class="cmt">// Забыли break! Контроль провалится в следующий case</span>
+    <span class="kw">case</span> <span class="str">"success"</span>:
+}`,
+        options: [
+            { ru: "Если в непустом блоке case отсутствует оператор break, return или throw, из-за чего выполнение провалится в следующий случай", en: "If a non-empty case block lacks a break, return, or throw statement, causing execution to fall through into the next case", ka: "თუ არაცარიელ case ბლოკში არ არის break, return ან throw ოპერატორი, რის გამოც შესრულება გადადის შემდეგ ქეისზე" },
+            { ru: "Если в конструкции switch полностью отсутствует ветка default", en: "Whenever a switch condition structure completely omits a trailing default case block statement", ka: "თუ switch კონსტრუქციაში საერთოდ არ არის default განშტოება" },
+            { ru: "Если два разных блока case проверяют одно и то же строковое значение", en: "If two separate case condition clauses analyze identical matching primitive string criteria entries", ka: "თუ ორი სხვადასხვა case ბლოკი ამოწმებს ერთსა და იმავე სტრიქონულ მნიშვნელობას" },
+            { ru: "Когда количество кейсов в одном switch превышает 10 элементов", en: "When the cumulative case block declarations count declared inside one switch context exceeds 10 items", ka: "როდესაც ქეისების რაოდენობა ერთ switch კონსტრუქციაში აღემატება 10 ელემენტს" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Проваливание в `switch` (fallthrough) — частая причина багов в JS, когда разработчик забывает написать `break`. Если блок `case` содержит исполняемый код и не заканчивается прерыванием (`break`, `return`, `throw`), флаг `noFallthroughCasesInSwitch` выдаст ошибку сборки. Пустые кейсы (группировка условий) при этом разрешены.",
+            en: "Switch-case fallthrough bugs occur when a developer accidentally leaves out a `break` command. If a `case` contains active operations and fails to terminate via `break`, `return`, or `throw`, `noFallthroughCasesInSwitch` triggers a build error. Empty grouped cases are exempt.",
+            ka: "`switch`-ში პირობის ჩავარდნა (fallthrough) ბაგების ხშირი მიზეზია JS-ში, როდესაც დეველოპერს ავიწყდება `break`-ს დაწერა. თუ `case` ბლოკი შეიცავს კოდს და არ მთავრდება `break`, `return` ან `throw` ოპერატორით, ეს ფლაგი გამოაგდებს შეცდომას."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#noFallthroughCasesInSwitch",
+        docLabel: "noFallthroughCasesInSwitch — TSConfig Reference"
+    },
+    {
+        id: 438,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Какую проблему совместимости решает включение флага 'esModuleInterop': true в конфигурации проекта?",
+            en: "What modular compatibility roadblock does setting 'esModuleInterop': true resolve?",
+            ka: "თავსებადობის რა პრობლემას აგვარებს 'esModuleInterop': true ფლაგის ჩართვა პროექტის კონფიგურაციაში?"
+        },
+        code: `<span class="cm">// Позволяет писать: import React from "react";</span>
+<span class="cm">// Вместо: import * as React from "react"; для CommonJS библиотек</span>`,
+        options: [
+            { ru: "Позволяет импортировать старые CommonJS-модули (module.exports) под видом стандартных ES-модулей с дефолтным экспортом", en: "Allows importing legacy CommonJS modules (module.exports) as if they were standard ES modules with a default export", ka: "საშუალებას იძლევა მოხდეს ძველი CommonJS მოდულების (module.exports) იმპორტი სტანდაртული ES მოდულების სახით ნაგულისხმევი (default) ექსპორტით" },
+            { ru: "Позволяет загружать файлы TypeScript напрямую в браузер без предварительного бандлинга", en: "Enables browsers to directly parse raw TypeScript source modules without compiling configurations", ka: "საშუალებას იძლევა TypeScript ფაილები ჩაიტვირთოს პირდაპირ ბრაუზერში წინასწარი ბანდლინგის გარეშე" },
+            { ru: "Автоматически преобразует асинхронные импорты в синхронные вызовы", en: "Transforms dynamic async import operations into blocking synchronous statements at compile time", ka: "ავტომატურად გარდაქმნის ასინქრონულ იმპორტებს სინქრონულ გამოძახებებად" },
+            { ru: "Убирает необходимость указывать расширения файлов при импорте картинок", en: "Elimitates the strict design rule mandating file extensions notation when importing graphic assets", ka: "ხსნის ფაილის გაფართოებების მითითების საჭიროებას სურათების იმპორტის დროს" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "В экосистеме npm много старых библиотек (например, старые версии React или crypto-js), которые экспортируются через `module.exports = ...`. По спецификации ESM их нельзя импортировать через `import React from 'react'`. Флаг `esModuleInterop` генерирует небольшие хелперы-прослойки во время компиляции, сглаживая разницу и позволяя использовать дефолтный синтаксис.",
+            en: "Many npm packages export via legacy `module.exports`. Under strict ESM rules, doing `import React from 'react'` on them fails. Activating `esModuleInterop` directs TS to emit small shims during build, aligning legacy behaviors with modern standards smoothly.",
+            ka: "npm ეკოსისტემაში ბევრი ძველი ბიბლიოთეკაა, რომლებიც ექსპორტირდება `module.exports`-ით. ESM სპეციფიკაციით მათი იმპორტი `import React from 'react'` სინტაქსით შეუძლებელია. `esModuleInterop` ფლაგი ქმნის დამხმარე ფუნქციებს კომპილაციისას, რაც აგვარებს ამ პრობლემას."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#esModuleInterop",
+        docLabel: "esModuleInterop — TSConfig Reference"
+    },
+    {
+        id: 439,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "Что позволяет делать компилятору активация свойства 'allowJs': true в файле конфигурации?",
+            en: "What capability does activating the 'allowJs': true option grant to the compiler?",
+            ka: "რისი გაკეთების უფლებას აძლევს კომპილატორს 'allowJs': true თვისების აქტივაცია კონფიგურაციის ფაილში?"
+        },
+        code: `<span class="cm">// tsconfig.json</span>
+{ <span class="str">"compilerOptions"</span>: { <span class="str">"allowJs"</span>: <span class="kw">true</span> } }`,
+        options: [
+            { ru: "Разрешает компилятору TypeScript принимать на вход и обрабатывать файлы с расширениями .js и .jsx наряду с .ts", en: "Allows TypeScript compiler to accept, process, and transpile standard .js and .jsx files alongside .ts inputs", ka: "ნებაზე რთავს TypeScript კომპილატორს მიიღოს და დაამუშაოს .js და .jsx გაფართოების ფაილები .ts ფაილებთან ერთად" },
+            { ru: "Автоматически конвертирует весь проект из TypeScript обратно в чистый старый JavaScript без сохранения исходников", en: "Forces compilation tasks to wipe out source code directories, replacing them entirely with native old JavaScript", ka: "ავტომატურად გადაიყვანს მთელ პროექტს TypeScript-იდან სუფთა ძველ JavaScript-ში საწყისი კოდის შენარჩუნების გარეშე" },
+            { ru: "Отключает любые ошибки типизации во всем проекте, превращая его в обычный JS", en: "Completely mutes all type verification warnings inside the engine, transitioning execution parameters to plain JS", ka: "თიშავს ტიპიზაციის ნებისმიერ შეცდომას მთელ პროექტში და აქცევს მას ჩვეულებრივ JS-ად" },
+            { ru: "Позволяет писать код на языке CoffeeScript внутри файлов проекта", en: "Enables the compilation parser to natively run and transpile CoffeeScript layouts found inside scripts", ka: "საშუალებას იძლევა CoffeeScript ენაზე დაიწეროს კოდი პროექტის ფაილებში" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Флаг `allowJs` критически важен при поэтапной миграции старого проекта с JavaScript на TypeScript. Он разрешает импортировать файлы `.js` прямо внутрь `.ts` файлов. Компилятор не будет ругаться на них и включит их в общий поток сборки.",
+            en: "The `allowJs` modifier is vital for migrating legacy JavaScript software codebases to TypeScript incrementally. It allows `.js` and `.jsx` modules to coexist and be imported directly into `.ts` environments without compilation rejections.",
+            ka: "`allowJs` ფლაგი კრიტიკულად მნიშვნელოვანია ძველი პროექტის ეტაპობრივი მიგრაციისას JavaScript-იდან TypeScript-ზე. ის ნებას რთავს `.js` ფაილების იმპорტს პირდაპირ `.ts` ფაილებში, კომპილატორი ჩასვამს მათ საერთო ბილდში."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#allowJs",
+        docLabel: "allowJs — TSConfig Reference"
+    },
+    {
+        id: 440,
+        category: { ru: "Конфигурация", en: "Configuration", ka: "კონფიგურაცია" },
+        tag: "configuration",
+        question: {
+            ru: "От какой потенциальной ошибки защищает флаг 'noPropertyAccessFromIndexSignature' при обращении к динамическим полям через точку?",
+            en: "What risk does 'noPropertyAccessFromIndexSignature' prevent when interacting with dynamic keys using dot notation?",
+            ka: "რა პოტენციური შეცდომისგან გვიცავს 'noPropertyAccessFromIndexSignature' ფლაგი დინამიურ ველებთან წერტილის (.) საშუალებით მიმართვისას?"
+        },
+        code: `<span class="kw">interface</span> <span class="type">UserRoles</span> { [<span class="prop">key</span>: <span class="type">string</span>]: <span class="type">boolean</span> }
+<span class="kw">const</span> <span class="prop">u</span>: <span class="type">UserRoles</span> = {};
+<span class="kw">const</span> <span class="prop">check</span> = <span class="prop">u</span>.<span class="prop">isAdmin</span>; <span class="cmt">// Ошибка при включенном флаге! Требуется u["isAdmin"]</span>`,
+        options: [
+            { ru: "Запрещает читать динамические свойства через точку (u.isAdmin), обязывая использовать квадратные скобки u['isAdmin'], чтобы явно показать динамическую природу ключа", en: "Disallows accessing dynamic fields via dot notation (u.isAdmin), forcing bracket notation u['isAdmin'] to visually signify index lookup risks", ka: "კრძალავს დინამიური თვისებების წაკითხვას წერტილის საშუალებით (u.isAdmin) და ავალდებულებს კვადრატული ფრჩხილების u['isAdmin'] გამოყენებას, რათა მკაფიოდ გამოჩნდეს გასაღების დინამიური ბუნება" },
+            { ru: "Полностью запрещает использовать строковые индексы внутри любых интерфейсов", en: "Completely invalidates layout patterns implementing open dynamic index signatures inside any interface profiles", ka: "სრულად კრძალავს სტრიქონული ინდექსების გამოყენებას ნებისმიერი ინტერფეისის შიგნით" },
+            { ru: "Вызывает автоматическую генерацию прокси-объектов (Proxy) в рантайме", en: "Instructs compilation outputs to automatically wrap raw structural objects inside runtime native Proxy configurations", ka: "იწვევს პროქსი-ობიექტების (Proxy) ავტომატურ გენერაციას runtime-ში" },
+            { ru: "Запрещает добавлять новые свойства объектам после их первоначальной инициализации", en: "Blocks downstream operations from adding new fields to an object shape post its initial layout definition", ka: "კრძალავს ობიექტებისთვის ახალი თვისებების დამატებას მათი პირველადი ინიციალიზაციის შემდეგ" }
+        ],
+        correct: 0,
+        explanation: {
+            ru: "Когда у объекта объявлен индексный синтаксис `[key: string]: boolean`, TypeScript по умолчанию разрешает написать `u.isAdmin`. Но это создает ложное ощущение безопасности, будто поле `isAdmin` точно присутствует в структуре. Флаг `noPropertyAccessFromIndexSignature` заставляет разработчика писать `u['isAdmin']`, напоминая, что этого ключа в объекте на самом деле может не оказаться, и возвращенное значение может быть `undefined`.",
+            en: "An index signature `[key: string]: boolean` normally lets you type `u.isAdmin`. However, this masks the risk that the property might be completely missing. Activating `noPropertyAccessFromIndexSignature` mandates bracket syntax `u['isAdmin']`, hinting that the returned result could easily be `undefined`.",
+            ka: "როდესაც ობიექტს აქვს ინდექსური სინტაქსი `[key: string]: boolean`, TS ნაგულისხმევად გვაძლევს უფლებას დავწეროთ `u.isAdmin`. ეს ქმნის ცრუ უსაფრთხოებას. `noPropertyAccessFromIndexSignature` ფლაგი აიძულებს დეველოპერს გამოიყენოს კვადრატული ფრჩხილები `u['isAdmin']`."
+        },
+        docLink: "https://www.typescriptlang.org/tsconfig#noPropertyAccessFromIndexSignature",
+        docLabel: "noPropertyAccessFromIndexSignature — TSConfig Reference"
+    }
 ];
