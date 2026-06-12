@@ -107,3 +107,14 @@ questions.forEach((question) => {
         result ? "Correct" : "Wrong "
     );
 });
+
+function uniqueInOrder (iterable: string | (string | number)[]):(string | number)[] {
+    if (iterable.length === 0) return [];
+	const arr = [...iterable];
+    return [
+        arr[0] as string | number,
+        ...arr.slice(1).filter((a, i) => a !== arr[i])
+    ]
+};
+
+console.log(uniqueInOrder('AAAABBBCCDAABBB')); // ['A', 'B', 'C', 'D', 'A', 'B']

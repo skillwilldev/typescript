@@ -91,3 +91,14 @@ questions.forEach((question) => {
     const result = checkAnswer(question, userAnswer ?? '');
     console.log(result ? "Correct" : "Wrong ");
 });
+function uniqueInOrder(iterable) {
+    if (iterable.length === 0)
+        return [];
+    const arr = [...iterable];
+    return [
+        arr[0],
+        ...arr.slice(1).filter((a, i) => a !== arr[i])
+    ];
+}
+;
+console.log(uniqueInOrder('AAAABBBCCDAABBB')); // ['A', 'B', 'C', 'D', 'A', 'B']
