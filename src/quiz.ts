@@ -118,3 +118,5 @@ function uniqueInOrder (iterable: string | (string | number)[]):(string | number
 };
 
 console.log(uniqueInOrder('AAAABBBCCDAABBB')); // ['A', 'B', 'C', 'D', 'A', 'B']
+
+
