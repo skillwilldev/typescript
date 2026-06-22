@@ -134,3 +134,5 @@ setInterval(updateClock, 1000);
 // let time = now.getTime() // რამდენი მილიწამია გასუხი 1970 წლის 1 იანვრიდან
 
 // console.log(now);
+
+export {};
