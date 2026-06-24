@@ -17,7 +17,7 @@ npm install -g typescript
 ### 2. Initialize Configuration
 If you do not have a `tsconfig.json` file yet, generate one by running:
 ```bash
-tsc --init
+npm init -y,  tsc --init
 ```
 
 ### 3. Run in Watch Mode
