@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const employee1 = {
     id: "user-001",
     name: "Melik",
@@ -64,3 +62,4 @@ const order3 = {
     total: 8,
 };
 console.log(order, order2, order3);
+export {};

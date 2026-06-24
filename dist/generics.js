@@ -1,4 +1,3 @@
-"use strict";
 // generic
 async function getData(url) {
     const response = await fetch(url);
@@ -53,3 +52,4 @@ const nameVal = getValue(person, "name"); // Type: string
 const optionalTask = { title: "Купить молоко" };
 // Makes all properties read-only
 const readonlyTask = { title: "Тест", description: "Описан" };
+export {};

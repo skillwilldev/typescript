@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 //დავალება 1 — ორი რიცხვის კალკულატორი
 function calculate1(a, b) {
     return a + b;
@@ -57,3 +55,4 @@ if (age >= 18 && hasPermission) {
 else {
     console.log("access denied!");
 }
+export {};

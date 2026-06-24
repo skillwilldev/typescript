@@ -1,4 +1,3 @@
-"use strict";
 // ==========================================
 // 2. DATABASE (STATE)
 // ==========================================
@@ -208,3 +207,4 @@ printUsers(); // Shows Melik's empty cart
 console.log('------------------');
 console.log(users);
 console.log(products);
+export {};

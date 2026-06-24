@@ -1,4 +1,3 @@
-"use strict";
 // enum, interface vs type
 const sum = (a, b) => a + b;
 const minus = (a, b) => a - b;
@@ -17,3 +16,4 @@ var TrafficLight;
 })(TrafficLight || (TrafficLight = {}));
 const traffic = TrafficLight.Red;
 console.log(traffic);
+export {};

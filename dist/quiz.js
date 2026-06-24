@@ -1,4 +1,3 @@
-"use strict";
 const questions = [
     {
         id: 1,
@@ -102,3 +101,4 @@ function uniqueInOrder(iterable) {
 }
 ;
 console.log(uniqueInOrder('AAAABBBCCDAABBB')); // ['A', 'B', 'C', 'D', 'A', 'B']
+export {};

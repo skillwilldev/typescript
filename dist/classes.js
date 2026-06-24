@@ -1,10 +1,10 @@
-"use strict";
 // // class Student {
 // //   name: string;
 // //   age: number;
 // //   id: string;
 // //   faculty: string;
 // //   status: string;
+export {};
 // //   constructor(
 // //     name: string,
 // //     age: number,

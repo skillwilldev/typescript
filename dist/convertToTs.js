@@ -1,6 +1,6 @@
-"use strict";
 // function happyBirthday(time: string | number | Date): void {
 //     const bday: Date = new Date(time);
+export {};
 //     if (isNaN(bday.getTime())) {
 //         console.error("err");
 //         return;

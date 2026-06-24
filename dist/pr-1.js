@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 const clock = document.querySelector('.clock');
 const clockInner = document.createElement('div');
 clockInner.classList.add('clock__inner');
@@ -78,3 +76,32 @@ for (let i = 1; i <= 60; i++) {
         line(i * 6 - 0.6, false);
     }
 }
+// function updateClock(): void {
+//     const now = new Date();
+//     const s = now.getSeconds();
+//     const m = now.getMinutes();
+//     const h = now.getHours() % 12;
+//     const secondsDeg = s * 6;
+//     const minutesDeg = m * 6 + s * 0.1;
+//     const hoursDeg = h * 30 + m * 0.5;
+//     seconds.style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
+//     minute.style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
+//     hours.style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
+// }
+// updateClock();
+// setInterval(updateClock, 1000);
+// function updateClock(): void {
+//     const now = new Date();
+//     const s = now.getSeconds() + now.getMilliseconds() / 1000;
+//     const m = now.getMinutes() + s / 60;
+//     const h = now.getHours() % 12 + m / 60;
+//     const secondsDeg = s * 6;
+//     const minutesDeg = m * 6;
+//     const hoursDeg = h * 30;
+//     seconds.style.transform = `translateX(-50%) rotate(${secondsDeg}deg)`;
+//     minute.style.transform = `translateX(-50%) rotate(${minutesDeg}deg)`;
+//     hours.style.transform = `translateX(-50%) rotate(${hoursDeg}deg)`;
+//     requestAnimationFrame(updateClock);
+// }
+// updateClock();
+export {};

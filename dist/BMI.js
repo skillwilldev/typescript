@@ -1,4 +1,3 @@
-"use strict";
 function calculateBMI(weight, height) {
     const bmi = parseFloat((weight / (height * height)).toFixed(1));
     let category;
@@ -29,3 +28,4 @@ console.log(`Weight: ${myWeight} kg`);
 console.log(`Height: ${myHeight} m`);
 console.log(`BMI: ${result.bmi}`);
 console.log(`Category: ${result.category}`);
+export {};

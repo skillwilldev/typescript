@@ -1,10 +1,10 @@
-"use strict";
 // // var a = 5;
 // // გლობალური ცვლადი
 // // let b = 6
 // // ლოკალური ცვლადი - Block-scope ცვლადი
 // // const c = 7
 // // მუდმივი ცვლადი
+export {};
 // // VS Code Extentions
 // //JavaScript and TypeScript Nightly
 // //Pretty TypeScript Errors

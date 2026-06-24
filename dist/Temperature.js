@@ -1,4 +1,3 @@
-"use strict";
 // 4. მთავარი ფუნქცია, რომელიც ახდენს კონვერტაციას.
 // ფუნქცია იღებს `ConversionInput` ტიპის ობიექტს და აბრუნებს `ConversionResult` ტიპის ობიექტს.
 const convertTemperature = (input) => {
@@ -35,3 +34,4 @@ const fahrenheitToCelsius = convertTemperature({
 // მიღებული შედეგების ბეჭდვა კონსოლში
 console.log(celsiusToFahrenheit); // დაბეჭდავს ობიექტს 77 გრადუსი F-ით
 console.log(fahrenheitToCelsius); // დაბეჭდავს ობიექტს 25 გრადუსი C-ით
+export {};

@@ -1,5 +1,3 @@
-"use strict";
-Object.defineProperty(exports, "__esModule", { value: true });
 let clock = document.getElementById("clock");
 for (let i = 1; i <= 12; i++) {
     let numberDiv = document.createElement("div");
@@ -76,3 +74,25 @@ function updateClock() {
     console.log(time.hours);
 }
 setInterval(updateClock, 1000);
+// let now = new Date();
+// // 1970 1 იანვრიდან
+// // მილიწამი -    1 წამი = 1000
+// // 0 1 2 3 4 5 6 7 8 9 10 11 - თვეები მიმდევრობით
+// let year = now.getFullYear();
+// let UTCyear = now.getUTCFullYear();
+// let month = now.getMonth();
+// let UTCmonth = now.getUTCMonth();
+// let day = now.getDay(); // 0-კვირა 1 2 3 4 5 6
+// let UTCDay = now.getUTCDay();
+// let date = now.getDate() // რა რიცხვია ახლა
+// let UTCDate = now.getUTCDate()
+// let hour = now.getHours();
+// let UTChour = now.getUTCHours();
+// let minute = now.getMinutes();
+// let UTCminutes = now.getUTCMinutes();
+// let second = now.getSeconds();
+// let UTCsecond = now.getUTCSeconds();
+// let milliseconds = now.getMilliseconds();
+// let time = now.getTime() // რამდენი მილიწამია გასუხი 1970 წლის 1 იანვრიდან
+// console.log(now);
+export {};

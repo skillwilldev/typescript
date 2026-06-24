@@ -1,4 +1,3 @@
-"use strict";
 const display = document.querySelector('.display');
 const buttons = document.querySelectorAll('button');
 let current = '0';
@@ -96,3 +95,4 @@ buttons.forEach((button) => {
         }
     });
 });
+export {};
