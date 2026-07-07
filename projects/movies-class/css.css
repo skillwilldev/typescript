@@ -1,0 +1,60 @@
+#myForm {
+    background: #ffffff;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
+    width: 100%;
+    max-width: 400px;
+    box-sizing: border-box;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    margin: 20px auto;
+}
+
+#myForm form {
+    display: flex;
+    flex-direction: column;
+    gap: 14px;
+    /* Отступы между инпутами */
+}
+
+#myForm form input,
+#myForm form select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1.5px solid #e0e0e0;
+    border-radius: 8px;
+    font-size: 15px;
+    color: #333333;
+    background-color: #f9f9f9;
+    box-sizing: border-box;
+    transition: all 0.25s ease;
+}
+
+#myForm form input:focus,
+#myForm form select:focus {
+    border-color: #4a90e2;
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+    outline: none;
+}
+
+#myForm form button {
+    background-color: #4a90e2;
+    color: #ffffff;
+    border: none;
+    border-radius: 8px;
+    padding: 14px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    margin-top: 6px;
+}
+
+#myForm form button:hover {
+    background-color: #357abd;
+}
+
+#myForm form button:active {
+    transform: scale(0.98);
+}
