@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="ka">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>სპორტული კლუბი</title>
+  <link rel="stylesheet" href="./styles.css" />
+</head>
+
+<body>
+
+  <header class="header">
+    <div class="header__inner">
+      <!-- <span class="header__eyebrow">TypeScript · OOP · DOM</span> -->
+      <h1>სპორტული კლუბის მართვის სისტემა</h1>
+    </div>
+  </header>
+
+  <main class="layout">
+
+    <section class="panel panel--form">
+      <h2>ახალი მოთამაშის დამატება</h2>
+      <form id="add-form" class="form">
+        <label class="field">
+          <span>სახელი</span>
+          <input id="name-input" class="input" type="text" placeholder="მაგ. ლუკა ბერიძე" required />
+        </label>
+        <label class="field">
+          <span>სპორტის სახეობა</span>
+          <input id="sport-input" class="input" type="text" placeholder="მაგ. ფეხბურთი" required />
+        </label>
+        <label class="field">
+          <span>ასაკი</span>
+          <input id="age-input" class="input" type="number" min="1" placeholder="მაგ. 22" required />
+        </label>
+        <button type="submit" class="btn btn--primary btn--block">მოთამაშის დამატება</button>
+        <p id="form-error" class="form__error"></p>
+      </form>
+    </section>
+
+    <section class="panel panel--list">
+      <div class="panel__top">
+        <h2>მოთამაშეები <span class="count-pill">(<span id="player-count">0</span>)</span></h2>
+        <input id="search-input" class="input input--search" type="text" placeholder="ძებნა სახელის მიხედვით..." />
+      </div>
+
+      <div id="player-list" class="grid"></div>
+      <div id="empty-state" class="empty-state"></div>
+    </section>
+
+  </main>
+
+  <script type="module" src="../../dist/main.js"></script>
+</body>
+
+</html>
