@@ -118,6 +118,7 @@ function displayBooks(): void {
 
 
 
+
 bookForm.addEventListener("submit", (event: Event) => {
     event.preventDefault();
 
