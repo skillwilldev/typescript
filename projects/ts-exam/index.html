@@ -8,13 +8,14 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap"
         rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/7.3.0/css/all.min.css">
     <link rel="stylesheet" href="./styles.css">
     <title>Library Management System</title>
 </head>
 
 <body>
 
-    
+
     <div class="container">
         <h1>Library Management</h1>
         <form id="book-form">
@@ -40,6 +41,10 @@
             </div>
             <button type="submit">Add Book</button>
         </form>
+        <div class="form-group">
+            <label for="search">Search Book</label>
+            <input type="text" id="search" placeholder="Search by title...">
+        </div>
         <h2>Books List</h2>
         <div id="books-container" class="book-list"></div>
     </div>

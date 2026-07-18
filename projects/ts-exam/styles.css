@@ -18,6 +18,7 @@
 
 html {
     box-sizing: border-box;
+    scrollbar-gutter: stable;
 }
 
 *,
@@ -95,6 +96,10 @@ form h3 {
     transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
+.form-group #search {
+    width: 70%;
+}
+
 .form-group select {
     cursor: pointer;
     appearance: none;
@@ -121,7 +126,8 @@ button {
     cursor: pointer;
     font-size: 0.95rem;
     font-weight: 600;
-    transition: background-color 0.15s ease, transform 0.05s ease;
+    font-family: inherit;
+    /* transition: background-color 0.15s ease, transform 0.05s ease; */
 }
 
 button:hover {
@@ -151,7 +157,7 @@ button:active {
 
 .book-card:hover {
     box-shadow: var(--shadow-hover);
-    transform: translateY(-2px);
+    /* transform: translateY(-2px); */
 }
 
 /* .book-card.unavailable {
@@ -177,10 +183,12 @@ button:active {
 
 .status {
     display: inline-block;
-    padding: 2px 10px;
     border-radius: 999px;
     font-weight: 600;
     font-size: 0.8rem;
+    min-width: 101px;
+    text-align: center;
+    padding: 2px 5px;
 }
 
 .status.available {
@@ -254,3 +262,54 @@ button:active {
     background: var(--color-primary);
     color: #fff;
 }
+
+.not-found {
+    text-align: center;
+    color: var(--color-text-muted);
+    padding: 20px;
+}
+
+.book-list:has(p.not-found) {
+    display: block;
+}
+
+.status-change-btn {
+    background: none;
+    border: none;
+    color: #64748b;
+    cursor: pointer;
+    padding: 4px 8px;
+    margin-left: 6px;
+    border-radius: 4px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    vertical-align: middle;
+}
+
+.status-change-btn:hover {
+    color: #2563eb;
+    background-color: #eff6ff;
+}
+
+.status-change-btn:active {
+    transform: scale(95%);
+}
+
+
+.status-change-btn i {
+    font-size: 0.95rem;
+}
+
+.status-change-btn:focus-visible {
+    outline: 2px solid #2563eb;
+    outline-offset: 2px;
+}
+
+.book-card {
+    transition: transform 0.2s ease;
+}
+
+/* .book-card:hover {
+    transform: translateY(-2px);
+} */
